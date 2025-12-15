@@ -81,6 +81,7 @@ echo Removing Mini-Windows from memory... please wait...
 set comspec=a:\command.com
 set path=a:\;%CDROM%:\DOSINS;%CDROM%:\
 xmsdsk /u /y > nul
+A:\
 echo Now Mini-Windows has been successfully removed from the memory.
 echo Made by Wengier and Roy, China DOS Union.
 goto shut
@@ -90,6 +91,7 @@ cls
 echo Thanks for using Mini-Windows 3.11!
 echo By Wengier and Roy, China DOS Union. All rights reserved.
 writext 0+ 1 "Any comments, please come to the forum at: " -f15 http://dosbbs.2ya.com/ -f7
+echo.
 echo.
 echo Type "WIN" to start Mini-Windows again if you want!
 echo Type "patcher" to start MultiPatcher!
