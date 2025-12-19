@@ -3,9 +3,18 @@
 #
 
 # Get DOS utility paths from options
-dosbox = get_option('dosbox')
-message('DOSbox File path: ' + dosbox)
 tcc = get_option('tcc')
+dosbox = get_option('dosbox')
+
+if tcc == ''
+  error('TCC Path empty. Please load local.conf, or supply value in meson_options.txt')
+endif
+
+if dosbox == ''
+  error('dosbox Path empty. Please load local.conf, or supply value in meson_options.txt')
+endif
+
+message('DOSbox File path: ' + dosbox)
 message('TurboC Directory: ' + tcc)
 
 # Add executable to end of DOSBox-X path
@@ -20,7 +29,7 @@ custom_include_path_OBJ = meson.current_build_dir() # Here, .OBJ files for libra
 # Check if Tcc exist
 fs = import('fs')
 if not fs.is_file(tcc + '\\BIN\\TCC.EXE')
-    message('TCC.EXE not found in "BIN" in the directory specified!')
+    error('TCC.EXE not found in "BIN" in the directory specified!')
 endif
 
 # Arguments to pass into DOSBox
