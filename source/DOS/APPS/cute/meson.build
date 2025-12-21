@@ -18,15 +18,3 @@ sub_variables = declare_dependency(
     'install_bin_dir' : install_bin_dir,
   }
 )
-
-# Make this installable
-custom_target(
-  output_file + '_DRIP',
-  input: source_file,
-  output: output_file,
-  command: 'echo',
-  build_by_default: true,
-  build_always_stale: true,
-  install: true,
-  install_dir: install_bin_dir,
-)

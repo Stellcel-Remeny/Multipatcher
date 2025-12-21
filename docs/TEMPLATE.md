@@ -7,7 +7,7 @@ When adding a new dos .C app, you must also add a meson.build file with the foll
 # Edit these variables only.
 source_file = '<src_c_file>'
 output_file = '<tcc_output_exe>'
-install_bin_dir = bin_<patches/utils/drivers/cosmetics> / '<name>'
+install_bin_dir = bin_(patches/utils/drivers/cosmetics) / '<name>'
 
 # Stop right there.
 
@@ -19,17 +19,6 @@ sub_variables = declare_dependency(
   }
 )
 
-# Make this installable
-custom_target(
-  output_file + '_DRIP',
-  input: source_file,
-  output: output_file,
-  command: 'echo',
-  build_by_default: true,
-  build_always_stale: true,
-  install: true,
-  install_dir: install_bin_dir,
-)
 ```
 
 Then, replace:
