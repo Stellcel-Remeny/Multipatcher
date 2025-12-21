@@ -5,6 +5,8 @@ builddir/
 make.bat
 dbox.bat
 
+source/base/boot/boot.img
+
 # item
 *.obj
 *.err
