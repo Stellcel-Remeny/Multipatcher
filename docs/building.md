@@ -1,30 +1,26 @@
 
 # Building MultiPatcher
 
-1st November, 2025 4:10PM
-30th November, 2025 4:54PM
-4th December, 2025 6:45PM
-
 To make a build of MultiPatcher on your system, *assuming it's MS Windows*:
 
 ## Prerequisites
 
 1. Meson
 2. Ninja
-3. DOSBox-X
-4. Turbo C++ Compiler files
+3. DOSBox or DOSBox-X
+4. Turbo C++ 3
 
 ## Instructions
 
-1. In the root of the MultiPatcher directory, create a new file named ```local.conf```.
-2. Put ```[project options]``` in it.
+1. In the root of the MultiPatcher directory, create a new file named `local.conf`.
+2. Put `[project options]` in it.
 3. Under it, add the following and then save it (use double backslashes or single forward slashes):
-    - ```dosbox = '<file>'```, where ```<file>``` must point to the path where DOSBox EXE file is located, including filename.
+    - `dosbox = '<file>'`, where `<file>` must point to the path where DOSBox EXE file is located, **including filename**.
         The following is an example:
-        ```dosbox = 'C:\\DOSBox-X\\DOSBox-X.exe'```
-    - ```tcc = '<path>'```, where ```<path>``` must point to the path where TurboC is installed. (The path must contain BIN, INCLUDE, etc)
-4. Run ```meson setup builddir --native-file local.conf```.
-5. Run ```meson install -C builddir``` to build MultiPatcher. Finalized output will be located in bin_dir (usually ```bin/```)
+        `dosbox = 'C:\\DOSBox-X\\DOSBox-X.exe'`
+    - `tcc = '<path>'`, where `<path>` must point to the path where TurboC is installed. (The path must contain BIN, INCLUDE, etc)
+4. Run `meson setup builddir --native-file local.conf`.
+5. Run `meson install -C builddir` to build MultiPatcher. Finalized output will be located in bin_dir (usually `bin/`)
 
 ## Building MPC for Windows VB4
 
@@ -38,5 +34,15 @@ You will need a copy of Microsoft Visual Basic 4.0 16-bit to compile this applic
 
 ## Tips
 
-- You can view ```meson_options.txt``` and enable/edit more options in local.conf.
+- You can view `meson_options.txt` and enable/edit more options in local.conf.
 - To fully rebuild, delete builddir and bin.
+
+## Edited on
+
+1st November, 2025 4:10PM
+
+30th November, 2025 4:54PM
+
+4th December, 2025 6:45PM
+
+21st December, 2025 1:10PM
