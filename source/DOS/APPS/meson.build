@@ -1,3 +1,6 @@
+# Imports
+py = import('python').find_installation()
+
 # Variables for directories
 bin_patches = meson.project_source_root() / get_option('bin_dir') / 'RES' / 'PATCHES'
 bin_utils = meson.project_source_root() / get_option('bin_dir') / 'RES' / 'UTILS'
@@ -20,10 +23,13 @@ dosbox_args = [
   '-c', 'mount o "' + custom_include_path_OBJ + '"', # We use the OBJ variable to not recompile libraries. (EXCPECTS MAIN MESON.BUILD TO HAVE ALREADY COMPILED THEM)
   '-c', 'PATH %PATH%;x:\\BIN',
   '-c', 'r:',
+  '-c', 'del TCC_LOG.TXT', # Delete previous logfiles
   '-c', 'CMPDAPPS.BAT',
 ]
 
 batch_cmds = []
+
+dos_targets = []
 
 # Ask Windows to list folders in this directory (bare names only)
 rd = run_command('cmd', '/c', 'dir', '/b', '/ad')
@@ -33,49 +39,86 @@ subdirs = rd.stdout().strip().split('\n')
 foreach d : subdirs
   if fs.is_dir(d) and fs.exists(d / 'meson.build')
     # Wipe variables
-    src = ''
-    out = ''
+    src  = ''
+    out  = ''
+    insd = ''
+    batch_cmds = []
     # Enter the directory so its variables become visible
     subdir(d)
     vars = sub_variables
-    src  = vars.get_variable('source_file')
-    out  = vars.get_variable('output_file')
-
     # After subdir(), the following variables MUST exist:
     #   source_file
     #   output_file
+    #   install_bin_dir
+    src  = vars.get_variable('source_file')
+    out  = vars.get_variable('output_file')
+    insd = vars.get_variable('install_bin_dir')
+
     if src == ''
       error('In ' + d + '/meson.build, source_file is empty.')
     elif out == ''
       error('In ' + d + '/meson.build, output_file is empty.')
+    elif insd == ''
+      error('In ' + d + '/meson.build, install_bin_dir is empty.')
     endif
 
-    batch_cmds += ['cd ' + d,
-                   'tcc.exe /IX:\\include /LX:\\LIB /II:\\ -ms Y:\\' + d + '\\' + src + ' O:\\MPCLIB.OBJ O:\\MININI.OBJ'
-                   + (get_option('tcc_output_to_file') ? ' > TCC_LOG.TXT' : ''),
-                   'cd ..']
+    # Write new command
+    batch_cmds = ['del ' + out + ' >NUL'] # Delete previously made output, so it will not falsely take previous executable if tcc fails
+    batch_cmds +=  ['tcc.exe /IX:\\include /LX:\\LIB /II:\\ -ms Y:\\' + d + '\\' + src + ' O:\\MPCLIB.OBJ O:\\MININI.OBJ'
+                   + (get_option('tcc_output_to_file') ? ' >> TCC_LOG.TXT' : '')]
+    # Append command to batch_cmds if file is modified
+    message('DOSAPP Target Input file: ' + d + '/' + src)
+    message('DOSAPP Target Output file: ' + out)
+    message('DOSAPP Target InstallDir: ' + insd)
+    t = custom_target(
+      out + '_DRIP',
+      input: d + '/' + src,
+      output: out,
+      command: [py, files('append.py'), meson.current_build_dir() + '/CMPDAPPS.BAT'] + batch_cmds,
+      build_by_default: true,
+      install: true,
+      install_dir: insd,
+    )
+    dos_targets += [t]
+
   endif
 endforeach
 
-# Quit if needed
-batch_cmds += get_option('exit_on_16bit_compilation') ? ['exit'] : []
-
-# Dump batch_cmds into a .bat file
-batch_content = '\n'.join(batch_cmds)
-configure_file(
-  input: 'CMPDAPPS.BAT.in',
-  output: 'CMPDAPPS.BAT',
-  configuration: {
-    'BATCH_CONTENT': batch_content,
-  }
-)
+# Add exit command if needed
+exit_target = []
+if get_option('exit_on_16bit_compilation')
+  exit_target = [custom_target(
+    'append_exit',
+    output: 'exit.stamp',
+    command: [py, files('append.py'),
+              meson.current_build_dir() + '/CMPDAPPS.BAT',
+              'exit'],
+    depends: dos_targets,
+    build_always_stale: true,
+    build_by_default: true,
+  )]
+endif
 
 # Run dosbox
-custom_target('other_dos_apps',
-    input: [],
-    output: 'ALL_DOS_APPS_BUILT.TXT',
-    command: [dosbox] + dosbox_args,
-    build_by_default: true,
-    build_always_stale: true,
-    depends: mpc_dos, # Make sure main one builds libraries...
+final_deps = [mpc_dos] + dos_targets
+if exit_target != []
+  final_deps += [exit_target]
+endif
+
+dosbox_execute = custom_target(
+  'other_dos_apps',
+  output: 'ALL_DOS_APPS_BUILT.TXT',
+  command: [dosbox] + dosbox_args,
+  build_by_default: true,
+  depends: final_deps,
+)
+
+# Wipe CMPDAPPS.BAT at last by depending on dosbox_execute, for next time.
+wipe_bat = custom_target(
+  'wipe_cmpdapps_bat',
+  output: 'CMPDAPPS.WIPE',
+  command: [py, '-c', 'open("' + meson.current_build_dir() + '/CMPDAPPS.BAT","w").close()'],
+  build_by_default: true,
+  build_always_stale: true,
+  depends: dosbox_execute
 )
