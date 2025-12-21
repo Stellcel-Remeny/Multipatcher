@@ -19,6 +19,12 @@ message('Bootable Mini Windows Source directory: ' + src_mwin)
 src_dos  = get_option('src_dos')
 message('DOS Source directory: ' + src_dos)
 
+# Check if BOOT.IMG exists
+fs = import('fs')
+if not fs.is_file(src_mwin + '\\BOOT.IMG')
+    error('BOOT.IMG not found in ' + src_mwin + ', please view HOWTO.TXT in src_mwin dir.')
+endif
+
 # Compile DOS App
 subdir(src_dos)
 
