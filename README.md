@@ -42,6 +42,14 @@ The 'RES/' folder contains required files for MultiPatcher to function properly.
 
 The goal here is to make an independent and lightweight utility where the users can use it to launch other utilities or patches. We don't want heavy applications like some Partition manager, but something like the Windows Update Blocker is welcomed.
 
+## Cloning
+
+You must have git installed.
+
+In your terminal window, type `git clone https://github.com/Stellcel-Remeny/Multipatcher.git --depth 1`
+
+`--depth 1` flag will shorten the amount of bandwidth you have to use to clone this repository.
+
 ## Compiling
 
 For compiling, see [Building](docs/building.md)
