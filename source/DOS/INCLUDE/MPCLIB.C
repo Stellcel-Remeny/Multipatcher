@@ -296,7 +296,8 @@ void print_page(const char* fmt, ...) {
     int i = 0, col = 0;
 
     va_start(args, fmt);
-    vsprintf(text, fmt, args);  // safe: text is allocated
+    vsprintf(text, fmt, args);
+    text[sizeof(text) - 1] = '\0';
     va_end(args);
 
     len = strlen(text);
@@ -336,14 +337,14 @@ void print_page(const char* fmt, ...) {
         }
 
         // print word
-        if (flags.v_word_by_word)
-            dbg("PRINTING WORD: '%s' (len=%d)", buffer, i);
-        cprintf(buffer);
+        if (flags.v_word_by_word) { dbg("PRINTING WORD: '%s' (len=%d)", buffer, i); }
+        else if (flags.animate)   { delay(30); }
+        cprintf("%s", buffer);
         col += i;
 
         // handle space after word
         if (pos < len && text[pos] == ' ') {
-            if (col + 1 > screen_cols) {
+            if (col >= screen_cols) {
                 cprintf("\r\n ");
                 col = 0;
             } else {
@@ -352,8 +353,6 @@ void print_page(const char* fmt, ...) {
             }
             pos++;
         }
-
-        if (flags.animate) delay(30);
     }
     cprintf("\r\n"); // final newline
 }
