@@ -40,6 +40,7 @@
 - Microsoft Layer for Unicode for Win9x
 - Paragon NTFS for Win9x/Me
 - SciTech Display Doctor 7
+- Windows Logo Changer by Dr. A. Olowofoyeku
 - XrX Logo Utility
 - XrX AddBar
 
