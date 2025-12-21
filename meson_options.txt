@@ -2,11 +2,12 @@
 
 # Directories
 option('src_base', type : 'string', value : 'source/BASE', description : 'Base directory with 3rd-party binaries to copy into bin_dir')
+option('src_muwu', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
 option('src_dos', type : 'string', value : 'source/DOS', description : 'Source directory for DOS application')
 option('bin_dir', type : 'string', value : 'bin', description : 'Output directory for built binaries')
 
 # Utilities
-option('dosbox', type : 'string', value : '', description : 'Folder path to DOSBOX Application')
+option('dosbox', type : 'string', value : '', description : 'File path to DOSBOX Application')
 option('tcc', type : 'string', value : '', description : 'Folder path to TurboC++')
 
 # Patchress 16BIT DOS Arguments
