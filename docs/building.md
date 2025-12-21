@@ -19,8 +19,9 @@ To make a build of MultiPatcher on your system, *assuming it's MS Windows*:
         The following is an example:
         `dosbox = 'C:\\DOSBox-X\\DOSBox-X.exe'`
     - `tcc = '<path>'`, where `<path>` must point to the path where TurboC is installed. (The path must contain BIN, INCLUDE, etc)
-4. Run `meson setup builddir --native-file local.conf`.
-5. Run `meson install -C builddir` to build MultiPatcher. Finalized output will be located in bin_dir (usually `bin/`)
+4. Go into `source/MINWIN` and read `howto.txt` to generate `BOOT.IMG` file.
+5. Run `meson setup builddir --native-file local.conf`.
+6. Run `meson install -C builddir` to build MultiPatcher. Finalized output will be located in bin_dir (usually `bin/`)
 
 ## Building MPC for Windows VB4
 
@@ -45,4 +46,4 @@ You will need a copy of Microsoft Visual Basic 4.0 16-bit to compile this applic
 
 4th December, 2025 6:45PM
 
-21st December, 2025 1:10PM
+21st December, 2025 1:10PM, 2:55PM
