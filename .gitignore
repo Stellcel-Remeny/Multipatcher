@@ -5,7 +5,7 @@ builddir/
 make.bat
 dbox.bat
 
-source/base/boot/boot.img
+source/minwin/boot.img
 
 # item
 *.obj
