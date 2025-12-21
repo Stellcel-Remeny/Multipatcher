@@ -48,19 +48,24 @@ foreach d : subdirs
     vars = sub_variables
     # After subdir(), the following variables MUST exist:
     #   source_file
-    #   output_file
     #   install_bin_dir
     src  = vars.get_variable('source_file')
-    out  = vars.get_variable('output_file')
     insd = vars.get_variable('install_bin_dir')
 
     if src == ''
       error('In ' + d + '/meson.build, source_file is empty.')
-    elif out == ''
-      error('In ' + d + '/meson.build, output_file is empty.')
     elif insd == ''
       error('In ' + d + '/meson.build, install_bin_dir is empty.')
     endif
+
+    # Append current directory name to insd
+    insd += '/' + d
+
+    # When TCC compiles, almost always the resulting .EXE file will be named
+    # as <src_C_file>.exe, without the .C file extension.
+    # Therefore, we can automate output file detection by taking the filename
+    # of the SRC file, stripping away the extension, and then appending '.EXE'.
+    out = src.split('.')[0] + '.EXE'
 
     # Write new command
     batch_cmds = ['del ' + out + ' >NUL'] # Delete previously made output, so it will not falsely take previous executable if tcc fails
