@@ -408,7 +408,7 @@ void user_select_item(const char *init_short_dir){
             dbg("OLD DIRECTORY: %s", current_directory);
             // Make sure we do not cross higher than Drive Letter level (?)
             // CHECK ASSUMES WE ARE NOT ABOVE '<root_dir>/RES', HENCE NO CHECKS FOR THAT.
-            last_backslash = strrchr(current_directory, '\\');
+            last_backslash = (char *)strrchr(current_directory, '\\');
             if (last_backslash) {
                 *last_backslash = '\0';   // truncate at last backslash
             }
@@ -463,7 +463,7 @@ void user_select_item(const char *init_short_dir){
                 dbg("ESC PRESSED.");
                 // Get the previous directory
                 dbg("OLD DIRECTORY IN: %s", current_directory);
-                last_backslash = strrchr(current_directory, '\\');
+                last_backslash = (char *)strrchr(current_directory, '\\');
 
                 // Check if new directory goes outside of initial directory
                 dbg("CHK IF STRLEN CURRENT_DIRECTORY: %d", strlen(current_directory));
