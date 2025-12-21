@@ -1,4 +1,5 @@
 Windows:
+- Install IMDISK
 - Run GENIMG.bat file.
 - Ensure that BOOT.IMG file is created
 - Rebuild Multipatcher
