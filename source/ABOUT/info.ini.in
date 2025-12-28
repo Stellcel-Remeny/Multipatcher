@@ -5,7 +5,7 @@
 name="About MultiPatcher"
 author="Remeny"
 version="MultiPatcher v@PROJECT_VERSION@"
-description="Package also contains goodies created by other people - view CREDITS.TXT for citations. This software itself is provided to you for free under GNU GPLv3, is available with source at: https://github.com/Stellcel-Remeny/Multipatcher"
+description="Package also contains goodies created by other people - view CREDITS.TXT for citations. This software itself is provided to you for free under GNU GPLv3, and is available with source at: https://github.com/Stellcel-Remeny/Multipatcher"
 executable=false
 
 [OS]
