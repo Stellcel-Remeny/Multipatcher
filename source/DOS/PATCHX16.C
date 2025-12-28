@@ -225,8 +225,10 @@ void print_entry_details(const Entry *entry) {
     }
 
     print_page("     Description: %s\n", entry->description);
-    if (entry->is_executable) { print_page(" Press ENTER to run, or ESC to go back..."); }
-    else                      { print_page(" Press ESC to go back..."); }
+    if (entry->is_executable) { print_page(" Press ENTER to run, or ESC to go back...");
+                                status("  ENTER = Run  E = Edit args  ESC = Go back  F3 = Exit"); }
+    else                      { print_page(" Press ESC to go back...");
+                                status("  ESC = Go back  F3 = Exit");}
 }
 
 // Logic to display information about an entry
@@ -268,11 +270,9 @@ void display_entry(Entry *entry) {
             strcat(entry->args, " /MPC ");
             strcat(entry->args, mpc_args);
         }
-        status("  ENTER = Run  E = Edit args  ESC = Go back  F3 = Exit");
     } else {
         // File is not executable.
         entry->is_executable = false;
-        status("  ESC = Go back  F3 = Exit");
     }
 
     dbg("Information gather OK.");
@@ -289,7 +289,7 @@ void display_entry(Entry *entry) {
     while (key != ESC_KEY) {
         key = getch();
         if      (key == F3_KEY)            { quit(); }
-        else if (key == 'e' || key == 'E') {
+        else if ((key == 'e' || key == 'E') && entry->is_executable) {
             dbg("EDIT ARGS PAGE OPENING");
             dbg("OLD ARGS: %s", entry->args);
             // Edit arguments
@@ -329,6 +329,8 @@ void display_entry(Entry *entry) {
 
                 // Build batch mode args
                 sprintf(batch_mode_args, "/C %s %s", entry->exe, entry->args);
+                dbg("ARG PASS TO COMMAND.COM: %s", batch_mode_args);
+                // TODO: FIX THIS - ADD DOSINS TO PATH!
                 code = spawnvp(P_WAIT, "COMMAND.COM", build_argv("COMMAND.COM", batch_mode_args));
             } else {
                 dbg("NOT BATCHMODE");
