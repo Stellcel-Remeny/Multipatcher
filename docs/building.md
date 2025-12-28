@@ -5,10 +5,10 @@ To make a build of MultiPatcher on your system, *assuming it's MS Windows*:
 
 ## Prerequisites
 
-1. Meson
-2. Ninja
-3. DOSBox or DOSBox-X
-4. Turbo C++ 3
+1. Meson (`pip install meson`)
+2. Ninja (`pip install ninja`)
+3. DOSBox or DOSBox-X ([DOSBox](https://www.dosbox.com/))
+4. Turbo C++ 3 ([Turbo C](https://turbo-c.net/))
 
 ## Instructions
 
@@ -25,7 +25,7 @@ To make a build of MultiPatcher on your system, *assuming it's MS Windows*:
 
 ## Building MPC for Windows VB4
 
-You will need a copy of Microsoft Visual Basic 4.0 16-bit to compile this application.
+You will need a copy of Microsoft Visual Basic 4.0 16-bit to compile this application. [Microsoft Visual Basic 4.0](https://winworldpc.com/product/microsoft-visual-bas/40)
 
 1. Open Microsoft Visual Basic 4.0 16-bit
 2. Open the project in `source/VB4'
@@ -47,3 +47,5 @@ You will need a copy of Microsoft Visual Basic 4.0 16-bit to compile this applic
 4th December, 2025 6:45PM
 
 21st December, 2025 1:10PM, 2:55PM
+
+28th December, 2025 4:18PM
