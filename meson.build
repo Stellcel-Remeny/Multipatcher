@@ -12,6 +12,10 @@ project('MultiPatcher',
     default_options : ['warning_level=3'])
 
 # Get directories from options
+src_dir = get_option('src_dir')
+message('Source directory: ' + src_dir)
+src_about = get_option('src_about')
+message('About directory: ' + src_about)
 src_base = get_option('src_base')
 message('Base directory: ' + src_base)
 src_mwin  = get_option('src_muwu')
@@ -25,8 +29,24 @@ if not fs.is_file(src_mwin + '\\BOOT.IMG')
     error('BOOT.IMG not found in ' + src_mwin + ', please view HOWTO.TXT in src_mwin dir.')
 endif
 
+# Generate text for 'About'
+conf = configuration_data()
+conf.set('PROJECT_VERSION', meson.project_version())
+
+configure_file(
+    input: src_about / 'info.ini.in',
+    output: 'info.ini',
+    configuration: conf
+)
+
 # Compile DOS App
 subdir(src_dos)
+
+# Install generated About information
+install_data(
+    meson.current_build_dir() / 'info.ini',
+    install_dir: meson.project_source_root() / get_option('bin_dir') / 'RES' / 'ABOUT'
+)
 
 # Now is a good time to copy src_base
 install_subdir(src_base,
