@@ -35,6 +35,7 @@ typedef struct {
     bool pass_mpc_args;
     bool batch_mode;
     bool pause_on_quit;
+    bool is_executable;
 } Entry;
 
 // ---[ Functions ]--- //
@@ -91,9 +92,9 @@ void quit(void) {
     return; // Cancel quit
 }
 
-// This function dumps all folders that have the Name= variable
-// (lfn.ini) in them, in the variable 'menus'.
+// This function dumps all folders that have (lfn.ini) in them, in the variable 'menus'.
 // Folders which have 'info.ini' in them will be added to 'entries'.
+// Those that do not support MS-DOS are not included.
 // Returns:
 //      number of items found (both menus and entries)
 int get_items(char **menus, char **entries, const char *folder, int max_items) {
@@ -203,24 +204,29 @@ void get_fancy_names(char **all_items, char **menus, char **entries, const char 
     all_items[menu_count + i] = NULL;
 }
 
-// Prints whatever is in the Entry struct
+// Prints whatever is in the Entry struct.
+// Has messages if not executable.
 void print_entry_details(const Entry *entry) {
     if (!entry) return;
     print_page(
         " Details:\n\n"
         "     Name: %s\n"
         "     Version: %s\n"
-        "     Author: %s\n"
-        "     Executable: %s %s\n\n"
-        "     Description: %s\n\n"
-        " Press ENTER to run, or ESC to go back...",
+        "     Author: %s",
         entry->long_name,
         entry->version,
-        entry->author,
-        entry->exe,
-        entry->args,
-        entry->description
+        entry->author
     );
+    if (entry->is_executable) {
+        if (entry->exe[0] == '\0') {print_page("     Executable: Cannot be executed because executable is unspecified.\n");}
+        else                       {print_page("     Executable: %s %s\n", entry->exe, entry->args);}
+    } else {
+        print_page("     Executable: Execution disabled due to Executable= flag being false.\n");
+    }
+
+    print_page("     Description: %s\n", entry->description);
+    if (entry->is_executable) { print_page(" Press ENTER to run, or ESC to go back..."); }
+    else                      { print_page(" Press ESC to go back..."); }
 }
 
 // Logic to display information about an entry
@@ -228,7 +234,6 @@ void display_entry(Entry *entry) {
     // Init vars
     unsigned char screen_buffer[MAX_SCREEN_COLS * MAX_SCREEN_ROWS * 2];
     int key = -1, code = 0;
-    bool entry_runs_on_msdos = false;
     char cwd[MAXPATH] = {0};
 
     // Buffer for Batch-mode args
@@ -239,48 +244,41 @@ void display_entry(Entry *entry) {
     status("");
     wipe();
 
-    // Get information from its INI file
+    // Change directory
     if (chdir(entry->directory)) crash("Failure to swap to %s", entry->directory); // Change to entry directory
 
-    entry_runs_on_msdos = ini_getbool("OS", "MSDOS", false, "info.ini");
+    // Gather all needed information from info.ini
+    ini_gets("MAIN", "Name", "<unspecified>", entry->long_name, sizeof(entry->long_name), "info.ini");
+    ini_gets("MAIN", "Description", "<unspecified>", entry->description, sizeof(entry->description), "info.ini");
+    ini_gets("MAIN", "Version", "<unspecified>", entry->version, sizeof(entry->version), "info.ini");
+    ini_gets("MAIN", "Author", "<unspecified>", entry->author, sizeof(entry->author), "info.ini");
+    entry->is_executable = ini_getbool("MAIN", "Executable", true, "info.ini");
+    ini_gets("MSDOS", "Exec", "", entry->exe, sizeof(entry->exe), "info.ini");
 
-    if (!entry_runs_on_msdos) {
-        dbg("Information gather HALT - does not support DOS.");
-        print_page(" The selected entry does not support MS-DOS.\n"
-                    " Press ESC to go back...");
-        status("  ESC = Go back  F3 = Exit");
-    } else { 
-        // Gather all needed information.
-        ini_gets("MAIN", "Name", "<unspecified>", entry->long_name, sizeof(entry->long_name), "info.ini");
-        ini_gets("MAIN", "Description", "<unspecified>", entry->description, sizeof(entry->description), "info.ini");
-        ini_gets("MAIN", "Version", "<unspecified>", entry->version, sizeof(entry->version), "info.ini");
-        ini_gets("MAIN", "Author", "<unspecified>", entry->author, sizeof(entry->author), "info.ini");
-        ini_gets("MSDOS", "Exec", "", entry->exe, sizeof(entry->exe), "info.ini");
+    // Check if file can be executed
+    if (entry->is_executable && entry->exe[0] != '\0') {
+        // This file is executable.
         ini_gets("MSDOS", "Args", "", entry->args, sizeof(entry->args), "info.ini");
         entry->pass_mpc_args = ini_getbool("MSDOS", "PassArgs", false, "info.ini");
         entry->batch_mode = ini_getbool("MSDOS", "BatchMode", false, "info.ini");
         entry->pause_on_quit = ini_getbool("MSDOS", "PauseOnQuit", false, "info.ini");
-        dbg("Information gather OK.");
-        
-        // Check if executable is blank
-        if (entry->exe[0] == '\0') {
-            print_page(" The selected entry does not specify an executable that can run under MSDOS.\n"
-                        " (Variable EXEC= under [MSDOS] is blank)\n\n"
-                        " Press ESC to go back...");
-            status("  ESC = Go back  F3 = Exit");
-        } else {
-            // Pass MPC arguments if needed
-            if (entry->pass_mpc_args) {
-                strcat(entry->args, " /MPC ");
-                strcat(entry->args, mpc_args);
-            }
 
-            // Print information
-            print_entry_details(entry);
-            status("  ENTER = Run  E = Edit args  ESC = Go back  F3 = Exit");
+        // Pass MPC arguments if needed
+        if (entry->pass_mpc_args) {
+            strcat(entry->args, " /MPC ");
+            strcat(entry->args, mpc_args);
         }
-
+        status("  ENTER = Run  E = Edit args  ESC = Go back  F3 = Exit");
+    } else {
+        // File is not executable.
+        entry->is_executable = false;
+        status("  ESC = Go back  F3 = Exit");
     }
+
+    dbg("Information gather OK.");
+
+    // Print information
+    print_entry_details(entry);
 
     // Check keys:
     //  F3 = Execute quit()
@@ -306,8 +304,8 @@ void display_entry(Entry *entry) {
             wipe();
             print_entry_details(entry);
         }
-        else if (key == ENTER_KEY) {
-            if (!file_exists(entry->exe))
+        else if (key == ENTER_KEY && entry->is_executable) {
+            if (!file_exists(entry->exe)) // Probably happens if user is naughty and removes the CD or something.
                 crash("File not found: %s", entry->exe); // We can define an error but this is easier.
 
             save_screen(screen_buffer);

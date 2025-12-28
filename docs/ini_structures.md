@@ -1,9 +1,7 @@
 
 # INI file structures
 
-28th November, 2025 9:16PM
-29th November, 2025 8:02AM
-4th December, 2025 9:39PM
+This file describes the structure of LFN.INI file for Menus, and INFO.INI file for Entries.
 
 ## Menus and LFN.INI
 
@@ -43,6 +41,7 @@ Under `[MAIN]`:
 - `description=` A short description of the item.
 - `author=` Creator of the item.
 - `version=` Version of the item.
+- `executable=<true/false>` Toggles executability of the item.
 
 Under `[OS]`:
 
@@ -61,5 +60,16 @@ Under `[MSDOS]`:
 - `pauseOnQuit=<true/false>` Pause for one keypress after `Exec=` finishes.
 
 Under literally every other `[<winver>]` section:
+
 - `exec=` Name of the executable
 - `args=` Default arguments to pass
+
+## Edited on
+
+28th November, 2025 9:16PM
+
+29th November, 2025 8:02AM
+
+4th December, 2025 9:39PM
+
+28th December, 2025 5:52PM

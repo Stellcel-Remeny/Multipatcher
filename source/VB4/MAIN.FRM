@@ -3,19 +3,19 @@ Begin VB.Form main
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Remeny MultiPatcher"
    ClientHeight    =   6045
-   ClientLeft      =   9360
-   ClientTop       =   4515
+   ClientLeft      =   840
+   ClientTop       =   4440
    ClientWidth     =   8955
    Enabled         =   0   'False
    Height          =   6555
-   Left            =   9300
+   Left            =   780
    LinkTopic       =   "main"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Picture         =   "MAIN.frx":0000
    ScaleHeight     =   6045
    ScaleWidth      =   8955
-   Top             =   4065
+   Top             =   3990
    Visible         =   0   'False
    WhatsThisHelp   =   -1  'True
    Width           =   9075
@@ -410,7 +410,7 @@ Begin VB.Form main
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "No items found. Select 'Go Up'"
+      Caption         =   "No items found. Select 'Go up'"
       BeginProperty Font 
          name            =   "MS Sans Serif"
          charset         =   1
@@ -611,11 +611,16 @@ Dim menus As New Collection
 Dim entries As New Collection
 Dim curPage As Integer
 
+Dim EntryRuns As Boolean
 Dim EntryExec As String
 Dim EntryArgs As String
 
 Dim selectedEntry As String
 Sub resetDisplayEntry()
+    ' Reset variables
+    EntryRuns = True
+    EntryExec = ""
+    EntryArgs = ""
     ' Display defaults
     Author.Caption = ""
     Version.Caption = ""
@@ -625,6 +630,7 @@ Sub resetDisplayEntry()
     DescBox.Text = ""
     execLabel.Caption = ""
     ' Reset startlabel
+    startlabel.Caption = "<-- Click here to begin"
     startlabel.ForeColor = &HF&
     startlabel.FontBold = False
 End Sub
@@ -634,6 +640,8 @@ Sub displayEntry(ByVal relativePath As String)
     Dim iniPath As String
     iniPath = FullCurDir & "\" & relativePath & "\INFO.INI"
     Debug.Print "ENTRY RELATIVE PATH: " & relativePath
+    ' Get information about executability
+    EntryRuns = ReadIniBool("Main", "Executable", iniPath, True)
     ' Populate executable
     EntryExec = ReadIniStr(WinVer, "Exec", iniPath)
     EntryArgs = ReadIniStr(WinVer, "Args", iniPath)
@@ -642,9 +650,24 @@ Sub displayEntry(ByVal relativePath As String)
     Version.Caption = "Version: " & ReadIniStr("MAIN", "Version", iniPath)
     DescBox.Text = ReadIniStr("MAIN", "Description", iniPath)
     DescBox.Visible = True
-    execLabel.Caption = "Command: " & EntryExec & " " & EntryArgs
-    ' Startlabel look change
-    startlabel.ForeColor = &H4000&
+    
+    ' Display information regarding execution
+    If EntryRuns And Not EntryExec = "" Then
+        execLabel.Caption = "Command: " & EntryExec & " " & EntryArgs
+        ' Startlabel look change - Green
+        startlabel.ForeColor = &H4000&
+    Else
+        If EntryRuns = False Then
+            execLabel.Caption = "Executable bit is set to False."
+        Else
+            execLabel.Caption = "Executable application not specified."
+            EntryRuns = False
+        End If
+        startlabel.Caption = "<X-  Cannot be executed"
+        ' Startlabel look change - Red
+        startlabel.ForeColor = &HC0&
+    End If
+    ' Bold the startlabel
     startlabel.FontBold = True
 End Sub
 
@@ -948,12 +971,15 @@ Private Sub itemList_Click(Index As Integer)
         ' PASS CORRECT ENTRY INDEX
         selectedEntry = entries.item(entryPos)
         displayEntry entries.item(entryPos)
+        
+        ' Update dirLabel
+        dirLabel.Caption = currentDir & entries.item(globalPos - menus.Count) ' No trailing backslash, it's an entry :)
     End If
 
 End Sub
 
 Private Sub startbutton_Click()
-    If Not selectedEntry = "" Then
+    If EntryRuns And Not selectedEntry = "" Then
         ' Play select sound
         Debug.Print "Playing VBSELECT.WAV"
         PlayWavAsync App.Path & "\DATA\VBSELECT.WAV"
