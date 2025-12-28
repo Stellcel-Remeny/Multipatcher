@@ -219,12 +219,13 @@ void status(const char *fmt, ...) {
 void intro(void) {
     int i;
     textbackground(BLACK);
-    clrscr();
+    //clrscr();
+    // ^^^ Nope. More exotic now.
     status("");
 
     // Intro Animation!
     textbackground(BLUE);
-    for (i = 0; i < screen_rows; i++) {
+    for (i = 1; i < screen_rows; i++) {
         gotoxy(1, i);
         if (flags.animate)
             delay(30);
