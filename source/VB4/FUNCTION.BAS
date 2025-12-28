@@ -109,6 +109,7 @@ End Function
 Function ReadIniBool(section As String, key As String, file As String, defaultValue As Boolean) As Boolean
     Dim s As String
     s = LCase$(Trim$(ReadIniStr(section, key, file)))
+    Debug.Print "Reading " + file + " sect " + section + " key " + key + " Returned S value: " + s
 
     If s = "" Then
         ReadIniBool = defaultValue
