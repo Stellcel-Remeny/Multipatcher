@@ -120,7 +120,6 @@ Begin VB.Form welcome
       EndProperty
       Height          =   1695
       Left            =   1560
-      Locked          =   -1  'True
       MultiLine       =   -1  'True
       TabIndex        =   4
       Text            =   "WELCOME.frx":B18E2
@@ -164,7 +163,7 @@ Begin VB.Form welcome
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "vbGUI: 1.3, VB4"
+      Caption         =   "vbGUI: 1.4"
       BeginProperty Font 
          name            =   "MS Sans Serif"
          charset         =   1
