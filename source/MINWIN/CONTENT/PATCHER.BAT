@@ -2,7 +2,7 @@ if not exist %CDROM%\MPCCD goto notfound
 if not exist %CDROM%\PATCHER.BAT goto notfound
 
 %CDROM%
-PATCHER.BAT
+PATCHER.BAT %1 %2 %3 %4 %5 %6 %7 %8 %9
 A:
 
 :notfound
