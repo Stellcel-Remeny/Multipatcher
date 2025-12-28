@@ -21,6 +21,7 @@
 
 // ---[ Globals ]--- //
 char mpc_args[512]; // Stores arguments passed into MPC
+char **mpc_argv;
 char root_dir[MAXPATH]; // Root directory of Multipatcher
 
 // ---[ Structures ]--- //
@@ -388,11 +389,15 @@ void user_select_item(const char *init_short_dir){
     for (;;) {
         wipe();
         print_page(" You are currently in: %s", current_directory);
+
         // First, we need to get the entries in the current directory.
         total_items = get_items(menus, entries, current_directory, MAX_ENTRIES);
         dbg("Total items found in current dir: %d", total_items);
 
         if (total_items == 0) {
+            // If animate is disabled by something, re-enable it.
+            if (!arg_check(mpc_argv, "/ni")) enable_animate();
+
             // We found nothing.
             dbg("CASE: NOTHING FOUND.");
             print_page("\n No entries or menus were found in the specified directory.\n\n"
@@ -421,6 +426,9 @@ void user_select_item(const char *init_short_dir){
                        " Please select an item from below.\n\n"
                       ); // <-- my face rn
             
+            // If animate is disabled by something, re-enable it.
+            if (!arg_check(mpc_argv, "/ni")) enable_animate();
+
             // Get the number of menus and entries
             num_menus = count_arrays(menus);
             num_entries = count_arrays(entries);
@@ -458,6 +466,9 @@ void user_select_item(const char *init_short_dir){
                 // User pressed F3
                 dbg("F3 PRESSED.");
                 quit();
+                // This means user cancelled the Quit operation.
+                // Disable animation temporarily for this loop for smooth experience.
+                disable_animate();
             } else if (selected_item == -1) {
                 // User pressed ESC
                 dbg("ESC PRESSED.");
@@ -476,6 +487,9 @@ void user_select_item(const char *init_short_dir){
                         *last_backslash = '\0';   // truncate at last backslash
                     } else {
                         dbg("IN APPROOT DIRECTORY.");
+                        // Since we are already at root, disable animation temporarily.
+                        // Because it looks silly. Also install Gentoo.
+                        disable_animate();
                     }
                 }
                 dbg("NEW DIRECTORY UP: %s", current_directory);
@@ -543,6 +557,7 @@ int main(int argc, char *argv[]) {
 
     get_screen_size(); // Fill screen_rows and screen_cols before doing anything.
     join(mpc_args, argv + 1); // Join all arguments into a single string
+    mpc_argv = argv;
     dbg("INIT: TSIZE ROW: %d, COL: %d, ARGS: %s", screen_rows, screen_cols, mpc_args);
 
     // Save current working directory
