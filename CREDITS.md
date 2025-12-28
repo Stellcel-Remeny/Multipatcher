@@ -40,6 +40,7 @@
 - Microsoft Layer for Unicode for Win9x
 - NTPatcher by Novabits
 - Paragon NTFS for Win9x/Me
+- Rufus 2.18 from rufus.ie
 - SciTech Display Doctor 7
 - Windows Logo Changer by Dr. A. Olowofoyeku
 - XrX Logo Utility
