@@ -1,6 +1,8 @@
 ## Default meson options ##
 
 # Directories
+option('src_dir', type : 'string', value : 'source', description : 'Source directory')
+option('src_about', type : 'string', value : 'source/ABOUT', description : 'Source directory containing About information.')
 option('src_base', type : 'string', value : 'source/BASE', description : 'Base directory with 3rd-party binaries to copy into bin_dir')
 option('src_muwu', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
 option('src_dos', type : 'string', value : 'source/DOS', description : 'Source directory for DOS application')
