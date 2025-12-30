@@ -264,7 +264,7 @@ void display_entry(Entry *entry, const char *init_dir) {
     while (environ[envc])
         envc++; // Environment variables of current dos installation
 
-    new_env = malloc((envc + 2) * sizeof(char *));
+    new_env = (char **)malloc((envc + 2) * sizeof(char *));
 
     dbg("ENTRY DIRECTORY: %s", entry->directory);
     dbg("Gathering information from INI file.");
@@ -354,7 +354,7 @@ void display_entry(Entry *entry, const char *init_dir) {
                 new_path,
                 "PATH=%s\\DOSINS;%s",
                 init_dir,
-                getenv("PATH") ? getenv("PATH") : ""
+                (char *)getenv("PATH") ? (char *)getenv("PATH") : ""
             );
 
             for (i = 0; i < envc; i++) {
