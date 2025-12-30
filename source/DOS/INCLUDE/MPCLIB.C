@@ -17,6 +17,7 @@
 // ---[ Global variables ]--- //
 int screen_rows = 0, screen_cols = 0;
 Flags flags = { false, false, false, false, false, false };
+char logfile[MAXPATH] = "LOGFILE.TXT"; // Default logfile
 
 // ---[ Functions ]--- //
 
@@ -50,17 +51,17 @@ void restore_screen(unsigned char *screen_buffer) {
     movedata(FP_SEG(screen_buffer), FP_OFF(screen_buffer), 0xB800, 0, screen_rows * screen_cols * 2);
 }
 
-// Logs a message into LOGFILE
+// Logs a message into logfile
 void log(const char* fmt, ...) {
     va_list args;
     FILE *f;
     if (!flags.v_log) return;
     // Append to logfile
-    f = fopen(LOGFILE, "a");   // "a" = append mode
+    f = fopen(logfile, "a");   // "a" = append mode
     if (!f) {
         perror("fopen");
         // Do not use crash() here to avoid recursion
-        printf("Cannot open %s to write logs", LOGFILE);
+        printf("Cannot open %s to write logs", logfile);
         exit(-1);
     }
     va_start(args, fmt);
