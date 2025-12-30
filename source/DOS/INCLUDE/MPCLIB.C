@@ -16,7 +16,7 @@
 
 // ---[ Global variables ]--- //
 int screen_rows = 0, screen_cols = 0;
-Flags flags = { false, false, false, false, false, false };
+Flags flags = { false, false, false, false, false, false, false, false };
 char logfile[MAXPATH] = "LOGFILE.TXT"; // Default logfile
 
 // ---[ Functions ]--- //
@@ -1206,6 +1206,8 @@ int restore_attrs(int original, const char *fmt, ...) {
 void validate_mpc_args(char *argv[]) {
     /* Reset flags */
     flags.animate = false;
+    flags.show_cursor = false;
+    flags.fat_cursor = false;
     flags.verbose = false;
     flags.v_pause = false;
     flags.v_log = false;
@@ -1214,6 +1216,9 @@ void validate_mpc_args(char *argv[]) {
 
     /* Populate flags */
     if (!arg_check(argv, "/ni")) flags.animate = true;
+    if      (arg_check(argv, "/nh"))         { flags.show_cursor = true; _setcursortype(_NORMALCURSOR); }
+    else if (arg_check(argv, "/chunkybaby")) { flags.fat_cursor = true; _setcursortype(_SOLIDCURSOR); }
+    else                                     { _setcursortype(_NOCURSOR); }
 
     if (arg_check(argv, "/v")) { // Verbose/Debug mode
         flags.verbose = true;

@@ -108,6 +108,8 @@ extern "C" {
 // ---[ Structures ]--- //
 typedef struct {
     bool animate;
+    bool show_cursor;
+    bool fat_cursor;
     bool verbose;
     bool v_pause;
     bool v_log;

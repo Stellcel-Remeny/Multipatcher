@@ -92,6 +92,8 @@ void quit(void) {
             intro_reverse();
             textbackground(BLACK);
             textcolor(LIGHTGRAY);
+            // Reset cursor
+            _setcursortype(_NORMALCURSOR);
             dbg("Terminated due to quit() request.");
             exit(0);
         }
@@ -624,6 +626,7 @@ int main(int argc, char *argv[]) {
         printf("\n  MultiPatcher Arguments\n"
              "===========================\n\n"
              "  /ni      = Disable animations\n"
+             "  /nh      = Show text cursor\n"
              "  /v       = Verbose mode\n"
              "  /vp      = Verbose mode with pauses on statusbar update (needs /v)\n"
              "  /vlog    = Verbose mode with logging (needs /v)\n"
@@ -631,6 +634,37 @@ int main(int argc, char *argv[]) {
              "  /vstat   = Show status messages as debug messages instead (needs /v)\n"
              "  /?       = Show this help message\n"
              "\n");
+        return 0;
+    }
+
+    //
+    if (arg_check(argv, "/linux")) {
+        printf(
+            "\n"
+            "  I'd just like to interject for a moment. What you're referring\n"
+            "  to as Linux, is in fact, GNU/Linux, or as I've recently taken to\n"
+            "  calling it, GNU plus Linux. Linux is not an operating system unto\n"
+            "  itself, but rather another free component of a fully functioning\n"
+            "  GNU system made useful by the GNU corelibs, shell utilities and\n"
+            "  vital system components comprising a full OS as defined by POSIX.\n"
+            "  Many computer users run a modified version of the GNU system\n"
+            "  every day, without realizing it. Through a peculiar turn of\n"
+            "  events, the version of GNU which is widely used today is often\n"
+            "  called \"Linux,\" and many of its users are not aware that it is\n"
+            "  basically the GNU system, developed by the GNU Project. There\n"
+            "  really is a Linux, and these people are using it, but it is just\n"
+            "  a part of the system they use.\n"
+            "\n"
+            "  Linux is the kernel: the program in the system that allocates the\n"
+            "  machine's resources to the other programs that you run. The\n"
+            "  kernel is an essential part of an operating system, but useless\n"
+            "  by itself; it can only function in the context of a complete\n"
+            "  operating system. Linux is normally used in combination with the\n"
+            "  GNU operating system: the whole system is basically GNU with\n"
+            "  Linux added, or GNU/Linux. All the so-called \"Linux\"\n"
+            "  distributions are really distributions of GNU/Linux.\n"
+            "\n"
+        );
         return 0;
     }
 
