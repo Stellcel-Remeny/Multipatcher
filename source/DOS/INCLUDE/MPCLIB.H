@@ -194,6 +194,7 @@ void wipe(void);
 void window(const int x, const int y, const int width, const int height);
 void window_off(const int x, const int y, const int width, const int height);
 int selector(bool enable_esc, bool enable_f3, char *items[]);
+int selector_noscroll(bool enable_esc, bool enable_f3, char *items[]);
 bool file_exists(const char *fmt, ...);
 int dir_exists(const char *fmt, ...);
 int copy_file(const char *src, const char *dst);

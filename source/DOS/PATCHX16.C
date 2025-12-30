@@ -539,9 +539,12 @@ void user_select_item(const char *init_short_dir){
             // Return to original
             restore_pos_and_color(current_pos);
             // Show selector
-            selected_item = selector(true, true, fancy_names);
+            selected_item = selector_noscroll(true, true, fancy_names);
 
-            if (selected_item == -2) {
+            if (selected_item == -4 || selected_item == -3) {
+                // User tried scrolling
+                crash("Scrolling not implemented in this part due to arrows.");
+            } else if (selected_item == -2) {
                 // User pressed F3
                 dbg("F3 PRESSED.");
                 quit();

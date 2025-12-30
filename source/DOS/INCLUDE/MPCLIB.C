@@ -533,78 +533,219 @@ void window_off(const int x, const int y, const int width, const int height) {
 // A simple selector function.
 // INDEX BEGINS AT 0, NOT 1
 // Returns:
-//  index of the selected item if ENTER,
-//  -1 if ESC is pressed.
-//  -2 if F3 is pressed.
+//  >= 0: index of the selected item if ENTER,
+//  -1    if ESC is pressed or error.
+//  -2    if F3 is pressed.
+// Supports scrollability.
 int selector(bool enable_esc, bool enable_f3, char *items[]) {
-    int total_size_of_items = count_arrays(items);
-    int selected_item = 0, i = 0;
-    int key = -1;
+    int total_size_of_items;
+    int selected_item;
+    int top_item;
+    int visible_items;
+    int i;
+    int key;
+    int item_index;
     struct text_info saved_attr;
-    // If there is nothing in items, quit.
-    if (total_size_of_items == 0) return -1;
 
-    // Capture current position and color scheme
+    // cgpt
+
+    total_size_of_items = count_arrays(items);
+    selected_item = 0;
+    top_item = 0;
+    key = -1;
+
+    if (total_size_of_items == 0)
+        return -1;
+
     save_pos_and_color(saved_attr);
 
-    // Check if the total amount goes beyond screen limit (+1 is so it would not print on status bar and line before it)
-    if (saved_attr.cury + total_size_of_items + 1 > screen_rows) {
-        dbg("Too many items to display! (%d items)", total_size_of_items);
-        crash("Scrollable functionality not implemented yet.");
-    }
+    visible_items = screen_rows - saved_attr.cury - 1;
+    if (visible_items <= 0)
+        visible_items = 1;
 
-    // Print everything in *items[] initially
-    while (items[i] != NULL) {
-        gotoxy(saved_attr.curx, saved_attr.cury + i);
-        cprintf(items[i]);
-        i++;
-    }
+    while (1) {
 
-    key = -1;
-    while (true) {
-        // Highlight the selected entry
-        gotoxy(saved_attr.curx, saved_attr.cury + selected_item);
-        textbackground(WHITE);
-        textcolor(BLACK);
-        cprintf(items[selected_item]);
+        /* Draw visible window */
+        for (i = 0; i < visible_items; i++) {
+            item_index = top_item + i;
 
-        // Wait for user input
+            /* Step 1: clear line with NORMAL attribute */
+            gotoxy(saved_attr.curx, saved_attr.cury + i);
+            textattr(saved_attr.attribute);
+            cprintf("%-*s", screen_cols - saved_attr.curx + 1, "");
+
+            if (item_index >= total_size_of_items)
+                continue;
+
+            /* Step 2: print text normally */
+            gotoxy(saved_attr.curx, saved_attr.cury + i);
+            cprintf(items[item_index]);
+
+            /* Step 3: overlay highlight ONLY on text if selected */
+            if (item_index == selected_item) {
+                gotoxy(saved_attr.curx, saved_attr.cury + i);
+                textbackground(WHITE);
+                textcolor(BLACK);
+                cprintf(items[item_index]);
+            }
+        }
+
+        textattr(saved_attr.attribute);
         key = getch();
+
         if (key == EXT_KEY) {
             key = getch();
+
             if (key == UP_KEY) {
-                // Remove highlight from current entry
-                gotoxy(saved_attr.curx, saved_attr.cury + selected_item);
-                textattr(saved_attr.attribute);
-                cprintf(items[selected_item]);
 
                 selected_item--;
-                if (selected_item < 0) selected_item = total_size_of_items - 1; // wrap around
-            } else if (key == DOWN_KEY) { // Down arrow
-                // Remove highlight from current entry
-                gotoxy(saved_attr.curx, saved_attr.cury + selected_item);
-                textattr(saved_attr.attribute);
-                cprintf(items[selected_item]);
+
+                /* Wrap to bottom */
+                if (selected_item < 0) {
+                    selected_item = total_size_of_items - 1;
+                    top_item = total_size_of_items - visible_items;
+                    if (top_item < 0)
+                        top_item = 0;
+                }
+                else if (selected_item < top_item) {
+                    top_item = selected_item;
+                }
+            }
+            else if (key == DOWN_KEY) {
 
                 selected_item++;
-                if (selected_item >= total_size_of_items) selected_item = 0; // wrap around
-            } else if (key == F3_KEY && enable_f3) { // F3 Key
-                gotoxy(1, saved_attr.cury + total_size_of_items); // Go to the newline below the selector
-                restore_color(saved_attr);
+
+                /* Wrap to top */
+                if (selected_item >= total_size_of_items) {
+                    selected_item = 0;
+                    top_item = 0;
+                }
+                else if (selected_item >= top_item + visible_items) {
+                    top_item = selected_item - visible_items + 1;
+                }
+            }
+            else if (key == F3_KEY && enable_f3) {
+                restore_pos_and_color(saved_attr);
                 return -2;
             }
-        } else if (key == ENTER_KEY) { // Enter key
-            gotoxy(1, saved_attr.cury + total_size_of_items); // Go to the newline below the selector
-            restore_color(saved_attr);
-            break; // selection made
-        } else if (key == ESC_KEY && enable_esc) { // ESC key
-            gotoxy(1, saved_attr.cury + total_size_of_items); // Go to the newline below the selector
-            restore_color(saved_attr);
-            return -1; // cancel selection
+        }
+        else if (key == ENTER_KEY) {
+            restore_pos_and_color(saved_attr);
+            return selected_item;
+        }
+        else if (key == ESC_KEY && enable_esc) {
+            restore_pos_and_color(saved_attr);
+            return -1;
         }
     }
+}
 
-    return selected_item;
+// The selector function without scrollability.
+// INDEX BEGINS AT 0, NOT 1
+// Returns:
+//  >= 0: index of the selected item if ENTER,
+//  -1    if ESC is pressed or error.
+//  -2    if F3 is pressed.
+//  -3    if user tries going above what's displayed
+//  -4    if user tries going below what's displayed
+// Does not support scrollability,
+int selector_noscroll(bool enable_esc, bool enable_f3, char *items[]) {
+    int total_size_of_items;
+    int selected_item;
+    int visible_items;
+    int i;
+    int key;
+    int item_index;
+    int can_scroll;
+    struct text_info saved_attr;
+
+    total_size_of_items = count_arrays(items);
+    selected_item = 0;
+    key = -1;
+
+    if (total_size_of_items == 0)
+        return -1;
+
+    save_pos_and_color(saved_attr);
+
+    visible_items = screen_rows - saved_attr.cury - 1;
+    if (visible_items <= 0)
+        visible_items = 1;
+
+    /* Clamp items to what can actually be shown */
+    if (total_size_of_items < visible_items)
+        visible_items = total_size_of_items;
+
+    can_scroll = (total_size_of_items > visible_items);
+
+    while (1) {
+
+        /* Draw visible (non-scrollable) window */
+        for (i = 0; i < visible_items; i++) {
+            item_index = i;
+
+            /* Clear line with normal attribute */
+            gotoxy(saved_attr.curx, saved_attr.cury + i);
+            textattr(saved_attr.attribute);
+            cprintf("%-*s", screen_cols - saved_attr.curx + 1, "");
+
+            /* Print text normally */
+            gotoxy(saved_attr.curx, saved_attr.cury + i);
+            cprintf(items[item_index]);
+
+            /* Highlight only the text if selected */
+            if (item_index == selected_item) {
+                gotoxy(saved_attr.curx, saved_attr.cury + i);
+                textbackground(WHITE);
+                textcolor(BLACK);
+                cprintf(items[item_index]);
+            }
+        }
+
+        textattr(saved_attr.attribute);
+        key = getch();
+
+        if (key == EXT_KEY) {
+            key = getch();
+
+            if (key == UP_KEY) {
+
+                if (selected_item == 0) {
+                    if (can_scroll) {
+                        restore_pos_and_color(saved_attr);
+                        return -3; /* tried to go above */
+                    }
+                    selected_item = visible_items - 1; /* wrap */
+                } else {
+                    selected_item--;
+                }
+            }
+            else if (key == DOWN_KEY) {
+
+                if (selected_item == visible_items - 1) {
+                    if (can_scroll) {
+                        restore_pos_and_color(saved_attr);
+                        return -4; /* tried to go below */
+                    }
+                    selected_item = 0; /* wrap */
+                } else {
+                    selected_item++;
+                }
+            }
+            else if (key == F3_KEY && enable_f3) {
+                restore_pos_and_color(saved_attr);
+                return -2;
+            }
+        }
+        else if (key == ENTER_KEY) {
+            restore_pos_and_color(saved_attr);
+            return selected_item;
+        }
+        else if (key == ESC_KEY && enable_esc) {
+            restore_pos_and_color(saved_attr);
+            return -1;
+        }
+    }
 }
 
 // Checks if a file exists. 
