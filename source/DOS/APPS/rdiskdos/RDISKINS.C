@@ -40,10 +40,10 @@ int main(int argc, char* argv[]) {
     textcolor(WHITE);
 
     page1:
-    print_page(" RDISK is a RAM-disk driver. It creates a \"fast\" disk using up to 2-GB\n"
-               " of XMS memory.   Files can be uploaded via AUTOEXEC to the RAM-disk and\n"
-               " accessed at memory speeds.    RDISK is a simple RAM-disk driver with no\n"
-               " resizing or other options.\n");
+    print_page("  RDISK is a RAM-disk driver. It creates a \"fast\" disk using up to 2-GB"
+               "of XMS memory. Files can be uploaded via AUTOEXEC to the RAM-disk and"
+               "accessed at memory speeds. RDISK is a simple RAM-disk driver with no"
+               "resizing or other options.");
     status("  ENTER = Next");
     print_page("  Please enter the path where RAMDISK shall be installed.\n");
     cprintf("     ");

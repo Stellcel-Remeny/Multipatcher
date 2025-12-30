@@ -85,8 +85,8 @@ int main(int argc, char* argv[]) {
     textcolor(WHITE);
 
     page1:
-    print_page("This is a small and simple Virtual Device Driver (\"VxD\") for Windows 3.1 in 386 Enhanced Mode. Its purpose is to work around two bugs in the firmware for Intel AHCI controllers, which normally cause Windows 3.1 Enhanced Mode to crash on disk access.\n");
-    print_page(" This program installs the AHCIFIX.386 file into your Windows 3.1 installation.\n\n");
+    print_page("  This is a small and simple Virtual Device Driver (\"VxD\") for Windows 3.1 in 386 Enhanced Mode. Its purpose is to work around two bugs in the firmware for Intel AHCI controllers, which normally cause Windows 3.1 Enhanced Mode to crash on disk access.\n");
+    print_page("  This program installs the AHCIFIX.386 file into your Windows 3.1 installation.\n\n");
     status("  ENTER = Next");
     print_page("  Please enter the path to your Windows 3.1 installation.\n");
     cprintf("     ");

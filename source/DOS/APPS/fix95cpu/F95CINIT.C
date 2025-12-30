@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     textcolor(WHITE);
 
     page1:
-    print_page("FIX95CPU will install the necessary files for running "
+    print_page("  FIX95CPU will install the necessary files for running "
                "Windows 95 RTM, Windows 95 A, Windows 95 B, or Windows 95 C "
                "in AMD systems with processor speeds greater than 350MHz, and "
                "in Intel systems with processor speeds greater than 2.1GHz.\n");

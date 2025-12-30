@@ -40,13 +40,13 @@ int main(int argc, char* argv[]) {
 
     page1:
     print_page("  What does it do?\n"
-               " It has 2 functions: shutdown your computer\n"
-               "                     reboot your computer\n\n"
-               " The shutdown option only works on ATX systems with Advanced Power Management\n"
-               " version 1.2 or higher. Just try the program, if it works, your system meets\n"
-               " the requirements.\n"
-               " The reboot option works on any modern personal computer.\n\n"
-               "  This application copies SHUTDOWN.COM.\n");
+               "   It has 2 functions: shutdown your computer\n"
+               "                       reboot your computer\n\n"
+               "   The shutdown option only works on ATX systems with Advanced Power Management"
+               "version 1.2 or higher. Just try the program, if it works, your system meets"
+               "the requirements.\n"
+               "   The reboot option works on any modern personal computer.\n\n"
+               "   This application copies SHUTDOWN.COM.\n");
     status("  ENTER = Next");
     print_page("  Please enter the path where Shutdown shall be installed.\n");
     cprintf("     ");

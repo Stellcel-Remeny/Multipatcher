@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     textcolor(WHITE);
 
     page1:
-    print_page("The Windows 95/98/SE/ME RAM Limitation Patch Program patches Windows 95, 98, "
+    print_page("  The Windows 95/98/SE/ME RAM Limitation Patch Program patches Windows 95, 98, "
                 "98SE or ME to support Computers with more than 512MB of RAM. Unmodified "
                 "Windows 95, 98, 98SE or ME can malfunction or crash when more than 512MB of "
                 "RAM is present.\n");
