@@ -19,7 +19,7 @@ extern "C" {
   #endif
 #endif
 
-// ---[ Special key codes ]--- //
+// ---[ Special key codes [getch()] ]--- //
 #define EXT_KEY       0
 #define BACKSPACE_KEY 8
 #define ENTER_KEY     13
@@ -31,11 +31,55 @@ extern "C" {
 #define DOWN_KEY      80
 #define TILDE_KEY     96
 
-// ---[ ASCII symbol codes ]--- //
-#define UP_ARROW      24
-#define DOWN_ARROW    25
-#define RIGHT_ARROW   26
-#define LEFT_ARROW    27
+// ---[ Arrows & UI symbols ]--- //
+#define UP_ARROW      24    // ↑
+#define DOWN_ARROW    25    // ↓
+#define RIGHT_ARROW   26    // →
+#define LEFT_ARROW    27    // ←
+
+#define BLOCK_FULL    219   // █
+#define BLOCK_DARK    178   // ▓
+#define BLOCK_MED     177   // ▒
+#define BLOCK_LIGHT   176   // ░
+
+#define BULLET        7     // •
+#define SMILE         1     // ☺
+#define HEART         3     // ♥
+
+// ---[ IBM PC / CP437 box-drawing characters ]--- //
+// Single-line box
+#define H_LINE        196   // ─
+#define V_LINE        179   // │
+#define TOP_LEFT      218   // ┌
+#define TOP_RIGHT     191   // ┐
+#define BOTTOM_LEFT   192   // └
+#define BOTTOM_RIGHT  217   // ┘
+
+// Double-line box
+#define DH_LINE       205   // ═
+#define DV_LINE       186   // ║
+#define DTOP_LEFT     201   // ╔
+#define DTOP_RIGHT    187   // ╗
+#define DBOTTOM_LEFT  200   // ╚
+#define DBOTTOM_RIGHT 188   // ╝
+
+// Mixed connectors
+#define T_DOWN        194   // ┬
+#define T_UP          193   // ┴
+#define T_RIGHT       195   // ├
+#define T_LEFT        180   // ┤
+#define CROSS         197   // ┼
+
+// Double-line connectors
+#define DT_DOWN       203   // ╦
+#define DT_UP         202   // ╩
+#define DT_RIGHT      204   // ╠
+#define DT_LEFT       185   // ╣
+#define DCROSS        206   // ╬
+
+// ---[ Mixed single/double connectors (CP437) ]--- //
+#define DV_T_LEFT     182   // ╢
+#define DV_T_RIGHT    199   // ╟
 
 // ---[ Save and restore screen items ]--- //
 //
@@ -72,6 +116,44 @@ typedef struct {
     bool v_word_by_word;
     bool v_status_as_debug;
 } Flags;
+
+// ---[ Box drawing presets ]--- //
+#define BOX_SINGLE 0
+#define BOX_DOUBLE 1
+#define BOX_PRESET_COUNT 2
+
+// Box character set definition
+struct box_chars {
+    unsigned char tl;  // top-left corner
+    unsigned char tr;  // top-right corner
+    unsigned char bl;  // bottom-left corner
+    unsigned char br;  // bottom-right corner
+    unsigned char h;   // horizontal line
+    unsigned char v;   // vertical line
+};
+
+// Preset table (IBM PC CP437)
+static const struct box_chars BOX_PRESETS[BOX_PRESET_COUNT] = {
+    // BOX_SINGLE
+    {
+        TOP_LEFT,      // tl ┌ 218
+        TOP_RIGHT,     // tr ┐ 191
+        BOTTOM_LEFT,   // bl └ 192
+        BOTTOM_RIGHT,  // br ┘ 217
+        H_LINE,        // h  ─ 196
+        V_LINE         // v  │ 179
+    },
+
+    // BOX_DOUBLE
+    {
+        DTOP_LEFT,     // tl ╔ 201
+        DTOP_RIGHT,    // tr ╗ 187
+        DBOTTOM_LEFT,  // bl ╚ 200
+        DBOTTOM_RIGHT, // br ╝ 188
+        DH_LINE,       // h  ═ 205
+        DV_LINE        // v  ║ 186
+    }
+};
 
 // ---[ Global Variables ]--- //
 extern Flags flags;
@@ -128,6 +210,7 @@ int save_attrs(int *out_attr, const char *fmt, ...);
 int clear_RHS(const char *fmt, ...);
 int restore_attrs(int original, const char *fmt, ...);
 void validate_mpc_args(char *argv[]);
+void box(int x, int y, int width, int height, int preset);
 
 // End of extern "C" block
 #ifdef __cplusplus
