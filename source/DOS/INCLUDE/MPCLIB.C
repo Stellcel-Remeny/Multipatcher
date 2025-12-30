@@ -289,73 +289,135 @@ void title(const char* fmt, ...) {
 }
 
 // Prints text page with optional animation
-void print_page(const char* fmt, ...) {
-    char text[MAX_SCREEN_COLS * MAX_SCREEN_ROWS];    // buffer for full page text
-    char buffer[MAX_SCREEN_COLS];   // buffer for each word
-    va_list args;
-    size_t pos = 0, len = 0;
-    int i = 0, col = 0;
+// Contains automatic leading space adder
+// ^^ By this, I mean it adds leading spaces
+// determined by the number of leading spaces
+// in the latest line with a \n character
+// (or the first line if no \n in your code)
+void print_page(const char *fmt, ...) {
+    char text[MAX_SCREEN_COLS * MAX_SCREEN_ROWS];
+    char temp[4096];                 /* large formatting buffer */
+    char buffer[MAX_SCREEN_COLS * 2];    /* single-word buffer */
 
+    va_list args;
+    size_t pos, len;
+    int i, indent;
+
+    /* ---- SAFE FORMATTING ---- */
     va_start(args, fmt);
-    vsprintf(text, fmt, args);
-    text[sizeof(text) - 1] = '\0';
+    vsprintf(temp, fmt, args);   /* still unsafe, but temp is large */
     va_end(args);
 
-    len = strlen(text);
+    strncpy(text, temp, sizeof(text) - 1);
+    text[sizeof(text) - 1] = '\0';
 
-    cprintf(" ");  // initial space
+    len = strlen(text);
+    pos = 0;
+    i = 0;
+    indent = wherex(); // Keep everything nice
+
+    /* Gather leading space offset */
+    while (indent < (int)len && text[indent] == ' ')
+        indent++;
+
+    /* clamp indent to screen width */
+    if (indent >= screen_cols - 1)
+        indent = screen_cols - 2;
+
+    // Initial space - also add 1 to indent
+    indent++;
+    cprintf(" ");
+
+    if (flags.v_word_by_word)
+        dbg("INDENT %d CURRENT COL %d", indent, wherex());
 
     while (pos < len) {
-        // handle explicit newlines
+        /* ---- HANDLE USER NEWLINE + RECOMPUTE INDENT ---- */
         if (text[pos] == '\n') {
-            cprintf("\r\n ");
-            col = 0;
-            pos++;
+            pos++;                  /* skip newline */
+            indent = 0;
+
+            /* count leading spaces after newline */
+            while (pos < len && text[pos] == ' ') {
+                indent++;
+                pos++;
+            }
+
+            /* clamp indent */
+            if (indent >= screen_cols - 1)
+                indent = screen_cols - 2;
+
+            /* always add one visual space */
+            indent++;
+
+            cprintf("\r\n");
+            for (i = 0; i < indent; i++)
+                cprintf(" ");
             continue;
         }
 
-        // collect a word
+        /* ---- SKIP WHITESPACE (EXCEPT NEWLINE) ---- */
+        while (pos < len &&
+               isspace((unsigned char)text[pos]) &&
+               text[pos] != '\n') {
+
+            if (wherex() + 1 > screen_cols - 1) {
+                cprintf("\r\n");
+                for (i = 0; i < indent; i++)
+                    cprintf(" ");
+            } else {
+                cprintf(" ");
+            }
+            pos++;
+        }
+
+        if (pos >= len || text[pos] == '\n')
+            continue;
+
+        /* ---- COLLECT WORD ---- */
         i = 0;
-        while (pos < len && text[pos] != '\n' &&
+        while (pos < len &&
                !isspace((unsigned char)text[pos]) &&
                i < screen_cols - 1) {
+
             buffer[i++] = text[pos++];
         }
         buffer[i] = '\0';
 
-        // if nothing collected, print the space
-        if (i == 0) {
-            cprintf(" ");
-            col++;
-            pos++;
+        /* ---- HANDLE WORD LONGER THAN LINE ---- */
+        if (i > screen_cols - indent) {
+            int k = 0;
+            while (k < i) {
+                if (wherex() > screen_cols - 1) {
+                    cprintf("\r\n");
+                    for (i = 0; i < indent; i++)
+                        cprintf(" ");
+                }
+                cprintf("%c", buffer[k++]);
+            }
             continue;
         }
 
-        // wrap line if needed
-        if (col + i > screen_cols) {
-            cprintf("\r\n ");
-            col = 0;
-        }
-
-        // print word
-        if (flags.v_word_by_word) { dbg("PRINTING WORD: '%s' (len=%d)", buffer, i); }
-        else if (flags.animate)   { delay(30); }
-        cprintf("%s", buffer);
-        col += i;
-
-        // handle space after word
-        if (pos < len && text[pos] == ' ') {
-            if (col >= screen_cols) {
-                cprintf("\r\n ");
-                col = 0;
-            } else {
+        /* ---- WRAP IF NECESSARY ---- */
+        if (wherex() + i > screen_cols - 1) {
+            cprintf("\r\n");
+            for (i = 0; i < indent; i++)
                 cprintf(" ");
-                col++;
-            }
-            pos++;
         }
+
+        /* ---- PRINT WORD ---- */
+        if (flags.v_word_by_word) {
+            dbg("PRINTING WORD: '%s' (len=%d)", buffer, i);
+        } else if (flags.animate) {
+            delay(30);
+        }
+
+        cprintf("%s", buffer);
+        if (flags.v_word_by_word)
+            dbg("REMAINING SPACE: %d", screen_cols - wherex());
     }
-    cprintf("\r\n"); // final newline
+
+    cprintf("\r\n");
 }
 
 // Wipes the screen with blue color
@@ -366,18 +428,6 @@ void wipe(void) {
         gotoxy(1, i);
         clreol();
         if (flags.animate) delay(30);
-    }
-    textbackground(BLUE);
-    textcolor(LIGHTGRAY);
-}
-
-// Wipe without animation. Made for one dumb little thing.
-void quick_wipe(void) {
-    int i;
-    textbackground(BLUE);
-    for (i = screen_rows - 1; i > 4; i--) {
-        gotoxy(1, i);
-        clreol();
     }
     textbackground(BLUE);
     textcolor(LIGHTGRAY);
