@@ -225,7 +225,8 @@ void print_entry_details(const Entry *entry) {
         print_page("     Executable: Execution disabled due to Executable= flag being false.\n");
     }
 
-    print_page("     Description: %s\n", entry->description);
+    cprintf("      Description:");
+    print_page("%s\n", entry->description);
     if (entry->is_executable) { print_page(" Press ENTER to run, or ESC to go back...");
                                 status("  ENTER = Run  E = Edit args  ESC = Go back  F3 = Exit"); }
     else                      { print_page(" Press ESC to go back...");
@@ -363,6 +364,7 @@ void user_select_item(const char *init_short_dir){
 // TODO: Add a search system
     // Init variables
     char current_directory[MAXPATH] = {0},     // Holds the Full path of current working directory
+         init_dir[MAXPATH] = {0},              // Holds full directory of init_short_dir
          *menus[MAX_ENTRIES / 2 + 1] = {0},    // Holds short name (dir name) of menus
          *entries[MAX_ENTRIES / 2 + 1] = {0},  // Holds short name (dir name) of entries
          *fancy_names[MAX_ENTRIES + 1] = {0},  // Holds fancy name of both menus and entries
@@ -378,12 +380,32 @@ void user_select_item(const char *init_short_dir){
     if (!entry) crash("Failed to allocate memory for Entry");
     memset(entry, 0, sizeof(Entry));
 
-    // Copy the fullpath of init_short_dir into current_directory
-    _fullpath(current_directory, init_short_dir, sizeof(current_directory));
+    // Copy the fullpath of init_short_dir into init_dir
+    _fullpath(init_dir, init_short_dir, sizeof(init_dir));
     
-    dbg("Initial directory: %s", current_directory);
-    if (!dir_exists(current_directory))
-        crash("Init directory '%s' does not exist!", current_directory);
+    while(!dir_exists(init_dir)) {
+        // This does mean that dir won't be reset when user quits though (after choosing an entry).
+        dbg("Init dir %s NOT exist!", init_dir);
+        wipe();
+        print_page("  The initial directory '%s' does not exist.\n"
+                   "  You must enter the correct path to the MultiPatcher's 'RES' folder.\n\n"
+                   "  Enter nothing to open quit dialog.\n\n"   
+                   "  Please enter the correct path:\n", init_dir);
+        status(" Enter something...");
+        cprintf("    ");
+        input(init_dir, 60, init_dir);
+        if(init_dir[0] == '\0') {
+            quit();
+            strcpy(init_dir, "Hi, how are you? :) Hope you're doing fine <3");
+        }
+    }
+
+    dbg("Initial directory: %s", init_dir);
+    dbg("Changing drive to : %c", init_dir[0]);
+    if (_chdrive((toupper(init_dir[0]) - 'A') + 1)) crash("Failure to switch drive letter.");
+
+    // Copy init_dir into current_directory
+    strcpy(current_directory, init_dir);
 
     // Here, we let the user select an entry.
     for (;;) {
@@ -412,7 +434,7 @@ void user_select_item(const char *init_short_dir){
             
             dbg("OLD DIRECTORY: %s", current_directory);
             // Make sure we do not cross higher than Drive Letter level (?)
-            // CHECK ASSUMES WE ARE NOT ABOVE '<root_dir>/RES', HENCE NO CHECKS FOR THAT.
+            // CHECK ASSUMES WE ARE NOT ABOVE '<init_dir>/RES', HENCE NO CHECKS FOR THAT.
             last_backslash = (char *)strrchr(current_directory, '\\');
             if (last_backslash) {
                 *last_backslash = '\0';   // truncate at last backslash
@@ -478,11 +500,11 @@ void user_select_item(const char *init_short_dir){
 
                 // Check if new directory goes outside of initial directory
                 dbg("CHK IF STRLEN CURRENT_DIRECTORY: %d", strlen(current_directory));
-                dbg("IS > STRLEN ROOT_DIR: %d", strlen(root_dir));
+                dbg("IS > STRLEN INIT_DIR: %d", strlen(init_dir));
                 dbg("+ STRLEN INIT_SHORT_DIR: %d + 1", strlen(init_short_dir));
                 if (last_backslash) {
                     dbg("LAST BACKSLASH FOUND.");
-                    if (strlen(current_directory) > strlen(root_dir) + strlen(init_short_dir) + 1) {
+                    if (strlen(current_directory) > strlen(init_dir) + strlen(init_short_dir) + 1) {
                         dbg("NOT IN APPROOT DIRECTORY.");
                         *last_backslash = '\0';   // truncate at last backslash
                     } else {
@@ -569,8 +591,15 @@ int main(int argc, char *argv[]) {
     // Page 1
     textcolor(LIGHTGRAY);
     print_page("  Welcome to MultiPatcher !\n\n"
-               "   This application contains some utilities.\n\n\n"
-               "   Press ENTER to continue...\n");
+               "   This application is the MS-DOS User Interface for running a variety of patches and utilities,"
+               " and for installing drivers and other improvements or funstuff on you computer.\n\n"
+               "   This application is given to you for free under the GNU GPLv3, and its source is available"
+               " at the following address:\n\n"
+               "            https://github.com/stellcel-remeny/multipatcher\n\n"
+               "   When you are ready, you can:\n"
+               "    - Press ENTER to continue\n"
+               "    - Press F3 to exit\n\n"
+               "   Pick your poison...");
 
     status("  ENTER = Continue  F3 = Exit");
 
