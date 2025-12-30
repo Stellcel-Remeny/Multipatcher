@@ -3,8 +3,10 @@
 
 ## Cosmetics/Visual Changes
 
+- 2KTetris by Tore Bastiansen
 - Calmira Shell for Windows 3.1
 - Change MS-DOS lines to 50 lines
+- Newshell by Microsoft
 - VESAMAN MandelBrot from Falcosoft
 
 ## Drivers
@@ -13,6 +15,7 @@
 - CREGFIX by Mintsuki
 - DOS IDE CD Driver by Microsoft
 - HIMEM.EXE for MS-DOS
+- NVMe driver for Windows NT4 / Windows 2k (not enabled)
 - RAMDisk Driver for MS-DOS
 - Windows 3.1 SVGA Drivers by PluMGMK
 - XMGR.SYS for MS-DOS
@@ -36,12 +39,14 @@
 - 7-Zip 4.65 by Igor Pavlov
 - Alky for applications
 - Blacklight shutdown utility
+- BootInfo
 - LegacyUpdate
 - Microsoft Layer for Unicode for Win9x
 - NTPatcher by Novabits
 - Paragon NTFS for Win9x/Me
 - Rufus 2.18 from rufus.ie
 - SciTech Display Doctor 7
+- Win32s for Windows 3.1 by Microsoft
 - Windows Logo Changer by Dr. A. Olowofoyeku
 - XrX Logo Utility
 - XrX AddBar
