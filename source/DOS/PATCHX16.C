@@ -43,7 +43,7 @@ typedef struct {
 // Displays quit dialog
 void quit(void) {
     // Init variables
-    int key = 0;
+    int key = 0, i = 0;
     struct text_info saved_attr;
     // Save current screen
     unsigned char screen_buffer[MAX_SCREEN_COLS * MAX_SCREEN_ROWS * 2];
@@ -61,8 +61,23 @@ void quit(void) {
     textbackground(WHITE);
     textcolor(RED);
 
+    // Draw box
+    box(wherex(), wherey(), 53, 11, 1);
+
+    // Draw separator and connectors
+    gotoxy(wherex(), wherey() + 8);
+    cprintf("%c", DV_T_RIGHT);
+    for (i = 0; i < 51; i++)
+        cprintf("%c", H_LINE);
+    cprintf("%c", DV_T_LEFT);
+
+    // Print options
+    gotoxy(16, 16);
+    cprintf("F3 = Quit  ENTER = Cancel");
+
     // Print the text
-    cprintf(" Are you sure you want to quit?");
+    gotoxy(15, 8);
+    print_page("  Are you sure you want to quit MultiPatcher?");
     status("  F3 = Quit  Enter = Cancel ");
 
     while (key != ENTER_KEY) {
@@ -444,8 +459,9 @@ void user_select_item(const char *init_short_dir){
         } else {
             // We found something.
             dbg("CASE: FOUND.");
-            print_page("\n RED = Menu  GREEN = Entry\n"
-                       " Please select an item from below.\n\n"
+            print_page("\n RED = Menu  GREEN = Entry\n\n"
+                       " Use %c and %c to move the highlight to your choice.\n"
+                       " Please select an item from below.\n\n", UP_ARROW, DOWN_ARROW
                       ); // <-- my face rn
             
             // If animate is disabled by something, re-enable it.
