@@ -153,10 +153,13 @@ static const struct box_chars BOX_PRESETS[BOX_PRESET_COUNT] = {
     }
 };
 
+// ---[ Libraries ]--- //
+#include <dir.h> // For MAXPATH
+
 // ---[ Global Variables ]--- //
 extern Flags flags;
 extern int screen_rows, screen_cols;
-extern char logfile[MAXPATH]; // <--- FileNAME to be used if logging is enabled
+extern char logfile[MAXPATH]; // <--- File to be used if logging is enabled
 
 // ---[ Manual flag manipulation defines ]--- //
 #define enable_animate() flags.animate = true;
