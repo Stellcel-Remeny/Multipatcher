@@ -1,0 +1,121 @@
+This is a legal agreement between you (either an individual or an entity) 
+and Microsoft Corporation ("Microsoft"). Microsoft reserves all rights not 
+expressly granted.
+
+The following discussion concerns redistributable components of Win32s, 
+hereafter referred to collectively as REDISTRIBUTABLE COMPONENTS.
+
+The following files, identified as "Group A," define the Win32s components. 
+Group A is a subgroup of the REDISTRIBUTABLE COMPONENTS. All of these files 
+must be installed on Windows 3.1 or Windows for Workgroups in order to run 
+Win32 applications. You must ship and install all of these components with 
+a Win32s application in accordance with the installation instructions in the
+Win32s Programmers Reference as part of the Microsoft Win32 SDK:
+CTYPE.NLS     L_INTL.NLS     LOCALE.NLS     SORTKEY.NLS
+SORTTBLS.NLS  UNICODE.NLS    W32S.386       COMDLG32.DLL
+CRTDLL.DLL    LZ32.DLL	     NETAPI32.DLL   NTMSG.DLL
+OLECLI.DLL    OLECLI32.DLL   OLESVR32.DLL   SCK16THK.DLL
+SHELL32.DLL   VERSION.DLL    W32SCOMB.DLL   W32SKRNL.DLL
+W32SYS.DLL    WIN32S16.DLL   WINMM.DLL      WINMM16.DLL   
+WSOCK32.DLL   WINSPOOL.DRV   WIN32S.EXE
+You must also ship Natural Language Support files corresponding to the 
+market of the Win32s application. For a Win32s application which has an 
+international market, you must ship all of the .NLS files found in 
+\MSTOOLS\WIN32S\NLS. For instance, a Win32s application which is released 
+only in the United States must ship P_437.NLS, P_850.NLS, and P_1252.NLS.
+
+The following files, identified as "Group B," are supplied along with the 
+Win32s components as a sample Win32 application.  Group B is a subgroup 
+of the REDISTRIBUTABLE COMPONENTS. You may redistribute these files with 
+your own Win32s installation program. You may not ship these files separately
+from the files listed above as Group A.
+CARDS.DLL     FREECELL.EXE   FREECELL.HLP
+
+The following files, identified as "Group C," can be shipped as-is, or used 
+by you to derive your own Win32s Setup program.  Group C is a subgroup of 
+the REDISTRIBUTABLE COMPONENTS.:
+INIUPD.DLL    MSCOMSTF.DLL   MSCUISTF.DLL   MSDETSTF.DLL
+MSINSSTF.DLL  MSSHLSTF.DLL   MSUILSTF.DLL   _MSSETUP.EXE
+_MSTEST.EXE   SETUP.EXE      MSDETECT.INC   SETUPAPI.INC
+SETUP.LST     32SINST.MST    32SINST.INF
+
+With respect to the REDISTRIBUTABLE COMPONENTS (including any modifications 
+to group C files), Microsoft grants you a nonexclusive, royalty-free right 
+to use, reproduce, and distribute the object code version of these files, 
+provided that you:
+	1. Distribute the REDISTRIBUTABLE COMPONENTS only in 
+	   conjunction with and as a part of your software product -- such 
+	   software must add significant and primary functionality to the 
+	   REDISTRIBUTABLE COMPONENTS and must be designed, developed and 
+	   tested to operate in the Microsoft Windows or Windows NT 
+	   environments
+	2. Do not use Microsoft's name, logo, or trademarks to market your 
+	   software application product;
+	3. Include a copyright notice for your software application product 
+	   sufficient to protect Microsoft's interest in the 
+	   Redistributables;
+	4. Agree to indemnify, hold harmless, and defend Microsoft from and 
+	   against any and all claims or lawsuits, including attorney's 
+	   fees, that arise or result from the use or distribution of your 
+	   software application product. The license in this section to 
+	   distribute REDISTRIBUTABLE COMPONENTS is royalty-free provided 
+	   that your software product is designed, developed and tested for 
+	   operation in the Microsoft Windows or Windows NT environments. 
+	   Contact Microsoft for the applicable royalties due and other 
+	   licensing terms for all other uses and/or distribution of the 
+	   REDISTRIBUTABLE COMPONENTS.
+		and
+	5. Do not permit further distribution of the Redistributables by 
+	   your end-user customers.
+
+LIMITED WARRANTY
+
+NO WARRANTIES.  To the maximum extent permitted by applicable law, Microsoft 
+expressly disclaims any warranty for the SOFTWARE.  The SOFTWARE and any 
+related documentation is provided "as is" without warranty of any kind, 
+either express or implied, including, without limitation, the implied 
+warranties or merchantability or fitness for a particular purpose.  The 
+entire risk arising out of use or performance of the SOFTWARE remains with 
+you. 
+
+CUSTOMER REMEDIES.  Microsoft's entire liability and your exclusive remedy 
+shall not exceed the price paid for the SOFTWARE. 
+
+NO LIABILITY FOR CONSEQUENTIAL DAMAGES.  To the maximum extent permitted by 
+applicable law, in no event shall Microsoft or its suppliers be liable for 
+any damages whatsoever (including, without limitation, damages for loss of 
+business profit, business interruption, loss of business information, or any 
+other pecuniary loss) arising out of the use or inability to use this 
+Microsoft product, even if Microsoft has been advised of the possibility of 
+such damages.  Because some states/jurisdictions do not allow the exclusion 
+or limitation of liability for consequential or incidental damages, the 
+above limitation may not apply to you. 
+
+U.S. GOVERNMENT RESTRICTED RIGHTS
+
+	The SOFTWARE and documentation are provided with RESTRICTED RIGHTS.  
+	Use, duplication, or disclosure by the Government is subject to 
+	restrictions as set forth in subparagraph (c)(1)(ii) of The Rights 
+	in Technical Data and Computer Software clause at DFARS 252.227-7013 
+	or subparagraphs (c)(1) and (2) of the Commercial Computer Software 
+	-- Restricted Rights at 48 CFR 52.227-19, as applicable.  
+	Manufacturer is Microsoft Corporation/One Microsoft Way/Redmond, 
+	WA 98052-6399. 
+
+If you acquired this product in the United States, this Agreement is 
+governed by the laws of the State of Washington. 
+
+If you acquired this product in Canada, this Agreement is governed by the 
+laws of the Province of Ontario, Canada.  Each of the parties hereto 
+irrevocably attorns to the jurisdiction of the courts of the Province of 
+Ontario and further agrees to commence any litigation which may arise 
+hereunder in the courts located in the Judicial District of York, Province 
+of Ontario. 
+
+If this product was acquired outside the United States, then local law may 
+apply.
+
+Should you have any questions concerning this Agreement, or if you desire to 
+contact Microsoft for any reason, please contact the Microsoft subsidiary 
+serving your country, or write: Microsoft Customer Sales and Service/One 
+Microsoft Way/Redmond, WA  98052-6399. 

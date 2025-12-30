@@ -1,0 +1,917 @@
+;Copyright(C) 1994-1995, Microsoft Corp.
+
+;
+; BUGBUG -- RickTu: Until OLE32 and/or registry stuff gets worked out,
+;           I've removed all of the "%11%\" prefixes from the OLE InProcServer32
+;           entries.  In the future, we will have to add these back when
+;           OLE can deal with paths w/expandable environment strings in them.
+;
+
+[version]
+LayoutFile=layout.inf
+signature="$CHICAGO$"
+SetupClass=BASE
+
+[DestinationDirs]
+shell.files.win      = 10    ; LDID_WIN
+shell.files.hlp      = 18    ; LDID_HELP
+shell.files.win.shared = 25  ; LDID_SHARED
+shell.files.sys      = 11    ; LDID_SYS
+templates.CopyFiles  = 25,Template      ; LDID_SHARED + Subfolder - pretty arbitrary
+template_reg.CopyFiles = 17             ; LDID_INF
+
+[BaseWinOptions]
+shell
+template_reg
+
+[test]
+AddReg  = shell.reg, shell.renames.reg
+DelReg  = shlold.reg
+
+[shell]
+CopyFiles = shell.files.win, shell.files.win.shared, shell.files.sys, shell.files.hlp
+UpdateInis = shell.inis, patterns.inis
+AddReg  = shell.reg, shell.renames.reg
+DelReg  = shlold.reg
+DelFiles = shlold.files
+
+
+
+;; ---------------------------------------------------------------------
+;; Register "Templates" as an optional components
+
+[template_reg]
+AddReg=template_reg.AddReg
+CopyFiles=template_reg.CopyFiles
+
+[template_reg.AddReg]
+;Registers Doc Templates so it shows up in Maint Mode Setup, set initial status to uninstalled:
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents,"Templates",,"templates"
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents\templates,INF,,"shell.inf"
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents\templates,Section,,"templates"
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents\templates,Installed,,"0"
+
+[template_reg.CopyFiles]
+shell.inf
+
+;; ---------------------------------------------------------------------
+;; Optional component definition for Document templates
+
+[Optional Components]
+templates
+
+[templates]
+CopyFiles       = templates.CopyFiles
+AddReg          = templates.AddReg, templates.install.reg
+DelReg          = templates.DelReg
+;Delfiles       =
+
+OptionDesc     = %Templates_DESC%
+Tip            = %Templates_TIP%
+Parent         = AccessTop
+InstallType    = 10 ;Typical, Custom.
+IconIndex      = 4  ;Windows Logo mini-icon for dialogs
+Uninstall      = templates_remove
+
+[test_templates]
+AddReg         = templates.AddReg
+
+
+[templates_remove]
+DelFiles       = templates.CopyFiles
+AddReg         = templates.remove.reg
+DelReg         = templates.AddReg
+
+;; ---------------------------------------------------------------------
+;; Templates install section
+
+[templates.install.reg]
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents\templates,Installed,,"1"
+
+[templates.remove.reg]
+; sets status for Maint Mode Setup to 'not installed'
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\OptionalComponents\templates,Installed,,"0"
+
+[templates.AddReg]
+HKCR,.doc\ShellNew,FileName,,"%25%\Template\winword.doc"
+HKCR,.ppt\ShellNew,FileName,,"%25%\Template\powerpnt.ppt"
+HKCR,.pre\ShellNew,FileName,,"%25%\Template\freelanc.pre"
+HKCR,.sam\ShellNew,FileName,,"%25%\Template\amipro.sam"
+HKCR,.shw\ShellNew,FileName,,"%25%\Template\presenta.shw"
+HKCR,.wb2\ShellNew,FileName,,"%25%\Template\quattro.wb2"
+HKCR,.wk4\ShellNew,FileName,,"%25%\Template\lotus.wk4"
+HKCR,.wpd\ShellNew,FileName,,"%25%\Template\wordpfct.wpd"
+HKCR,.wpg\ShellNew,FileName,,"%25%\Template\wordpfct.wpg"
+HKCR,.wpw\ShellNew,FileName,,"%25%\Template\wordpfct.wpw"
+HKCR,.xls\ShellNew,FileName,,"%25%\Template\excel.xls"
+
+[templates.DelReg]
+HKCR,.xls\ShellNew,NullFile
+
+[templates.CopyFiles]
+amipro.sam
+excel.xls
+freelanc.pre
+informs.wpf
+lotus.wk4
+powerpnt.ppt
+presenta.shw
+quattro.wb2
+winword.doc
+wordpfct.wpd
+wordpfct.wpg
+wordpfct.wpw
+
+;----------------------
+; generic Shell stuff
+
+[shlold.files]
+BatMeter.Exe
+
+[shell.inis]
+system.ini,boot,,"shell=Explorer.exe"
+
+[patterns.inis]
+control.ini,Patterns,,"%NoneDesc%=%NoneDesc%"
+control.ini,Patterns,,"%BricksDesc%=187 95 174 93 186 117 234 245"
+control.ini,Patterns,,"%ButtonsDesc%=170 125 198 71 198 127 190 85"
+control.ini,Patterns,,"%CargoNetDesc%=120 49 19 135 225 200 140 30"
+control.ini,Patterns,,"%CircuitsDesc%=82 41 132 66 148 41 66 132"
+control.ini,Patterns,,"%CobblestonesDesc%=40 68 146 171 214 108 56 16"
+control.ini,Patterns,,"%ColosseumDesc%=130 1 1 1 171 85 170 85"
+control.ini,Patterns,,"%DaisiesDesc%=30 140 216 253 191 27 49 120"
+control.ini,Patterns,,"%DizzyDesc%=62 7 225 7 62 112 195 112"
+control.ini,Patterns,,"%FieldEffectDesc%=86 89 166 154 101 149 106 169"
+control.ini,Patterns,,"%KeyDesc%=254 2 250 138 186 162 190 128"
+control.ini,Patterns,,"%LiveWireDesc%=239 239 14 254 254 254 224 239"
+control.ini,Patterns,,"%PlaidDesc%=240 240 240 240 170 85 170 85"
+control.ini,Patterns,,"%RounderDesc%=215 147 40 215 40 147 213 215"
+control.ini,Patterns,,"%ScalesDesc%=225 42 37 146 85 152 62 247"
+control.ini,Patterns,,"%StoneDesc%=174 77 239 255 8 77 174 77"
+control.ini,Patterns,,"%ThatchesDesc%=248 116 34 71 143 23 34 113"
+control.ini,Patterns,,"%TileDesc%=69 130 1 0 1 130 69 170"
+control.ini,Patterns,,"%TrianglesDesc%=135 7 6 4 0 247 231 199"
+control.ini,Patterns,,"%RevengeDesc%=77 154 8 85 239 154 77 154"
+
+[shell.files.win]
+msd.ini
+
+[shell.files.win.shared]
+control.exe
+grpconv.exe
+welcome.exe
+moricons.dll
+msd.exe
+progman.exe
+regedit.exe
+rundll.exe
+taskman.exe
+winfile.exe
+Explorer.exe
+rundll32.exe
+
+[shell.files.hlp]
+regedit.hlp
+regedit.cnt
+
+[shell.files.sys]
+appstart.ani  ;animated cursor
+hourglas.ani  ;animated cursor
+shell.dll, shell.new,,8
+shell32.dll,,,8
+comctl32.dll
+linkinfo.dll
+docprop.dll
+shscrap.dll
+systray.exe
+
+[shlold.reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\Run,BatteryMeter
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunServices,SystemTray
+HKCR,Folder\shellex\PropertySheetHandlers\FileSystem,,,"{21B22460-3AEA-1069-A2DC-08002B30309D}"
+HKCR,*\shellex\PropertySheetHandlers\FileSystem,,,"{21B22460-3AEA-1069-A2DC-08002B30309D}"
+HKCR,Folder\shellex\ContextMenuHandlers\FileSystem,,,"{21B22460-3AEA-1069-A2DC-08002B30309D}"
+HKCR,*\shellex\ContextMenuHandlers\FileSystem,,,"{21B22460-3AEA-1069-A2DC-08002B30309D}"
+HKCR,Network\shellex\ContextMenuHandlers\FileSystem,,,"{21B22460-3AEA-1069-A2DC-08002B30309D}"
+HKCR,Folder\shell\find
+HKCR,.drive,,,"SystemFolder"
+HKCR,.sysDirectory,,,"SystemFolder"
+HKCR,SystemFolder,,,"System Folder"
+HKCR,*\shell\openas
+HKCR,*\shell
+HKCR,Folder\Attributes
+HKCR,Directory\Attributes
+HKCR,Bookmark\Attributes
+HKCR,Bookmark
+HKCR,cplfile\shell\open\command
+HKCR,cplfile\shell\open
+HKCR,cplfile\shell
+HKCR,cplfile
+HKCR,Drive\Attributes
+HKCR,lnkfile\Attributes
+HKCR,lnkfile\shell\open
+HKCR,piffile\Attributes
+HKCR,dllfile\Attributes
+HKCR,sysfile\Attributes
+HKCR,vxdfile\Attributes
+HKCR,drvfile\Attributes
+HKCR,ShellScrap,IsShortcut
+HKCR,Directory\shell
+HKCR,Directory\shell\open
+HKCR,Directory\shell\explore
+HKCR,Drive\shell
+HKCR,Drive\shell\open
+HKCR,Drive\shell\explore
+HKCR,Microsoft_Network
+HKCR,Netware
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell,,,""
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\open
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\explore
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\open
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\explore
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\shell,,,""
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\shell\open
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\shell\explore
+HKCR,CLSID\{BD84B380-8CA2-1069-AB1D-08000948F534}\shell,,,
+HKCR,CLSID\{BD84B380-8CA2-1069-AB1D-08000948F534}\shell\open
+HKCR,CLSID\{BD84B380-8CA2-1069-AB1D-08000948F534}\shell\explore
+HKCR,CLSID\{00020D23-0000-0000-C000-000000000046}\Shell,,,""
+HKCR,CLSID\{00020D23-0000-0000-C000-000000000046}\Shell\Open
+HKCR,CLSID\{00020D23-0000-0000-C000-000000000046}\Shell\Open
+HKCR,CLSID\{00020D23-0000-0000-C000-000000000046}\Shell\Explore
+HKCR,CLSID\{00020D23-0000-0000-C000-000000000046}\Shell\Explore
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\PropertySheetHandlers\RecycleBin
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\PropertySheetHandlers\Wastebasket
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\ContextMenuHandlers\RecycleBin
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\ContextMenuHandlers\Wastebasket
+
+[shell.renames.reg]
+; Set the Hidden attribute on the Inf Folder:
+; R=1; H=2; S=4; HS=6; SHR=7
+HKLM,Software\Microsoft\Windows\CurrentVersion\RenameFiles\Win,,,%25%
+HKLM,Software\Microsoft\Windows\CurrentVersion\RenameFiles\Win,INF,,"INF,2"
+
+[shell.reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\Run,SystemTray,,"SysTray.Exe"
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce,InitShell,,"1"
+
+;Run Once entry to lauch "welcome to windows" screen (done after the Wrapper is run):
+;HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce,Welcome,,"%25%\grpconv.exe -i"
+
+;Add IconSpacingFactor so it can be localized:
+HKCU,"Control Panel\Desktop\WindowMetrics",IconSpacingFactor,,%IconSpacingFactor%
+
+;Set a few colors to look good in 3-D
+HKCU,"Control Panel\Colors",InactiveTitle,,"128 128 128"
+HKCU,"Control Panel\Colors",InactiveTitleText,,"255 255 255"
+HKCU,"Control Panel\Colors",Menu,,"192 192 192"
+
+;Install default animated cursors:
+HKU,".Default\Control Panel\Cursors",AppStarting,2,%11%\appstart.ani
+HKU,".Default\Control Panel\Cursors",Wait,2,%11%\hourglas.ani
+
+;disk tools
+HKCR,Drive\shellex\PropertySheetHandlers\DiskTools,,,{D3B1DE00-6B94-1069-8754-08002B2BD64F}
+HKCR,CLSID\{D3B1DE00-6B94-1069-8754-08002B2BD64F},,,%DISK_TOOLS%
+HKCR,CLSID\{D3B1DE00-6B94-1069-8754-08002B2BD64F}\InProcServer32,,,disktool.dll
+HKCR,CLSID\{D3B1DE00-6B94-1069-8754-08002B2BD64F}\InProcServer32,ThreadingModel,,"Apartment"
+
+;don't give a description for this psudeo type
+HKCR,Folder\DefaultIcon,,,"%11%\shell32.dll,3"
+HKCR,Folder,EditFlags,1,02,00,00,00
+HKCR,Folder\shell
+HKCR,Folder\shell\open
+HKCR,Folder\shell\open\command,,,"%25%\Explorer.exe /idlist,%%I,%%L"
+HKCR,Folder\shell\open\ddeexec,,,"[ViewFolder(""%%l"", %%I, %%S)]"
+HKCR,Folder\shell\open\ddeexec\application,,,Folders
+HKCR,Folder\shell\open\ddeexec\topic,,,AppProperties
+HKCR,Folder\shell\open\ddeexec\ifexec,,,"[]"
+HKCR,Folder\shell
+HKCR,Folder\shell\explore
+HKCR,Folder\shell\explore\command,,,"%25%\Explorer.exe /e,/idlist,%%I,%%L"
+HKCR,Folder\shell\explore\ddeexec,,,"[ExploreFolder(""%%l"", %%I, %%S)]"
+HKCR,Folder\shell\explore\ddeexec\application,,,Folders
+HKCR,Folder\shell\explore\ddeexec\topic,,,AppProperties
+HKCR,Folder\shell\explore\ddeexec\ifexec,,,"[]"
+
+
+;don't give a description for this psudeo type
+HKCR,Directory\DefaultIcon,,,"%11%\shell32.dll,3"
+HKCR,Directory,EditFlags,1,02,00,00,00
+HKCR,Directory,AlwaysShowExt
+HKCR,Directory\shell
+HKCR,Directory\shell\find
+HKCR,Directory\shell\find\command,,,%25%\Explorer.exe
+HKCR,Directory\shell\find\ddeexec,,,"[FindFolder(""%%l"", %%I)]"
+HKCR,Directory\shell\find\ddeexec\application,,,Folders
+HKCR,Directory\shell\find\ddeexec\topic,,,AppProperties
+HKCR,Directory\shellex\CopyHookHandlers\FileSystem,,,"{217FC9C0-3AEA-1069-A2DB-08002B30309D}"
+
+;Scrap datahandler
+HKCR,CLSID\{56117100-C0CD-101B-81E2-00AA004AE837},,,%SCRAP_DATAHANDLER%
+HKCR,CLSID\{56117100-C0CD-101B-81E2-00AA004AE837}\InProcServer32,,,shscrap.dll
+HKCR,CLSID\{56117100-C0CD-101B-81E2-00AA004AE837}\InProcServer32,ThreadingModel,,"Apartment"
+
+;DocShortcut applets
+HKCR,.shb,,,DocShortcut
+HKCR,DocShortcut,,,%DESC_BMK%
+HKCR,DocShortcut,IsShortcut
+HKCR,DocShortcut,NeverShowExt
+HKCR,DocShortcut\shell
+HKCR,DocShortcut\shell\open\command,,,"rundll32 %11%\shscrap.dll,OpenScrap_RunDLL /r /x %%1"
+HKCR,DocShortcut\DefaultIcon,,,"%11%\shscrap.dll,-100"
+HKCR,DocShortcut\shellex\DataHandler,,,"{56117100-C0CD-101B-81E2-00AA004AE837}"
+;HKCR,DocShortcut,EditFlags,1,01,00,00,00
+
+HKCR,.shs,,,ShellScrap
+HKCR,ShellScrap,,,%DESC_SCRAP%
+HKCR,ShellScrap,NeverShowExt
+HKCR,ShellScrap\shell
+HKCR,ShellScrap\shell\open\command,,,"rundll32 %11%\shscrap.dll,OpenScrap_RunDLL %%1"
+HKCR,ShellScrap\shellex\DataHandler,,,"{56117100-C0CD-101B-81E2-00AA004AE837}"
+HKCR,ShellScrap\DefaultIcon,,,"%11%\shscrap.dll,-100"
+
+;don't give a description for this psudeo type
+HKCR,Drive\DefaultIcon,,,"%11%\shell32.dll,8"
+HKCR,Drive,EditFlags,1,02,00,00,00
+HKCR,Drive\shell\find
+HKCR,Drive\shell\find\command,,,%25%\Explorer.exe
+HKCR,Drive\shell\find\ddeexec,,,"[FindFolder(""%%l"", %%I)]"
+HKCR,Drive\shell\find\ddeexec\application,,,Folders
+HKCR,Drive\shell\find\ddeexec\topic,,,AppProperties
+
+;don't give a description for this psudeo type
+HKCR,AudioCD\DefaultIcon,,,"%11%\shell32.dll,40"
+HKCR,AudioCD\shell,,,play
+HKCR,AudioCD\shell\play,,,%V_PLAY%
+HKCR,AudioCD\shell\play\command,,,"%25%\cdplayer.exe /play %%1"
+HKCR,AudioCD,EditFlags,1,02,00,00,00
+
+;don't give a description for this psudeo type
+HKCR,*\shellex\PropertySheetHandlers\{3EA48300-8CF6-101B-84FB-666CCB9BCD32}
+
+;don't give a description for this psudeo type
+HKCR,Unknown\shell\openas\command,,,"%25%\rundll32.exe %11%\shell32.dll,OpenAs_RunDLL %%1"
+;HKCR,Unknown,EditFlags,1,02,00,00,00
+HKCR,Unknown,AlwaysShowExt
+
+HKCR,.lnk,,,lnkfile
+HKCR,.lnk\ShellNew,Command,,"RunDLL32 AppWiz.Cpl,NewLinkHere %%1"
+HKCR,lnkfile,,,%DESC_LNK%
+HKCR,lnkfile,EditFlags,1,01,00,00,00
+HKCR,lnkfile,IsShortcut
+HKCR,lnkfile,NeverShowExt
+HKCR,lnkfile\shellex\IconHandler,,,"{00021401-0000-0000-C000-000000000046}"
+HKCR,lnkfile\shellex\DropHandler,,,"{00021401-0000-0000-C000-000000000046}"
+HKCR,lnkfile\shellex\ContextMenuHandlers\{00021401-0000-0000-C000-000000000046}
+
+HKCR,.fnd,,,fndfile
+HKCR,fndfile,,,%DESC_FND%
+HKCR,fndfile\DefaultIcon,,,"%11%\shell32.dll,42"
+HKCR,fndfile\shell
+HKCR,fndfile\shell\open\command,,,%25%\Explorer.exe
+HKCR,fndfile\shell\open\ddeexec,,,"[OpenFindFile(""%%1"", %%I)]"
+HKCR,fndfile\shell\open\ddeexec\application,,,Folders
+HKCR,fndfile\shell\open\ddeexec\topic,,,AppProperties
+
+HKCR,.reg,,,regfile
+HKCR,regfile,,,%DESC_REG%
+HKCR,regfile\DefaultIcon,,,"%25%\regedit.exe,1"
+HKCR,regfile\shell
+HKCR,regfile\shell\open\command,,,"regedit.exe %%1"
+HKCR,regfile\shell\open,,,%V_MERGE%
+HKCR,regfile\shell\print
+HKCR,regfile\shell\print\command,,,"%25%\NOTEPAD.EXE /p %%1"
+HKCR,regfile\shell\edit,,,%V_EDIT%
+HKCR,regfile\shell\edit\command,,,"%25%\NOTEPAD.EXE %%1"
+
+HKCR,.hlp,,,hlpfile
+HKCR,hlpfile,,,%DESC_HLP%
+HKCR,hlpfile\shell\open\command,,,"%25%\winhlp32.exe %%1"
+HKCR,hlpfile\DefaultIcon,,,"%25%\winhlp32.exe,1"
+
+HKCR,.scr,,,scrfile
+HKCR,scrfile,,,%DESC_SCR%
+HKCR,scrfile\shell
+HKCR,scrfile\shell\open,,,%V_TEST%
+HKCR,scrfile\shell\open\command,,,"""%%1"" /S"
+HKCR,scrfile\shell\config,,,%V_CONFIGURE%
+HKCR,scrfile\shell\config\command,,,"""%%1"""
+HKCR,scrfile\shell\install,,,%V_INSTALL%
+HKCR,scrfile\shell\install\command,,,"rundll32.exe desk.cpl,InstallScreenSaver %%l"
+
+HKCR,.com,,,comfile
+HKCR,comfile,,,%DESC_COM%
+HKCR,comfile,EditFlags,1,D8,07,00,00
+HKCR,comfile\shell
+HKCR,comfile\shell\open
+HKCR,comfile\shell\open,EditFlags,1,00,00,00,00
+HKCR,comfile\shell\open\command,,,"""%%1"" %%*"
+HKCR,comfile\shellex\PropertySheetHandlers\PifProps,,,"{86F19A00-42A0-1069-A2E9-08002B30309D}"
+HKCR,comfile\DefaultIcon,,,"%11%\shell32.dll,2"
+
+HKCR,.exe,,,exefile
+HKCR,exefile,,,%DESC_APP%
+HKCR,exefile,EditFlags,1,D8,07,00,00
+HKCR,exefile\shell
+HKCR,exefile\shell\open
+HKCR,exefile\shell\open,EditFlags,1,00,00,00,00
+HKCR,exefile\shell\open\command,,,"""%%1"" %%*"
+HKCR,exefile\shellex\PropertySheetHandlers\PifProps,,,"{86F19A00-42A0-1069-A2E9-08002B30309D}"
+HKCR,exefile\DefaultIcon,,,%%1
+
+HKCR,.bat,,,batfile
+HKCR,batfile,,,%DESC_BAT%
+HKCR,batfile,EditFlags,1,D0,04,00,00
+HKCR,batfile\shell
+HKCR,batfile\shell\open
+HKCR,batfile\shell\open,EditFlags,1,00,00,00,00
+HKCR,batfile\shell\open\command,,,"""%%1"" %%*"
+HKCR,batfile\shell\print
+HKCR,batfile\shell\print\command,,,"%25%\NOTEPAD.EXE /p %%1"
+HKCR,batfile\shell\edit,,,%V_EDIT%
+HKCR,batfile\shell\edit\command,,,"%25%\NOTEPAD.EXE %%1"
+HKCR,batfile\shellex\PropertySheetHandlers\PifProps,,,"{86F19A00-42A0-1069-A2E9-08002B30309D}"
+HKCR,batfile\DefaultIcon,,,"%11%\shell32.dll,-153"
+
+HKCR,.cmd,,,cmdfile
+HKCR,cmdfile,,,%DESC_CMD%
+HKCR,cmdfile,EditFlags,1,D0,04,00,00
+HKCR,cmdfile\shell
+HKCR,cmdfile\shell\open
+HKCR,cmdfile\shell\open,EditFlags,1,00,00,00,00
+HKCR,cmdfile\shell\open\command,,,"""%%1"" %%*"
+HKCR,cmdfile\shell\print
+HKCR,cmdfile\shell\print\command,,,"%25%\NOTEPAD.EXE /p %%1"
+HKCR,cmdfile\shell\edit,,,%V_EDIT%
+HKCR,cmdfile\shell\edit\command,,,"%25%\NOTEPAD.EXE %%1"
+HKCR,cmdfile\shellex\PropertySheetHandlers\PifProps,,,"{86F19A00-42A0-1069-A2E9-08002B30309D}"
+HKCR,cmdfile\DefaultIcon,,,"%11%\shell32.dll,-153"
+
+HKCR,.pif,,,piffile
+HKCR,piffile,,,%DESC_PIF%
+HKCR,piffile,EditFlags,1,01,00,00,00
+HKCR,piffile,IsShortcut
+HKCR,piffile,NeverShowExt
+HKCR,piffile\shell\open
+HKCR,piffile\shell\open\command,,,"""%%1"" %%*"
+HKCR,piffile\shellex\PropertySheetHandlers\PifProps,,,"{86F19A00-42A0-1069-A2E9-08002B30309D}"
+HKCR,piffile\shellex\IconHandler,,,"{00021401-0000-0000-C000-000000000046}"
+;;HKCR,piffile\DefaultIcon,,,%%1
+
+HKCR,.dll,,,dllfile
+HKCR,dllfile,,,%DESC_DLL%
+HKCR,dllfile,AlwaysShowExt
+HKCR,dllfile,EditFlags,1,01,00,00,00
+HKCR,dllfile\DefaultIcon,,,"%11%\shell32.dll,-154"
+
+HKCR,.txt,,,txtfile
+HKCR,txtfile,,,%DESC_TXT%
+HKCR,txtfile\DefaultIcon,,,"%11%\shell32.dll,-152"
+HKCR,txtfile\shell\open\command,,,"%25%\NOTEPAD.EXE %%1"
+HKCR,txtfile\shell\print\command,,,"%25%\NOTEPAD.EXE /p %%1"
+
+HKCR,.ini,,,inifile
+HKCR,inifile,,,%DESC_INI%
+HKCR,inifile\DefaultIcon,,,"%11%\shell32.dll,-151"
+HKCR,inifile\shell\open\command,,,"%25%\NOTEPAD.EXE %%1"
+HKCR,inifile\shell\print\command,,,"%25%\NOTEPAD.EXE /p %%1"
+
+HKCR,.inf,,,inffile
+HKCR,inffile,,,%DESC_INF%
+HKCR,inffile\DefaultIcon,,,"%11%\shell32.dll,-151"
+HKCR,inffile\shell\open\command,,,"%25%\NOTEPAD.EXE %%1"
+HKCR,inffile\shell\print\command,,,"%25%\NOTEPAD.EXE /p %%1"
+
+; commenting these out as should only be entered if wordpad is installed,
+; covered in wordpad.inx file
+;HKCR,.rtf,,,rtffile
+;HKCR,rtffile,,,%DESC_RTF%
+;HKCR,rtffile\DefaultIcon,,,"%25%\WORDPAD.EXE,1"
+;HKCR,rtffile\shell\open\command,,,"%25%\WORDPAD.EXE ""%%1"""
+;HKCR,rtffile\shell\print\command,,,"%25%\WORDPAD.EXE /p ""%%1"""
+
+HKCR,.sys,,,sysfile
+HKCR,sysfile,,,%DESC_SYS%
+HKCR,sysfile,AlwaysShowExt
+HKCR,sysfile,EditFlags,1,01,00,00,00
+HKCR,sysfile\DefaultIcon,,,"%11%\shell32.dll,-154"
+
+HKCR,.vxd,,,vxdfile
+HKCR,.386,,,vxdfile
+HKCR,vxdfile,EditFlags,1,01,00,00,00
+HKCR,vxdfile,,,%DESC_VXD%
+HKCR,vxdfile,AlwaysShowExt
+HKCR,vxdfile\DefaultIcon,,,"%11%\shell32.dll,-154"
+
+HKCR,.drv,,,drvfile
+HKCR,drvfile,,,%DESC_DRV%
+HKCR,drvfile,EditFlags,1,01,00,00,00
+HKCR,drvfile,AlwaysShowExt
+HKCR,drvfile\DefaultIcon,,,"%11%\shell32.dll,-154"
+
+HKCR,.cpl,,,cplfile
+HKCR,cplfile,,,%DESC_CPL%
+HKCR,cplfile\DefaultIcon,,,"%11%\shell32.dll,-154"
+;HACK: Asymetrix created a data file type with the extension .CPL
+;set stuff up so that Compel can install over us
+;we MUST NOT install an "open" verb for this to work right
+;When Compel is not installed the following verb will be the default verb
+;When Compel is installed the user will be able to use both types of CPLs
+HKCR,cplfile\shell\cplopen,,,%DESC_VERB_CPLOPEN%
+HKCR,cplfile\shell\cplopen\command,,,"rundll32.exe shell32.dll,Control_RunDLL %%1,%%*"
+
+HKCR,.fon,,,fonfile
+HKCR,fonfile,,,%DESC_FON%
+HKCR,fonfile\DefaultIcon,,,"%11%\shell32.dll,-155"
+
+HKCR,.ttf,,,ttffile
+HKCR,ttffile,,,%DESC_TTF%
+HKCR,ttffile\DefaultIcon,,,"%11%\shell32.dll,-156"
+
+HKCR,.ico,,,icofile
+HKCR,icofile,,,%DESC_ICO%
+HKCR,icofile\DefaultIcon,,,%%1
+
+HKCR,.cur,,,curfile
+HKCR,curfile,,,%DESC_CUR%
+HKCR,curfile\DefaultIcon,,,%%1
+
+HKCR,.ani,,,anifile
+HKCR,anifile,,,%DESC_ANI%
+HKCR,anifile\DefaultIcon,,,%%1
+
+; QuickView
+HKCR,QuickView,,,"Quick View File"
+HKCR,QuickView\shell\open\command,,,%11%\viewers\quikview.exe
+
+
+; NEW MENU ENTRIES
+; Warning, next 4 lines are order dependent, do not change--Johnpa
+; BugBug: need to point .doc ShellNew entry to winword document, christob
+;HKCR,.doc,,2,WordPad.Document
+;HKCR,.doc\ShellNew,NullFile
+HKCR,.rtf,,2,rtffile
+HKCR,.rtf\ShellNew,Data,0,{\\rtf1}
+HKCR,.txt\ShellNew,NullFile
+HKCR,.bmp\ShellNew,NullFile
+HKCR,.wav\ShellNew,NullFile
+
+HKCR,Package,,,%DESC_PACKAGE%
+HKCR,Package\protocol\StdFileEditing\verb\0,,,%V_ACTIVATE%
+HKCR,Package\protocol\StdFileEditing\verb\1,,,%V_EDITPACKAGE%
+HKCR,Package\protocol\StdFileEditing\server,,,packgr32.exe
+
+; COMPOBJs
+
+HKCR,CLSID\{21B22460-3AEA-1069-A2DC-08002B30309D},,,%DESC_FILESYSATTR%
+HKCR,CLSID\{21B22460-3AEA-1069-A2DC-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{21B22460-3AEA-1069-A2DC-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{86747AC0-42A0-1069-A2E6-08002B30309D},,,%DESC_SHELLMONIKER%
+HKCR,CLSID\{86747AC0-42A0-1069-A2E6-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{86747AC0-42A0-1069-A2E6-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{86F19A00-42A0-1069-A2E9-08002B30309D},,,%DESC_PIFPAGE%
+HKCR,CLSID\{86F19A00-42A0-1069-A2E9-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{86F19A00-42A0-1069-A2E9-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{217FC9C0-3AEA-1069-A2DB-08002B30309D},,,%COPY_HOOK%
+HKCR,CLSID\{217FC9C0-3AEA-1069-A2DB-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{217FC9C0-3AEA-1069-A2DB-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{00021400-0000-0000-C000-000000000046},,,%DESC_DESKTOP%
+HKCR,CLSID\{00021400-0000-0000-C000-000000000046}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{00021400-0000-0000-C000-000000000046}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{00021401-0000-0000-C000-000000000046},,,%DESC_LNK%
+HKCR,CLSID\{00021401-0000-0000-C000-000000000046}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{00021401-0000-0000-C000-000000000046}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{00021401-0000-0000-C000-000000000046}\shellex\MayChangeDefaultMenu
+HKCR,CLSID\{86F19A00-42A0-1069-A2EB-08002B30309D},,,%DESC_PIFFILE%
+HKCR,CLSID\{86F19A00-42A0-1069-A2EB-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{86F19A00-42A0-1069-A2EB-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{3EA48300-8CF6-101B-84FB-666CCB9BCD32},,,%DESC_DOCPROP%
+HKCR,CLSID\{3EA48300-8CF6-101B-84FB-666CCB9BCD32}\InProcServer32,,,"docprop.dll"
+HKCR,CLSID\{3EA48300-8CF6-101B-84FB-666CCB9BCD32}\InProcServer32,ThreadingModel,,"Apartment"
+
+; My Computer
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D},,2,%DESK_MYCOMP%
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\DefaultIcon,,,"%25%\Explorer.exe,0"
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\find
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\find\command,,,%25%\Explorer.exe
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\find\ddeexec,,,"[FindFolder(""%%l"", %%I)]"
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\find\ddeexec\application,,,Folders
+HKCR,CLSID\{20D04FE0-3AEA-1069-A2D8-08002B30309D}\shell\find\ddeexec\topic,,,AppProperties
+
+; Net Neighborhood
+
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D},,2,%DESK_NETHOOD%
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\DefaultIcon,,,"%11%\shell32.dll,17"
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\find,,,%V_FINDCOMP%
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\find\command,,,%25%\Explorer.exe
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\find\ddeexec,,,"[FindFolder(""%%l"", %%I)]"
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\find\ddeexec\application,,,Folders
+HKCR,CLSID\{208D2C60-3AEA-1069-A2D7-08002B30309D}\shell\find\ddeexec\topic,,,AppProperties
+
+; FindExtensions
+
+HKCR,CLSID\{61E218E0-65D3-101B-9F08-061CEAC3D50D},,,"ShellFind"
+HKCR,CLSID\{61E218E0-65D3-101B-9F08-061CEAC3D50D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{61E218E0-65D3-101B-9F08-061CEAC3D50D}\InProcServer32,ThreadingModel,,"Apartment"
+HKLM,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\Explorer\FindExtensions\ShellFind,,,"{61E218E0-65D3-101B-9F08-061CEAC3D50D}"
+
+; Recycle Bin
+
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E},,,%DESC_RECYCLEBIN%
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\DefaultIcon,,2,"%11%\shell32.dll,31"
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\DefaultIcon,Empty,,"%11%\shell32.dll,31"
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\DefaultIcon,Full,,"%11%\shell32.dll,32"
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\ShellFolder,Attributes,1,40,01,00,20
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\ContextMenuHandlers\{645FF040-5081-101B-9F08-00AA002F954E}
+HKCR,CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\PropertySheetHandlers\{645FF040-5081-101B-9F08-00AA002F954E}
+HKLM,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\Explorer\Desktop\NameSpace\{645FF040-5081-101B-9F08-00AA002F954E},,,%DESC_RECYCLEBIN%
+
+; Entries for control panel
+
+HKCR,CLSID\{21EC2020-3AEA-1069-A2DD-08002B30309D},,,%DESC_CONTROLS%
+HKCR,CLSID\{21EC2020-3AEA-1069-A2DD-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{21EC2020-3AEA-1069-A2DD-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{21EC2020-3AEA-1069-A2DD-08002B30309D}\DefaultIcon,,,"%11%\shell32.dll,-137"
+HKLM,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\Explorer\MyComputer\NameSpace\Controls,,,{21EC2020-3AEA-1069-A2DD-08002B30309D}
+
+; Entries for printers folder
+
+HKCR,CLSID\{2227A280-3AEA-1069-A2DE-08002B30309D},,,%DESC_PRINTERS%
+HKCR,CLSID\{2227A280-3AEA-1069-A2DE-08002B30309D}\InProcServer32,,,"shell32.dll"
+HKCR,CLSID\{2227A280-3AEA-1069-A2DE-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{2227A280-3AEA-1069-A2DE-08002B30309D}\DefaultIcon,,,"%11%\shell32.dll,-138"
+HKLM,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\Explorer\MyComputer\NameSpace\Printers,,,{2227A280-3AEA-1069-A2DE-08002B30309D}
+
+; Group converter stuff.
+HKCU,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\GrpConv\MapGroups,%MMEDIA%,,%ACCESSMMEDIA%
+HKCU,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\GrpConv\MapGroups,%GAMES%,,%ACCESSGAMES%
+HKCU,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\GrpConv\MapGroups,%SYSTOOLS%,,%ACCESSSYSTOOLS%
+HKCU,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\GrpConv\MapGroups,%DESKTOP%,,%DOTDOTDESKTOP%
+HKCU,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\GrpConv\MapGroups,%PROGRAMS%,,%DOT%
+
+; Briefcase stuff
+
+; Runonce
+HKLM, Software\Microsoft\Windows\CurrentVersion\RunOnce,"%FSSetup_Desc%",,"rundll32.exe syncui.dll,Briefcase_Create"
+
+; Security for Approved shell extension
+
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved,{85BBD920-42A0-1069-A2E4-08002B30309D},,%DESC_BRIEFCASE%
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved,{3EA48300-8CF6-101B-84FB-666CCB9BCD32},,%DESC_DOCPROP%
+
+; Briefcase Inproc server
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D},,,%DESC_BRIEFCASE%
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\InProcServer32,,,"syncui.dll"
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\InProcServer32,ThreadingModel,,"Apartment"
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\ShellFolder,Attributes,1,36,01,00,40
+
+; Briefcase shell folder binding
+HKCR,CLSID\{85BBD920-42A0-1069-A2E4-08002B30309D}\DefaultIcon,,,"%11%\syncui.dll,0"
+
+; Add New Menu entry
+HKCR,.bfc,,,Briefcase
+HKCR,.bfc\ShellNew,Command,,"%25%\rundll32.exe %11%\syncui.dll,Briefcase_Create %%1!d! %%2"
+HKCR,.bfc\ShellNew\Config,NoExtension,,""
+HKCR,Briefcase,,,%DESC_BRIEFCASE%
+HKCR,Briefcase\shell\open\command,,,"explorer.exe %%1"
+HKCR,Briefcase\DefaultIcon,,,"%11%\syncui.dll,0"
+HKCR,Briefcase\CLSID,,,{85BBD920-42A0-1069-A2E4-08002B30309D}
+
+; Explorer Default Polices
+HKCU,SOFTWARE\MICROSOFT\WINDOWS\CurrentVersion\Policies\Explorer,NoDriveTypeAutoRun,1,95,00,00,00
+
+; Sharing extensions
+
+HKCR,CLSID\{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6},,,%DESC_SHARING%
+HKCR,CLSID\{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}\InProcServer32,,,"ntshrui.dll"
+HKCR,CLSID\{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}\InProcServer32,ThreadingModel,,"Free"
+
+HKCR,CLSID\{40DD6E20-7C17-11CE-A804-00AA003CA9F6},,,%DESC_SHARING%
+HKCR,CLSID\{40DD6E20-7C17-11CE-A804-00AA003CA9F6}\InProcServer32,,,"ntshrui.dll"
+HKCR,CLSID\{40DD6E20-7C17-11CE-A804-00AA003CA9F6}\InProcServer32,ThreadingModel,,"Free"
+
+HKCR,Folder\shellex\PropertySheetHandlers\Sharing,,,"{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}"
+HKCR,Folder\shellex\ContextMenuHandlers\Sharing,,,"{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}"
+HKCR,Directory\shellex\CopyHookHandlers\Sharing,,,"{40DD6E20-7C17-11CE-A804-00AA003CA9F6}"
+
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved,{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6},,%DESC_SHARING%
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved,{40DD6E20-7C17-11CE-A804-00AA003CA9F6},,%DESC_SHARING%
+
+HKCR,Network\SharingHandler,,,"ntshrui.dll"
+
+; Info for VDMs
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\MS-DOS Emulation\Font","Font",,"Lucida Console"
+
+; Tips for the end user
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","0",,%TIP00%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","1",,%TIP01%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","2",,%TIP02%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","3",,%TIP03%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","4",,%TIP04%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","5",,%TIP05%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","6",,%TIP06%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","7",,%TIP07%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","8",,%TIP08%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","9",,%TIP09%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","10",,%TIP10%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","11",,%TIP11%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","12",,%TIP12%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","13",,%TIP13%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","14",,%TIP14%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","15",,%TIP15%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","16",,%TIP16%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","17",,%TIP17%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","18",,%TIP18%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","19",,%TIP19%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","20",,%TIP20%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","21",,%TIP21%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","22",,%TIP22%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","23",,%TIP23%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","24",,%TIP24%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","25",,%TIP25%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","26",,%TIP26%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","27",,%TIP27%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","28",,%TIP28%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","29",,%TIP29%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","30",,%TIP30%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","31",,%TIP31%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","32",,%TIP32%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","33",,%TIP33%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","34",,%TIP34%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","35",,%TIP35%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","36",,%TIP36%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","37",,%TIP37%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","38",,%TIP38%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","39",,%TIP39%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","40",,%TIP40%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","41",,%TIP41%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","42",,%TIP42%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","43",,%TIP43%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","44",,%TIP44%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","45",,%TIP45%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","46",,%TIP46%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","47",,%TIP47%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","48",,%TIP48%
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Tips","49",,%TIP49%
+
+
+[Strings]
+DESC_PIF        = "Shortcut to MS-DOS Program"
+DESC_REG        = "Registration Entries"
+DESC_APP        = "Application"
+DESC_BAT        = "MS-DOS Batch File"
+DESC_CMD        = "Windows NT Command Script"
+DESC_COM        = "MS-DOS Application"
+DESC_SCR        = "Screen Saver"
+DESC_LNK        = "Shortcut"
+DESC_FND        = "Saved Search"
+DESC_HLP        = "Help File"
+DESC_TXT        = "Text Document"
+DESC_INI        = "Configuration Settings"
+DESC_INF        = "Setup Information"
+DESC_RTF        = "Rich Text File"
+DESC_DLL        = "Application Extension"
+DESC_SYS        = "System file"
+DESC_VXD        = "Virtual device driver"
+DESC_DRV        = "Device driver"
+DESC_CPL        = "Control Panel extension"
+;HACK Asymetrix Compel has .CPL data files and registers an open verb
+;make our verb explicitly different so that when Compel is installed the
+;user can use both types of CPL files but Compel's will be the default
+DESC_VERB_CPLOPEN = "Open with Control Panel"
+DESC_FON        = "Font file"
+DESC_TTF        = "TrueType Font file"
+DESC_ICO        = "Icon"
+DESC_CUR        = "Cursor"
+DESC_ANI        = "Animated Cursor"
+DESC_BMK        = "Shortcut into a document"
+DESC_SCRAP      = "Scrap object"
+
+DESC_PACKAGE    = "Package"
+DESC_CONTROLS   = "Control Panel"
+DESC_PRINTERS   = "Printers"
+DESC_SHELLMONIKER = "Shell Moniker"
+DESC_FILESYSATTR = "File system attributes"
+DESC_PIFPAGE    = ".PIF file property pages"
+DESC_PIFFILE    = ".PIF file handler"
+DESC_DOCPROP    = "OLE Docfile Property Page"
+DESC_RECYCLEBIN = "Recycle Bin"
+DESC_DESKTOP    = "Desktop"
+DESC_BRIEFCASE  = "Briefcase"
+DESK_MYCOMP     = "My Computer"
+DESK_NETHOOD    = "Network Neighborhood"
+
+DESC_SHARING    = "Shell extensions for sharing"
+
+
+IconSpacingFactor = "100" ;Set to 100 for English, change for other languages
+
+;BUGBUG: we may be able to remove these since we special case opne and print verbs
+V_EDIT      = "&Edit"
+V_PLAY      = "&Play"
+V_MERGE     = "Mer&ge"
+V_CONNECT   = "&Connect"
+V_TEST      = "T&est"
+V_ACTIVATE  = "&Activate Contents"
+V_EDITPACKAGE = "&Edit Package"
+V_CONFIGURE = "C&onfigure"
+V_INSTALL   = "&Install"
+V_FINDCOMP  = "&Find Computer..."
+
+NoneDesc                = "(None)"
+BricksDesc              = "Bricks"
+ButtonsDesc             = "Buttons"
+CargoNetDesc            = "Cargo Net"
+CircuitsDesc            = "Circuits"
+CobblestonesDesc        = "Cobblestones"
+ColosseumDesc           = "Colosseum"
+DaisiesDesc             = "Daisies"
+DizzyDesc               = "Dizzy"
+FieldEffectDesc         = "Field Effect"
+KeyDesc                 = "Key"
+LiveWireDesc            = "Live Wire"
+PlaidDesc               = "Plaid"
+RounderDesc             = "Rounder"
+ScalesDesc              = "Scales"
+StoneDesc               = "Stone"
+ThatchesDesc            = "Thatches"
+TileDesc                = "Tile"
+TrianglesDesc           = "Triangles"
+RevengeDesc             = "Waffle's Revenge"
+
+Templates_DESC          = "Document Templates"
+Templates_TIP           = "Allows you to easily create new documents for your most common programs"
+
+DISK_TOOLS              = "Disk Tools Extension"
+COPY_HOOK               = "Shell Copy Hook"
+SCRAP_DATAHANDLER       = "Shell Scrap DataHandler"
+
+MMEDIA                  = "Multimedia"
+ACCESSMMEDIA            = "Accessories\Multimedia"
+GAMES                   = "Games"
+ACCESSGAMES             = "Accessories\Games"
+SYSTOOLS                = "System Tools"
+DESKTOP                 = "Desktop"
+PROGRAMS                = "Programs"
+ACCESSSYSTOOLS          = "Accessories\System Tools"
+DOTDOTDESKTOP           = "..\..\Desktop"
+DOT                     = "."
+
+TIP00 = "If you don't know how to do something, you can look it up in Help. Just click the Start button, and then click Help."
+TIP01 = "The Shut Down command on the Start menu enables you to safely shut down your computer."
+TIP02 = "To add a program to your Start menu, you can drag the program's icon onto the Start button."
+TIP03 = "You can use your right mouse button to drag files. Try it and see what happens!"
+TIP04 = "You can use long filenames when you save documents. You can even use spaces!"
+TIP05 = "You can click your right mouse button anywhere and see a menu of available commands."
+TIP06 = "To print a document quickly, you can drag its icon onto a printer icon."
+TIP07 = "To change your desktop background, click it by using your right mouse button; then click Properties."
+TIP08 = "If you see a question mark button in the title bar of a window, you can get Help on each item in that window by clicking it, and then clicking the item."
+TIP09 = "You can use Windows Explorer to see all the files on your computer."
+TIP10 = "You can solve printer problems by using the Print Troubleshooter in Help."
+TIP11 = "You can move the taskbar to any edge of your screen by dragging it with your mouse."
+TIP12 = "You can minimize all open windows at once; just use your right mouse button to click an empty area on the taskbar, and then click Minimize All Windows."
+TIP13 = "To set your computer's clock, you can double-click the clock on the taskbar."
+TIP14 = "You can minimize neck strain by positioning your monitor at eye level."
+TIP15 = "To change the Windows color scheme, use your right mouse button to click the desktop; then click Properties."
+TIP16 = "You can solve memory problems on your computer by using the Memory Troubleshooter in Help."
+TIP17 = "To select more than one file or folder, hold down CTRL while you click each item."
+TIP18 = "To change your screen saver, use your right mouse button to click the desktop; then click Properties."
+TIP19 = "Deleted files and folders are saved in the Recycle Bin until you empty it."
+TIP20 = "You can use Paint in the Accessories group to draw pictures and to view bitmap files."
+TIP21 = "You can switch mouse buttons if you are left-handed. Just double-click the Mouse icon in Control Panel."
+TIP22 = "To open a document quickly, you can double-click its icon."
+TIP23 = "When you type, you should keep your wrists elevated or use a wristpad to minimize strain."
+TIP24 = "You can find many interesting programs by clicking the Start button, point to Programs, and then point to Accessories."
+TIP25 = "You can start a Windows-based program from an MS-DOS window."
+TIP26 = "You can copy and paste text between MS-DOS and Windows."
+TIP27 = "To see how much disk space is free, use your right mouse button to click the icon for the drive; then click Properties."
+TIP28 = "Even if you don't shut down your computer at night, you can turn off your monitor to save power."
+TIP29 = "The mouse pointer is easier to see on laptop computers if you turn on pointer trails. Just double-click the Mouse icon in Control Panel, and then click the Motion tab."
+TIP30 = "When a folder is open, you can press BACKSPACE to open the folder one level higher."
+TIP31 = "When you display files in Details view, you can sort them by clicking the column headings."
+TIP32 = "To draw a selection box around a group of files, you can click at a corner of the group, and then drag to form the box."
+TIP33 = "The underlined letters in menus are shortcuts. Press ALT + the underlined letter to select the item."
+TIP34 = "You can use Defragmenter, in the System Tools folder, to speed up your computer's performance."
+TIP35 = "You can put shortcuts to your printers on your desktop."
+TIP36 = "You can find fun games to play in the Games folder, which is inside the Accessories folder."
+TIP37 = "To free disk space, try emptying the Recycle Bin."
+TIP38 = "You can drag a file's icon into a document, or even drag a shortcut icon into a document or mail message."
+TIP39 = "You can solve hardware problems by using the Hardware Conflict Troubleshooter in Help."
+TIP40 = "You can have programs start when you start Windows by dragging their icons to your StartUp folder."
+TIP41 = "You can use Backup, in the System Tools folder, to make backup copies of important files."
+TIP42 = "You can set Windows Explorer to show or hide three-letter MS-DOS extensions."
+TIP43 = "Quick View enables you to preview a document without opening it."
+TIP44 = "You can use ScanDisk, in the System Tools folder, to check your hard disk for errors."
+TIP45 = "When you print a document, a printer icon appears on the taskbar. Double-click it to see a list of documents waiting to print."
+TIP46 = "To learn what any toolbar button is for, you can rest your mouse pointer on the button for a few seconds."
+TIP47 = "You can use the Run command on the Start menu to open shared folders on other computers."
+TIP48 = "You can reorder documents in a printer window by dragging their icons."
+TIP49 = "You can customize Windows NT in many ways. Don't hesitate to experiment!"
+
