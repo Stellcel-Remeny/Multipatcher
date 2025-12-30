@@ -228,7 +228,7 @@ void intro(void) {
     for (i = 1; i < screen_rows; i++) {
         gotoxy(1, i);
         if (flags.animate)
-            delay(30);
+            delay(15);
         clreol();
     }
 
@@ -244,7 +244,7 @@ void intro_reverse(void) {
     for (i = screen_rows - 1; i > 0; i--) {
         gotoxy(1, i);
         if (flags.animate)
-            delay(30);
+            delay(15);
         clreol();
     }
     textcolor(WHITE);
@@ -427,7 +427,7 @@ void wipe(void) {
     for (i = screen_rows - 1; i > 4; i--) {
         gotoxy(1, i);
         clreol();
-        if (flags.animate) delay(30);
+        if (flags.animate) delay(10);
     }
     textbackground(BLUE);
     textcolor(LIGHTGRAY);
@@ -1080,4 +1080,61 @@ void validate_mpc_args(char *argv[]) {
         if (arg_check(argv, "/vw"))    flags.v_word_by_word = true;
         if (arg_check(argv, "/vstat")) flags.v_status_as_debug = true;
     }
+}
+
+// Draws a box using given preset
+//    preset = 0: use single-lined box
+//    preset = 1: use double-lined box
+void box(int x, int y, int width, int height, int preset) {
+    struct text_info saved_attr;
+    const struct box_chars *bc;
+    int i;
+
+    /* Basic validation */
+    if (preset < 0 || preset >= BOX_PRESET_COUNT)
+        return;
+    if (width < 2 || height < 2)
+        return;
+
+    bc = &BOX_PRESETS[preset];
+
+    /* Save cursor position + attributes */
+    save_pos_and_color(saved_attr);
+
+    /* ---- Corners ---- */
+    gotoxy(x, y);
+    cprintf("%c", bc->tl);
+
+    gotoxy(x + width - 1, y);
+    cprintf("%c", bc->tr);
+
+    gotoxy(x, y + height - 1);
+    cprintf("%c", bc->bl);
+
+    gotoxy(x + width - 1, y + height - 1);
+    cprintf("%c", bc->br);
+
+    /* ---- Vertical sides (left & right together) ---- */
+    for (i = 1; i < height - 1; i++) {
+        gotoxy(x, y + i);
+        cprintf("%c", bc->v);
+
+        gotoxy(x + width - 1, y + i);
+        cprintf("%c", bc->v);
+    }
+
+    /* ---- Horizontal sides (top & bottom together) ---- */
+    for (i = 1; i < width - 1; i++) {
+        gotoxy(x + i, y);
+        cprintf("%c", bc->h);
+
+        gotoxy(x + i, y + height - 1);
+        cprintf("%c", bc->h);
+
+        // Delay for animation
+        if (flags.animate) delay(5);
+    }
+
+    /* Restore cursor position + attributes */
+    restore_pos_and_color(saved_attr);
 }
