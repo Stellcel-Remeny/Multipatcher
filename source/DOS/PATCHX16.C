@@ -249,14 +249,22 @@ void print_entry_details(const Entry *entry) {
 }
 
 // Logic to display information about an entry
-void display_entry(Entry *entry) {
+void display_entry(Entry *entry, const char *init_dir) {
     // Init vars
     unsigned char screen_buffer[MAX_SCREEN_COLS * MAX_SCREEN_ROWS * 2];
     int key = -1, code = 0;
     char cwd[MAXPATH] = {0};
+    char *argv[4] = {0};
+    char cmdline[512];
+    char **new_env;
+    int i, j = 0;
+    char new_path[512];
 
-    // Buffer for Batch-mode args
-    char batch_mode_args[sizeof(entry->args) + 32] = {0};
+    int envc = 0;
+    while (environ[envc])
+        envc++; // Environment variables of current dos installation
+
+    new_env = malloc((envc + 2) * sizeof(char *));
 
     dbg("ENTRY DIRECTORY: %s", entry->directory);
     dbg("Gathering information from INI file.");
@@ -340,18 +348,51 @@ void display_entry(Entry *entry) {
 
             dbg("Current working directory: %s", cwd);
 
+            // Prepare to execute the program
+            /* Build PATH */
+            sprintf(
+                new_path,
+                "PATH=%s\\DOSINS;%s",
+                init_dir,
+                getenv("PATH") ? getenv("PATH") : ""
+            );
+
+            for (i = 0; i < envc; i++) {
+                if (!strncmp(environ[i], "PATH=", 5)) {
+                    new_env[j++] = new_path;
+                } else {
+                    new_env[j++] = environ[i];
+                }
+            }
+
+            new_env[j] = NULL;
+
             // Execute the program
-            if (entry->batch_mode) { // Batch files require COMMAND.COM to be executed
+            if (entry->batch_mode) {
                 dbg("BATCHMODE");
 
-                // Build batch mode args
-                sprintf(batch_mode_args, "/C %s %s", entry->exe, entry->args);
-                dbg("ARG PASS TO COMMAND.COM: %s", batch_mode_args);
-                // TODO: FIX THIS - ADD DOSINS TO PATH!
-                code = spawnvp(P_WAIT, "COMMAND.COM", build_argv("COMMAND.COM", batch_mode_args));
+                /* Build command line for COMMAND.COM */
+                sprintf(cmdline, "%s %s", entry->exe, entry->args);
+                dbg("COMMAND LINE: %s", cmdline);
+
+                argv[0] = "COMMAND.COM";
+                argv[1] = "/C";
+                argv[2] = cmdline;
+                argv[3] = NULL;
+                code = spawnvpe(
+                    P_WAIT,
+                    "COMMAND.COM",
+                    argv,
+                    new_env
+                );
             } else {
                 dbg("NOT BATCHMODE");
-                code = spawnv(P_WAIT, entry->exe, build_argv(entry->exe, entry->args));
+                code = spawnvpe(
+                    P_WAIT,
+                    entry->exe,
+                    build_argv(entry->exe, entry->args),
+                    new_env
+                );
             }
             
             dbg("Program exited with code %d\n", code);
@@ -547,7 +588,7 @@ void user_select_item(const char *init_short_dir){
                         current_directory,
                         entries[selected_item - num_menus]);
                 // Display entry information
-                display_entry(entry);
+                display_entry(entry, init_dir);
                 // If the funct closes, that means user pressed ESC.
                 // So we don't do anything.
             } else {
@@ -596,10 +637,14 @@ int main(int argc, char *argv[]) {
     get_screen_size(); // Fill screen_rows and screen_cols before doing anything.
     join(mpc_args, argv + 1); // Join all arguments into a single string
     mpc_argv = argv;
-    dbg("INIT: TSIZE ROW: %d, COL: %d, ARGS: %s", screen_rows, screen_cols, mpc_args);
 
     // Save current working directory
     getcwd(root_dir, sizeof(root_dir));
+
+    // Populate logfile for log()
+    sprintf(logfile, "%sLOGFILE.TXT", root_dir);
+
+    dbg("INIT: TSIZE ROW: %d, COL: %d, ARGS: %s", screen_rows, screen_cols, mpc_args);
 
     intro();
     title("Remeny MultiPatcher [MS-DOS]");
