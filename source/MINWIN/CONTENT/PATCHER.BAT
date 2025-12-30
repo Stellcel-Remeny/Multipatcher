@@ -1,3 +1,4 @@
+@echo off
 if not exist %CDROM%\MPCCD goto notfound
 if not exist %CDROM%\PATCHER.BAT goto notfound
 
