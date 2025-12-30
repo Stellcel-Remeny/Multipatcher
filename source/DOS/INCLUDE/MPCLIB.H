@@ -105,8 +105,6 @@ extern "C" {
 #define MAX_SCREEN_COLS 132 // Apparently 60*132 is the max possible vid out for dos
 #define MAX_SCREEN_ROWS 60
 
-#define LOGFILE "LOGFILE.TXT" // <--- File to be used if logging is enabled
-
 // ---[ Structures ]--- //
 typedef struct {
     bool animate;
@@ -158,6 +156,7 @@ static const struct box_chars BOX_PRESETS[BOX_PRESET_COUNT] = {
 // ---[ Global Variables ]--- //
 extern Flags flags;
 extern int screen_rows, screen_cols;
+extern char logfile[MAXPATH]; // <--- FileNAME to be used if logging is enabled
 
 // ---[ Manual flag manipulation defines ]--- //
 #define enable_animate() flags.animate = true;
