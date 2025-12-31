@@ -75,7 +75,7 @@ cls
 echo.
 echo Removing Windows 3.11 from memory... please wait...
 set comspec=a:\command.com
-set path=a:\;%CDROM%\DOSINS;%CDROM%:\
+set path=a:\;%DOSPATH%;%CDROM%:\
 xmsdsk /u /y > nul
 echo Now Mini-Windows has been successfully removed from the memory.
 echo Made by Wengier and Roy, China DOS Union.
