@@ -62,6 +62,6 @@
 
 ## MultiPatcher Information
 
-- Compiler used: TurboC 3.0
-- Needs meson + ninja, DOSBOX-X (maybe regular DOSBOX could also work?)
+- Compiler used for DOSApp: TurboC 3.0
+- Needs meson + ninja, DOSBOX/DOSBOX-X
 - Created by NTSP3 for Remeny.
