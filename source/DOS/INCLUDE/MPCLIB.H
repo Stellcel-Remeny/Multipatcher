@@ -163,19 +163,14 @@ extern Flags flags;
 extern int screen_rows, screen_cols;
 extern char logfile[MAXPATH]; // <--- File to be used if logging is enabled
 
-// ---[ Manual flag manipulation defines ]--- //
-#define enable_animate() flags.animate = true;
-#define disable_animate() flags.animate = false;
-#define enable_verbose() flags.verbose = true;
-#define disable_verbose() flags.verbose = false;
-#define enable_v_pause() flags.v_pause = true;
-#define disable_v_pause() flags.v_pause = false;
-#define enable_v_log() flags.v_log = true;
-#define disable_v_log() flags.v_log = false;
-#define enable_v_word_by_word() flags.v_word_by_word = true;
-#define disable_v_word_by_word() flags.v_word_by_word = false;
-#define enable_v_status_as_debug() flags.v_status_as_debug = true;
-#define disable_v_status_as_debug() flags.v_status_as_debug = false;
+// ---[ Deprecated function compatibility ]--- //
+// When you remove a function, please add suitable substitute here... if you can, obviously.
+static inline void quick_wipe(void) {
+    bool saved = flags.animate;
+    flags.animate = false;
+    wipe();
+    flags.animate = saved;
+}
 
 // ---[ Function declarations ]--- //
 void get_screen_size(void);

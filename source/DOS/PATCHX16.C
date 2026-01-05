@@ -476,7 +476,7 @@ void user_select_item(const char *init_short_dir){
 
         if (total_items == 0) {
             // If animate is disabled by something, re-enable it.
-            if (!arg_check(mpc_argv, "/ni")) enable_animate();
+            if (!arg_check(mpc_argv, "/ni")) flags.animate = true;
 
             // We found nothing.
             dbg("CASE: NOTHING FOUND.");
@@ -508,7 +508,7 @@ void user_select_item(const char *init_short_dir){
                       ); // <-- my face rn
             
             // If animate is disabled by something, re-enable it.
-            if (!arg_check(mpc_argv, "/ni")) enable_animate();
+            if (!arg_check(mpc_argv, "/ni")) flags.animate = true;
 
             // Get the number of menus and entries
             num_menus = count_arrays(menus);
@@ -552,7 +552,7 @@ void user_select_item(const char *init_short_dir){
                 quit();
                 // This means user cancelled the Quit operation.
                 // Disable animation temporarily for this loop for smooth experience.
-                disable_animate();
+                flags.animate = false;
             } else if (selected_item == -1) {
                 // User pressed ESC
                 dbg("ESC PRESSED.");
@@ -573,7 +573,7 @@ void user_select_item(const char *init_short_dir){
                         dbg("IN APPROOT DIRECTORY.");
                         // Since we are already at root, disable animation temporarily.
                         // Because it looks silly. Also install Gentoo.
-                        disable_animate();
+                        flags.animate = false;
                     }
                 }
                 dbg("NEW DIRECTORY UP: %s", current_directory);
