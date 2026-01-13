@@ -10,13 +10,13 @@ extern "C" {
 
 // ---[ Boolean type ]--- //
 #if !defined(__cplusplus)
-  #if __STDC_VERSION__ >= 199901L
-    #include <stdbool.h>
-  #else
-    typedef int bool;
-    #define true  1
-    #define false 0
-  #endif
+    #if __STDC_VERSION__ >= 199901L
+        #include <stdbool.h>
+    #else
+        typedef int bool;
+        #define true  1
+        #define false 0
+    #endif
 #endif
 
 // ---[ Special key codes [getch()] ]--- //
@@ -162,15 +162,6 @@ static const struct box_chars BOX_PRESETS[BOX_PRESET_COUNT] = {
 extern Flags flags;
 extern int screen_rows, screen_cols;
 extern char logfile[MAXPATH]; // <--- File to be used if logging is enabled
-
-// ---[ Deprecated function compatibility ]--- //
-// When you remove a function, please add suitable substitute here... if you can, obviously.
-static inline void quick_wipe(void) {
-    bool saved = flags.animate;
-    flags.animate = false;
-    wipe();
-    flags.animate = saved;
-}
 
 // ---[ Function declarations ]--- //
 void get_screen_size(void);
