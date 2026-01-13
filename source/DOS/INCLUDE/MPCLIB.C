@@ -1,5 +1,5 @@
 // Multipatcher library
-// 2025 remeny
+// 2026, 2025 remeny
 
 // ---[ Include ]--- //
 #include <conio.h>
