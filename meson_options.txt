@@ -1,21 +1,21 @@
 ## Default meson options ##
 
 # Directories
-option('src_dir', type : 'string', value : 'source', description : 'Source directory')
-option('src_about', type : 'string', value : 'source/ABOUT', description : 'Source directory containing About information.')
-option('src_base', type : 'string', value : 'source/BASE', description : 'Base directory with 3rd-party binaries to copy into bin_dir')
-option('src_muwu', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
-option('src_dos', type : 'string', value : 'source/DOS', description : 'Source directory for DOS application')
-option('bin_dir', type : 'string', value : 'bin', description : 'Output directory for built binaries')
+option('SRC_DIR', type : 'string', value : 'source', description : 'Source directory')
+option('SRC_ABOUT', type : 'string', value : 'source/ABOUT', description : 'Source directory containing About information.')
+option('SRC_BASE', type : 'string', value : 'source/BASE', description : 'Base directory with 3rd-party binaries to copy into bin_dir')
+option('SRC_MUWU', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
+option('SRC_DOS', type : 'string', value : 'source/DOS', description : 'Source directory for DOS application')
+option('BIN_DIR', type : 'string', value : 'bin', description : 'Output directory for built binaries')
 
 # Utilities
-option('dosbox', type : 'string', value : '', description : 'File path to DOSBOX Application')
-option('tcc', type : 'string', value : '', description : 'Folder path to TurboC++')
+option('DOSBOX', type : 'string', value : '', description : 'File path to DOSBOX Application')
+option('TCC', type : 'string', value : '', description : 'Folder path to TurboC++')
 
-# Patchress 16BIT DOS Arguments
-option('mpc_dos_args', type : 'string', value : '', description : 'Arguments to pass into Patchress 16-bit DOS application')
+# MultiPatcher 16BIT DOS Arguments
+option('MPC_DOS_ARGS', type : 'string', value : '', description : 'Arguments to pass into MultiPatcher 16-bit DOS application')
 
 # Debug boolean settings
-option('quick_run_16bit', type : 'boolean', value : false, description : 'Immediately run 16-bit application in DOSBox after TCC compilation')
-option('exit_on_16bit_compilation', type : 'boolean', value : true, description : 'Exit DOSBox after TCC compilation')
-option('tcc_output_to_file', type : 'boolean', value : true, description : 'Redirect TCC output to a file instead of console')
+option('QUICK_RUN_16BIT', type : 'boolean', value : false, description : 'Immediately run 16-bit application in DOSBox after TCC compilation')
+option('EXIT_ON_16BIT_COMPILATION', type : 'boolean', value : true, description : 'Exit DOSBox after TCC compilation')
+option('TCC_OUTPUT_TO_FILE', type : 'boolean', value : true, description : 'Redirect TCC output to a file instead of console')

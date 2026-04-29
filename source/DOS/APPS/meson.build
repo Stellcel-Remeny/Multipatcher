@@ -2,10 +2,10 @@
 py = import('python').find_installation()
 
 # Variables for directories
-bin_patches = meson.project_source_root() / get_option('bin_dir') / 'RES' / 'PATCHES'
-bin_utils = meson.project_source_root() / get_option('bin_dir') / 'RES' / 'UTILS'
-bin_cosmetic = meson.project_source_root() / get_option('bin_dir') / 'RES' / 'COSMETIC'
-bin_drivers = meson.project_source_root() / get_option('bin_dir') / 'RES' / 'DRIVERS'
+bin_patches = meson.project_source_root() / get_option('BIN_DIR') / 'RES' / 'PATCHES'
+bin_utils = meson.project_source_root() / get_option('BIN_DIR') / 'RES' / 'UTILS'
+bin_cosmetic = meson.project_source_root() / get_option('BIN_DIR') / 'RES' / 'COSMETIC'
+bin_drivers = meson.project_source_root() / get_option('BIN_DIR') / 'RES' / 'DRIVERS'
 
 # For every directory in this folder with meson.build, include them.
 # Then, compile a list of arguments to pass into DOSBox.
@@ -70,7 +70,7 @@ foreach d : subdirs
     # Write new command
     batch_cmds = ['del ' + out + ' >NUL'] # Delete previously made output, so it will not falsely take previous executable if tcc fails
     batch_cmds +=  ['tcc.exe /IX:\\include /LX:\\LIB /II:\\ -ms Y:\\' + d + '\\' + src + ' O:\\MPCLIB.OBJ O:\\MININI.OBJ'
-                   + (get_option('tcc_output_to_file') ? ' >> TCC_LOG.TXT' : '')]
+                   + (get_option('TCC_OUTPUT_TO_FILE') ? ' >> TCC_LOG.TXT' : '')]
     # Append command to batch_cmds if file is modified
     message('DOSAPP Target Input file: ' + d + '/' + src)
     message('DOSAPP Target Output file: ' + out)
@@ -91,7 +91,7 @@ endforeach
 
 # Add exit command if needed
 exit_target = []
-if get_option('exit_on_16bit_compilation')
+if get_option('EXIT_ON_16BIT_COMPILATION')
   exit_target = [custom_target(
     'append_exit',
     output: 'exit.stamp',

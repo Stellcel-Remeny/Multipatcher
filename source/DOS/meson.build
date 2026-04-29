@@ -3,8 +3,8 @@
 #
 
 # Get DOS utility paths from options
-tcc = get_option('tcc')
-dosbox = get_option('dosbox')
+tcc = get_option('TCC')
+dosbox = get_option('DOSBOX')
 
 if tcc == ''
   error('TCC Path empty. Please load local.conf, or supply value in meson_options.txt')
@@ -43,16 +43,16 @@ dosbox_args = [
   '-c', 'PATH %path%;x:\\BIN',
   '-c', 'r:',
   '-c', 'tcc.exe /IX:\\include /LX:\\LIB /II:\\ -ms Y:\\PATCHX16.C I:\\MPCLIB.C I:\\MININI.C'
-        + (get_option('tcc_output_to_file') ? ' > TCC_LOG.TXT' : ''),
+        + (get_option('TCC_OUTPUT_TO_FILE') ? ' > TCC_LOG.TXT' : ''),
 ]
 
 # If debug run after compilation is enabled
-if get_option('quick_run_16bit')
+if get_option('QUICK_RUN_16BIT')
     message('QUICK_RUN_16BIT IS ENABLED.')
-    dosbox_args += ['-c', 'MPC.EXE' + get_option('mpc_dos_args')]
+    dosbox_args += ['-c', 'MPC.EXE' + get_option('MPC_DOS_ARGS')]
 endif
 
-if get_option('exit_on_16bit_compilation')
+if get_option('EXIT_ON_16BIT_COMPILATION')
     dosbox_args += ['-c', 'exit']
 endif
 
@@ -64,7 +64,7 @@ mpc_dos = custom_target('16_bit_mpc_dos',
     build_by_default: true,
     build_always_stale: true,
     install: true,
-    install_dir: meson.project_source_root() / get_option('bin_dir')
+    install_dir: meson.project_source_root() / get_option('BIN_DIR')
 )
 
 # Build other DOS apps
@@ -75,7 +75,7 @@ run_target('run_dos',
     command: [
         dosbox,
         '-noconsole',
-        '-c', 'mount r "' + meson.project_source_root() / get_option('bin_dir') + '"',
+        '-c', 'mount r "' + meson.project_source_root() / get_option('BIN_DIR') + '"',
         '-c', 'r:',
         '-c', output_file,
         '-c', 'exit'
