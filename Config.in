@@ -22,7 +22,7 @@ menu "Directories"
             Directory containing third-party binaries that will be copied into
             the output directory during the build process.
 
-    config SRC_MUWU
+    config SRC_MWIN
         string "Mini Windows source directory"
         default "source/MINWIN"
         help

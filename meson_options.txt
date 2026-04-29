@@ -4,7 +4,7 @@
 option('SRC_DIR', type : 'string', value : 'source', description : 'Source directory')
 option('SRC_ABOUT', type : 'string', value : 'source/ABOUT', description : 'Source directory containing About information.')
 option('SRC_BASE', type : 'string', value : 'source/BASE', description : 'Base directory with 3rd-party binaries to copy into bin_dir')
-option('SRC_MUWU', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
+option('SRC_MWIN', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
 option('SRC_DOS', type : 'string', value : 'source/DOS', description : 'Source directory for DOS application')
 option('BIN_DIR', type : 'string', value : 'bin', description : 'Output directory for built binaries')
 
