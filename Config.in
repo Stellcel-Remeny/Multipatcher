@@ -1,0 +1,101 @@
+mainmenu "MultiPatcher"
+
+menu "Directories"
+
+    config SRC_DIR
+        string "Source directory"
+        default "source"
+        help
+            Root directory containing all source files for the project.
+
+    config SRC_ABOUT
+        string "About directory"
+        default "source/ABOUT"
+        help
+            Directory containing About or metadata information used during build
+            or packaging stages.
+
+    config SRC_BASE
+        string "Base binaries directory"
+        default "source/BASE"
+        help
+            Directory containing third-party binaries that will be copied into
+            the output directory during the build process.
+
+    config SRC_MUWU
+        string "Mini Windows source directory"
+        default "source/MINWIN"
+        help
+            Directory containing Mini Windows (MINWIN) related source files.
+
+    config SRC_DOS
+        string "DOS application source directory"
+        default "source/DOS"
+        help
+            Directory containing the 16-bit DOS application sources.
+
+    config BIN_DIR
+        string "Output binary directory"
+        default "bin"
+        help
+            Destination directory where compiled binaries and artifacts
+            will be placed.
+
+endmenu
+
+
+menu "External Tools"
+
+    config DOSBOX
+        string "Path to DOSBox executable"
+        default ""
+        help
+            Full path to the DOSBox executable used to run 16-bit DOS binaries.
+            Leave empty if DOSBox is available in PATH.
+
+    config TCC
+        string "Turbo C++ directory"
+        default ""
+        help
+            Directory containing the Turbo C++ (TCC) toolchain.
+            This is required for building 16-bit DOS components.
+
+endmenu
+
+
+menu "MultiPatcher DOS Runtime Options"
+
+    config MPC_DOS_ARGS
+        string "DOS application arguments"
+        default ""
+        help
+            Command-line arguments passed to the MultiPatcher 16-bit DOS application
+            when executed via DOSBox.
+
+endmenu
+
+
+menu "Debug and Development Options"
+
+    config QUICK_RUN_16BIT
+        bool "Auto-run 16-bit application after build"
+        default n
+        help
+            If enabled, automatically runs the compiled 16-bit DOS application
+            inside DOSBox immediately after successful compilation.
+
+    config EXIT_ON_16BIT_COMPILATION
+        bool "Exit DOSBox after compilation"
+        default y
+        help
+            If enabled, DOSBox will automatically exit after Turbo C++
+            finishes compilation.
+
+    config TCC_OUTPUT_TO_FILE
+        bool "Redirect TCC output to file"
+        default y
+        help
+            Redirects Turbo C++ compiler output to a file instead of displaying
+            it in the DOSBox console. Useful for debugging build logs.
+
+endmenu
