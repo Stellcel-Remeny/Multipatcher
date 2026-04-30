@@ -34,6 +34,18 @@ menu "Directories"
         help
             Directory containing the 16-bit DOS application sources.
 
+    config SRC_SCRIPTS
+        string "Scripts directory"
+        default "source/SCRIPTS"
+        help
+            Directory containing required scripts for compiling.
+
+    config SRC_UTILS
+        string "Utilities directory"
+        default "source/UTILS"
+        help
+            Directory containing some required utilities.
+
     config BIN_DIR
         string "Output binary directory"
         default "bin"

@@ -6,6 +6,8 @@ option('SRC_ABOUT', type : 'string', value : 'source/ABOUT', description : 'Sour
 option('SRC_BASE', type : 'string', value : 'source/BASE', description : 'Base directory with 3rd-party binaries to copy into bin_dir')
 option('SRC_MWIN', type : 'string', value : 'source/MINWIN', description : 'Source directory for Mini Windows directory')
 option('SRC_DOS', type : 'string', value : 'source/DOS', description : 'Source directory for DOS application')
+option('SRC_SCRIPTS', type : 'string', value : 'source/SCRIPTS', description : 'Scripts directory')
+option('SRC_UTILS', type : 'string', value : 'source/UTILS', description : 'Utilities directory')
 option('BIN_DIR', type : 'string', value : 'bin', description : 'Output directory for built binaries')
 
 # Utilities
