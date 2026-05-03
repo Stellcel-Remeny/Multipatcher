@@ -1,75 +1,121 @@
 
-# INI file structures
+# INI File Structures
 
-This file describes the structure of LFN.INI file for Menus, and INFO.INI file for Entries.
+This document describes the structure of `LFN.INI` (menus) and `INFO.INI` (entries) used by MultiPatcher.
 
-## Menus and LFN.INI
+---
 
-- The presence of `LFN.INI` inside any folder in `RES/` tells MultiPatcher that it is a menu.
+## Menus (`LFN.INI`)
 
-- A menu is a folder that contains other menus or entries in it.
+A folder inside `RES/` is treated as a **menu** if it contains an `LFN.INI` file.
 
-## Entries and INFO.INI
+Menus:
 
-- The presence of `INFO.INI` inside any folder in `RES/` tells MultiPatcher that it is an entry.
+- represent navigation nodes in the MultiPatcher interface
+- contain other menus or entries
 
-- An entry is a folder that contains the actual patch/utility/etc in it.
+### LFN.INI structure
 
-- These show up in the MPC GUI/TUI app different to Menus.
+#### `[MAIN]`
 
-- They can execute the application specified in `INFO.INI`.
+- `name=`  
+  Display name shown in the MultiPatcher interface
 
-## Structure of LFN.INI
+#### `[OS]`
 
-Under `[MAIN]`:
+Visibility flags per operating system:
 
-- `name=` The name to be displayed in the MPC interface.
+- `msdos=<true|false>`
+- `w31=<true|false>`
+- `w95=<true|false>`
+- `w98=<true|false>`
+- `wme=<true|false>`
+- `nt31=<true|false>`
+- `nt35=<true|false>`
+- `nt351=<true|false>`
+- `nt4=<true|false>`
+- `w2k=<true|false>`
+- `wxp=<true|false>`
 
-Under `[OS]`:
+Set each flag to control where the menu appears.
 
-- `msdos=<true/false>` To show under DOS, set to `true`.
-- `w31=<true/false>` To show under Windows 3.1, set to `true`.
-- `w95=<true/false>` To show under Windows 95, set to `true`.
+---
 
-... and so on for each of these options: `w98`, `wme`, `nt31`, `nt35`, `nt351`, `nt4`, `w2k`, and `wxp`
+## Entries (`INFO.INI`)
 
-## Structure of INFO.INI
+A folder inside `RES/` is treated as an **entry** if it contains an `INFO.INI` file.
 
-Under `[MAIN]`:
+Entries:
 
-- `name=` The name to be displayed in the MPC interface.
-- `description=` A short description of the item.
-- `author=` Creator of the item.
-- `version=` Version of the item.
-- `executable=<true/false>` Toggles executability of the item.
+- represent executable utilities, patches, or tools
+- appear inside menus
+- can be executed by MultiPatcher
 
-Under `[OS]`:
+### INFO.INI structure
 
-- `msdos=<true/false>` To show under DOS, set to `true`.
-- `w31=<true/false>` To show under Windows 3.1, set to `true`.
-- `w95=<true/false>` To show under Windows 95, set to `true`.
+#### `[MAIN]`
 
-... and so on for each of these options: `w98`, `wme`, `nt31`, `nt35`, `nt351`, `nt4`, `w2k`, and `wxp`
+- `name=`  
+  Display name in the interface
 
-Under `[MSDOS]`:
+- `description=`  
+  Short description of the item
 
-- `exec=` Name of the executable
-- `args=` Default arguments to pass
-- `passArgs=<true/false>` Passes arguments from the main MultiPatcher application down, along with the `/MPC` argument.
-- `batchMode=<true/false>` Run `Exec=` under `system()` (The COMMAND.COM Shell). Must be set to TRUE if `Exec=` is a batch script.
-- `pauseOnQuit=<true/false>` Pause for one keypress after `Exec=` finishes.
+- `author=`  
+  Creator of the item
 
-Under literally every other `[<winver>]` section:
+- `version=`  
+  Version string
 
-- `exec=` Name of the executable
-- `args=` Default arguments to pass
+- `executable=<true|false>`  
+  Marks whether the entry can be executed
 
-## Edited on
+---
 
-28th November, 2025 9:16PM
+#### `[OS]`
 
-29th November, 2025 8:02AM
+Same visibility flags as menus:
 
-4th December, 2025 9:39PM
+- `msdos=<true|false>`
+- `w31=<true|false>`
+- `w95=<true|false>`
+- `w98=<true|false>`
+- `wme=<true|false>`
+- `nt31=<true|false>`
+- `nt35=<true|false>`
+- `nt351=<true|false>`
+- `nt4=<true|false>`
+- `w2k=<true|false>`
+- `wxp=<true|false>`
 
-28th December, 2025 5:52PM
+---
+
+#### `[MSDOS]`
+
+Used when running under DOS:
+
+- `exec=`  
+  Executable name
+
+- `args=`  
+  Default arguments
+
+- `passArgs=<true|false>`  
+  Forwards arguments from MultiPatcher and appends `/MPC`
+
+- `batchMode=<true|false>`  
+  Runs via `system()` (COMMAND.COM). Required for batch scripts
+
+- `pauseOnQuit=<true|false>`  
+  Waits for a keypress after execution finishes
+
+---
+
+#### `[<winver>]` sections
+
+Any Windows version-specific override section (e.g. `[w95]`, `[wxp]`, etc.):
+
+- `exec=` executable name
+- `args=` default arguments
+
+These override or supplement OS-specific execution settings.
