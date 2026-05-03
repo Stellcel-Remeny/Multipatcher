@@ -1,51 +1,80 @@
 
 # Building MultiPatcher
 
-To make a build of MultiPatcher on your system, *assuming it's MS Windows*:
+This document explains how to build MultiPatcher using Meson, Ninja, DOSBox, and Turbo C++ 3.
 
 ## Prerequisites
 
-1. Meson (`pip install meson`)
-2. Ninja (`pip install ninja`)
-3. DOSBox or DOSBox-X ([DOSBox](https://www.dosbox.com/))
-4. Turbo C++ 3 ([Turbo C](https://turbo-c.net/))
+Required:
+
+1. Meson  
+   `pip install meson`
+
+2. Ninja  
+   `pip install ninja`
+
+3. DOSBox or DOSBox-X  
+   [Download DOSBox](https://www.dosbox.com/)
+
+4. Turbo C++ 3  
+   [Download Turbo C++](https://turbo-c.net/)
+
+Optional (recommended):
+
+1. Mesonconfig  
+   `pip install mesonconfig`
 
 ## Instructions
 
+1. Run `mesonconfig` on the project directory.
+2. Go to the "External Tools" menu.
+3. Change "Path to DOSBox executable" to the path where the DOSBox executable is located, **including the executable filename**.
+    The following is an example for Linux:
+    `(/usr/bin/dosbox) Path to DOSBox executable`
+4. Change "Turbo C++ directory" to the path where Turbo C++ is installed. (The path must contain BIN, INCLUDE, etc)
+    The following is an example for Windows:
+    `(C:\\TURBOC) Turbo C++ directory`
+5. Run `meson setup <output_directory> --native-file local.conf`.
+    The following is an example command:
+
+    ```sh
+    meson setup builddir --native-file local.conf
+    ```
+
+6. Run `meson compile -C <output_directory>` to build MultiPatcher.
+    The following is an example command:
+
+    ```sh
+    meson compile -C builddir
+    ```
+
+   The ISO image will be generated as `<output_directory>/MultiPatcher.iso`
+
+## Manual Configuration (Without mesonconfig)
+
 1. In the root of the MultiPatcher directory, create a new file named `local.conf`.
-2. Put `[project options]` in it.
-3. Under it, add the following and then save it (use double backslashes or single forward slashes):
-    - `dosbox = '<file>'`, where `<file>` must point to the path where DOSBox EXE file is located, **including filename**.
+2. Add the following configuration **(use double backslashes for Windows)**:
+
+    ```ini
+    [project options]
+    dosbox = '<dosbox-file>'
+    tcc = '<tcc-folder>'
+    ```
+
+    - `<dosbox-file>` must point to the path where the DOSBox executable is located, **including the executable filename**.
         The following is an example:
         `dosbox = 'C:\\DOSBox-X\\DOSBox-X.exe'`
-    - `tcc = '<path>'`, where `<path>` must point to the path where TurboC is installed. (The path must contain BIN, INCLUDE, etc)
-4. Go into `source/MINWIN` and read `howto.txt` to generate `BOOT.IMG` file.
-5. Run `meson setup builddir --native-file local.conf`.
-6. Run `meson install -C builddir` to build MultiPatcher. Finalized output will be located in bin_dir (usually `bin/`)
+
+    - `<tcc-folder>` must point to the path where Turbo C++ is installed. (The path must contain BIN, INCLUDE, etc)
+
+Then continue from step 5 in [Instructions](#instructions).
 
 ## Building MPC for Windows VB4
 
 You will need a copy of Microsoft Visual Basic 4.0 16-bit to compile this application. [Microsoft Visual Basic 4.0](https://winworldpc.com/product/microsoft-visual-bas/40)
 
 1. Open Microsoft Visual Basic 4.0 16-bit
-2. Open the project in `source/VB4'
+2. Open the project in `source/VB4`
 3. Make necessary modifications and compile it using the File menu in VB4.
-4. Copy the resulting .EXE file as `source/BASE/Patchg16.exe` along with the `DATA/` folder.
+4. Copy the compiled .EXE file as `source/BASE/Patchg16.exe` along with the `DATA/` folder.
 5. Recompile the whole project using meson.
-
-## Tips
-
-- You can view `meson_options.txt` and enable/edit more options in local.conf.
-- To fully rebuild, delete builddir and bin.
-
-## Edited on
-
-1st November, 2025 4:10PM
-
-30th November, 2025 4:54PM
-
-4th December, 2025 6:45PM
-
-21st December, 2025 1:10PM, 2:55PM
-
-28th December, 2025 4:18PM
