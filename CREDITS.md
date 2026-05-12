@@ -3,65 +3,57 @@
 
 ## Cosmetics/Visual Changes
 
-- 2KTetris by Tore Bastiansen
-- Calmira Shell for Windows 3.1
+- [Calmira Shell for Windows 3.1](http://www.calmira.de/)
 - Change MS-DOS lines to 50 lines
-- Newshell by Microsoft
-- VESAMAN MandelBrot from Falcosoft
+- [Microsoft Cheese Terminator](https://archive.org/details/mct_20200922)
+- [Newshell](https://winworldpc.com/product/newshell/beta)
+- [SmallTetris](https://archive.org/details/2ktetris)
+- [VESA MandelBrot](https://falcosoft.hu/dos_softwares.html#vesaman)
 
 ## Drivers
 
-- Cutemouse for MS-DOS
-- CREGFIX by Mintsuki
-- DOS IDE CD Driver by Microsoft
-- HIMEM.EXE for MS-DOS
-- NVMe driver for Windows NT4 / Windows 2k (not enabled)
+- [Cutemouse](https://cutemouse.sourceforge.net/)
+- [CREGFIX](https://github.com/LordOfMice/Tools/blob/master/cregfix.zip)
+- [HIMEMX](https://sourceforge.net/projects/himemx/)
+- [MS-DOS CD-ROM Driver](https://archive.org/details/cd-driver-1.25)
+- [NVMe2K](https://github.com/techomancer/nvme2k?tab=readme-ov-file) **(not enabled)**
 - RAMDisk Driver for MS-DOS
-- Windows 3.1 SVGA Drivers by PluMGMK
-- XMGR.SYS for MS-DOS
+- [Windows 1.0 IM1024 INSTALL.BAT Patch](https://www.betaarchive.com/forum/viewtopic.php?f=59&t=40317) **(Requires Setup disks)**
+- [Windows 3.1 SVGA Drivers](https://github.com/PluMGMK/vbesvga.drv)
+- [XMGR](https://github.com/usys/xrdos/blob/master/files/BIN/XMGR.SYS)
 
 ## Patches
 
-- FIX95CPUPatch by LoneCrusader
-- KernelEx
-- PatchMem for Win9x by RLOEW
-- Patcher9x by JHRobotics
-- SIMD95 by JHRobotics
-- W3xstart
+- [AHCIFIX.386](https://github.com/PluMGMK/ahcifix.386)
+- [FIX95CPU](http://lonecrusader.x10host.com/fix95cpu.html)
+- [KernelEx](https://sourceforge.net/projects/kernelex/)
+- [Patcher9x](https://github.com/JHRobotics/patcher9x)
+- [PatchMem](http://lonecrusader.x10host.com/rloew/patchmem.html)
+- [Real DOS-Mode Patch for Windows Me](https://www.infania.net/misc/RealDOSME/)
+- [SIMD95](https://github.com/JHRobotics/SIMD95)
+- [Win3xStart](http://www.win3x.org/win3board/viewtopic.php?t=17&view=min)
 - Windows 1.0 Setver change
-- Windows 3.1 AHCIFIX.386 by PluMGMK
-- Windows Me DOS mode patch by Reines
 
 ## Utilities
 
-- 4DOS by JP Software
-- 4NT 8.02 by JP Software
-- 7-Zip 4.65 by Igor Pavlov
-- Alky for applications
-- Blacklight shutdown utility
-- BootInfo
-- LegacyUpdate
-- Microsoft Layer for Unicode for Win9x
+- [4DOS](https://archive.org/details/4dos8)
+- [4NT](https://4dos.info/v4nt.htm#08)
+- [7-Zip](https://www.oldversion.com/software/7-zip/7-zip-4-65/)
+- [Alky for applications](http://www.alkyforapplications.net/)
+- [Blacklight shutdown utility](http://www.win3x.org/win3board/viewtopic.php?t=24930&view=min)
+- [BootInfo](https://github.com/LordOfMice/Tools/blob/master/BootInfo.zip)
+- [LegacyUpdate](https://github.com/LegacyUpdate/LegacyUpdate/)
+- [Microsoft Layer for Unicode for Win9x](https://legacyupdate.net/download-center/download/4237/platform-software-development-kit-redistributable-microsoft-layer-for-unicode-on-windows-95-98-and-me-systems-1.1.3790.0)
 - NTPatcher by Novabits
-- Paragon NTFS for Win9x/Me
-- Rufus 2.18 from rufus.ie
-- SciTech Display Doctor 7
-- Win32s for Windows 3.1 by Microsoft
-- Windows Logo Changer by Dr. A. Olowofoyeku
-- XrX Logo Utility
-- XrX AddBar
-
-## Test
-
-- Microsoft Cheese Terminator
+- [Paragon NTFS](https://archive.org/details/paragon-ntfs-for-win98-2000)
+- [Rufus](https://rufus.ie/)
+- [SciTech Display Doctor](https://archive.org/details/scitechdoctor)
+- [Win32s](https://winworldpc.com/product/win32s/125)
+- [Windows Logo Changer](https://archive.org/details/winlogo30)
+- [XrX AddBar](https://www.xrx.ca/logoutils/bar-doc.htm)
+- [XrX Animated Logo Utility](https://www.xrx.ca/logoutils/logo-doc.htm)
 
 ## Other
 
-- Mini Windows 3.11 by China Dos Union
-- CSMWrap by FlyGoat
-
-## MultiPatcher Information
-
-- Compiler used for DOSApp: TurboC 3.0
-- Needs meson + ninja, DOSBOX/DOSBOX-X
-- Created by NTSP3 for Remeny.
+- [CSMWrap](https://github.com/CSMWrap/CSMWrap)
+- [Mini Windows 3.11](https://archive.org/details/mwin-3)
