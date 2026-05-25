@@ -1,6 +1,7 @@
 vbesvga.drv and vddvbe.386
 
-Modern Generic SVGA driver for Windows 3.1
+Modern Generic SVGA driver for Windows 3.1 (with decent Windows 9x
+support)
 
 This is a rewrite of the Windows 3.1 SVGA driver, designed to support
 ALL available 8-bit, 16-bit, 24-bit or 32-bit graphic modes on any
@@ -8,6 +9,19 @@ system providing the VESA BIOS Extensions (hence the VBE in the name).
 It is based on the Video 7 SVGA driver included in the Win16 Driver
 Development Kit, with most of the hardware-specific code gutted out, and
 with support added for multi-byte pixels.
+
+Issue Templates
+
+Issue templates were added to this repository in November 2025. Please
+use them when reporting bugs! By "use them", I mean "fill out the
+answers to the questions in the given format", not "select them and
+replace the content with your own freeform text". The questions are
+there for a reason, and if you don't provide all the information then I
+won't be able to figure out what's going on on your system. I know most
+of the currently-open issues don't follow these formats, but that's only
+because they predate the creation of the templates. The templates were
+written based on my experience of debugging all the previous issues, and
+reflect questions that I would otherwise need to ask anyway.
 
 Why on Earth did I make such a thing?
 
@@ -22,16 +36,24 @@ Screenshots
 
 Using standard Program Manager shell
 
-[True-Colour Full HD screenshot of Windows 3.1 desktop showing colour
-settings (on "Plasma Power Saver"), Program Manager, a 50-row MS-DOS
-prompt, Solitaire and Minesweeper]
+[True-Colour Full HD screenshot of Windows 3.1 desktop, with a
+photographic wallpaper, showing colour settings (on "Plasma Power
+Saver"), Program Manager, an Internet Explorer 4.0 window (showing the
+"VESA BIOS Extensions" page on Gopherpedia), a 50-row MS-DOS prompt
+(showing VIDMODES.COM output), Solitaire and Minesweeper]
 
 This True-Colour Full HD screenshot, with large fonts, shows the staples
 of the Windows 3.1 GUI and the iconic games Minesweeper and Solitaire.
 The windowed 50-row DOS prompt demonstrates that I am running this on
-MS-DOS 6.20, and that I'm using a real AMD graphics card with vendor
-string equal to (C) 1988-2018, Advanced Micro Devices, Inc. and product
-name equal to NAVI14.
+MS-DOS 6.20, and (via the output of VIDMODES.COM; see below) that I'm
+using a real AMD graphics card with vendor string equal to
+(C) 1988-2018, Advanced Micro Devices, Inc. and product name equal to
+NAVI14. The wallpaper (a photo I took here) nicely demonstrates the True
+Colour rendering capability.
+
+I also decided to include an IE4 window with a topical Wikipedia page
+(via Gopherpedia!) now that I've figured out how to get my network
+connection running thanks to a tutorial posted on VOGONS in 2025!
 
 Using third-party Calmira XP shell
 
@@ -40,19 +62,37 @@ wallpaper, showing colour settings (on "Bordeaux"), Character Map,
 Advanced Task Manager, two MS-DOS prompts (one showing the main menu of
 Rayman, the other showing VIDMODES.COM output), and Calmira Explorer]
 
-This screenshot showcases the True Colour rendering capability, in the
-wallpaper (a photo I took here) and in the Windows-XP-derived icons used
-by the Calmira XP shell. The Advanced Task Manager instance again
-confirms that we're on DOS 6.20 and Windows 3.10. It also says we're on
-a 486, which of course isn't true, but that's just the newest CPU that
-Windows 3.1 knows about! The 25-row DOS prompt shows the output of
-VIDMODES.COM (see below), confirming again that I'm using a real AMD
-graphics card with vendor string equal to
-(C) 1988-2018, Advanced Micro Devices, Inc. and product name equal to
-NAVI14 (reported a bit more legibly this time!). And what's that in the
-other DOS prompt? That's right, it's Rayman (1995)! Thanks to the new
-256-colour-capable grabber (see below), Rayman can now be played in a
-window - it's a bit choppy, but it works!
+This screenshot again showcases the True Colour rendering capability, in
+the wallpaper and in the Windows-XP-derived icons used by the Calmira XP
+shell. The Advanced Task Manager instance again confirms that we're on
+DOS 6.20 and Windows 3.10. It also says we're on a 486, which of course
+isn't true, but that's just the newest CPU that Windows 3.1 knows about!
+The 25-row DOS prompt again shows (part of) the output of VIDMODES.COM,
+confirming again that I'm using a real AMD graphics card. And what's
+that in the other DOS prompt? That's right, it's Rayman (1995)! Thanks
+to the new 256-colour-capable grabber (see below), Rayman can now be
+played in a window - it's a bit choppy, but it works!
+
+On Windows 98
+
+[True-Colour Full HD screenshot of Windows 98 Active Desktop, with the
+Channel Bar, a 50-row DOS prompt (showing VIDMODES.COM output), a
+Display Properties dialog (showing only the current setting of 1920 by
+1080 with 32-bit colour), and the "Welcome to Windows 98" window]
+
+This shows Windows 98 running on the same hardware as above, with large
+fonts, with the Active Desktop UI fully working. It also shows that the
+display settings dialog can show the current, but unfortunately doesn't
+currently allow for on-the-fly adjustments.
+
+[True-Colour Full HD screenshot of Windows 98 Active Desktop, with the
+Channel Bar, two DOS prompts (one showing VER and VIDMODES.COM output,
+the other showing the main menu of Rayman Designer), and a RetroZilla
+browser window (showing the home page of raymandesigner.com)]
+
+This one shows Rayman Designer running in a windowed DOS prompt (in this
+case using Windows 98's stock grabber), and the go-to site for sharing
+and downloading levels for that game in a RetroZilla browser window.
 
 Usage Notes
 
@@ -69,13 +109,15 @@ one would like, so there is some hardware that has some issues:
   include potential freezes when using the mode command to change the
   size of the prompt, and font corruption when switching to full screen
   (which also affects blue screens).
+- AMD Radeons: the RX 5000 series works perfectly, and I use it for
+  development. There has been one report of a 386 Enhanced Mode boot
+  failure with an RX 7000 series card, but it's not clear whether that
+  was caused by the graphics hardware or some other incompatibility on
+  the motherboard.
 - Intel 810 chipset integrated graphics crashes back to DOS during boot
   leaving you with a blank screen. It turns out there is an official
   driver for this chipset, so please use that instead:
   https://archive.org/details/w-810-r-209
-- The AMD Radeon RX 7800 XT (and presumably newer Radeons) fails to boot
-  in Enhanced Mode. The RX 5000 series is OK (that's what I develop on),
-  and I don't know what the story is with the RX 6000 series.
 
 In general, if your hardware is old enough, it probably has an official
 driver for Windows 3.1 (like the i810). Official drivers should be
@@ -98,24 +140,54 @@ folder and use the MD5SUM utility from FreeDOS, as follows:
 If any file from the release archive is corrupt, it will come up as
 "FAILED".
 
+Large, Small and Tiny Fonts
+
+Most Windows 3.1 display drivers supported "small" and "large" font
+modes, setting the display resolution to 96 dpi and 120 dpi
+respectively. Annoyingly, while the corresponding setting was usually
+known as "fontsize", the actual font size used by the system was
+determined by three FON files (system, OEM and fixed-width fonts)
+specified elsewhere in the SYSTEM.INI file. Driver setup files were
+programmed to make these settings match, but a manual install could
+produce weird-looking mismatches.
+
+VBESVGA.DRV supports three modes: "large" at 120 dpi, "small" at 96 dpi,
+and "tiny" at 48 dpi. Unlike old drivers, this doesn't need to be
+configured explicitly: it automatically detects the DPI of the
+currently-installed system font, and picks the closest of the three
+supported values. However, you can still use the fontsize setting in
+SYSTEM.INI to override this if you wish.
+
+There is also a fontsize=nativedpi setting, which calculates the
+physical dots per inch of your screen, and again picks the closest of
+the three supported values. Again though, this can lead to a mismatch
+with the system font size.
+
 Setup / Configuration Procedure
 
 There are a few different ways to setup and configure the driver,
 according to your tastes and requirements. In all cases, the first step
 is to extract the vbesvga-release.zip archive to a folder on your
-DOS/Win3.1 machine, or else mount the vbesvga.img as a floppy image (or
-put it on a real floppy).
+DOS/Win3.1/Win9x machine, or else mount the vbesvga.img as a floppy
+image (or put it on a real floppy).
 
 Generic OEMSETUP.INF
 
 The OEMSETUP.INF file provided in the release archives and images, which
 can be used with the Windows Setup tool, includes some basic profiles,
-typical of early SVGA hardware. You can choose a resolution of 640*480,
-800*600, 1024*768, or "Automatic", meaning that your monitor's preferred
-resolution is auto-detected (which falls back to 1024*768 on failure).
-For each choice of resolution, you can pick 256 (8-bit), 32k (15-bit),
-65k (16-bit) or 16M (24-bit) colours, and Large (120-dpi) or Small
-(96-dpi) fonts.
+typical of early SVGA hardware. You can choose a resolution of 320*200,
+640*480, 800*600, 1024*768, or "Automatic", meaning that your monitor's
+preferred resolution is auto-detected (this detection falls back to
+1024*768 on failure). For each choice of resolution, you can pick 256
+(8-bit), 32k (15-bit), 65k (16-bit) or 16M (24-bit) colours.
+
+The 320*200 modes are configured for "tiny" fonts, requiring LR*.FON
+from the Windows 3.0 MME CD-ROM). 640*480 modes are configured for
+"small" fonts (requiring VGA*.FON included in both Windows 3.x and
+Windows 9x installation media), and the larger modes offer "large" or
+"small" options (requiring 8514*.FON and VGA*.FON respectively, again
+included in Windows 3.x and 9x installation media). "Automatic" modes
+offer all three options, again requiring the respective font files.
 
 There is no guarantee that your system will support all of these modes,
 so you may wish to use one of the other setup methods to get a more
@@ -134,9 +206,17 @@ hardware, and choose Large or Small fonts. Unlike the OEMSETUP.INF, you
 can also configure the SwapBuffersInterval and BounceOnModeset values
 documented below.
 
-Once it installs the driver, it also creates a VBESVGA.EXE DOS program
-in the Windows directory that you can use to reconfigure the driver
-without reinstalling.
+You can select the "tiny" (LR*.FON), "small" (VGA*.FON) or "large"
+(8514*.FON) system font sets, and/or override the DPI setting
+("fontsize" in SYSTEM.INI) as described above. You will need to provide
+the font files yourself, either placing them in the same folder as the
+setup tool, or directly in the WINDOWS\SYSTEM folder. The tool will not
+let you choose a missing font file (the setting will flash red and you
+will not be able to save until you change it).
+
+Once it installs the driver, the tool also creates a VBESVGA.EXE DOS
+program in the Windows directory that you can use to reconfigure the
+driver without reinstalling.
 
 Thanks to @joshudson for creating this tool!
 
@@ -145,17 +225,6 @@ Generating a bespoke OEMSETUP.INF
 You can also use @albertus82's BASIC script to generate a bespoke
 OEMSETUP.INF for your machine, and then install the driver using Windows
 Setup.
-
-Using the driver with DBCS versions of Windows / DOS (e.g. Japanese)
-
-Currently, VDDVBE.386 only supports standard text mode for "message
-mode" (better known as BSoDs). To boot it on a DBCS version of DOS, you
-will need to use the shim driver VDDD.386, found in the Japanese version
-of Windows 3.1. This problem probably only arises with DBCS versions of
-Win9x, which normally support graphical-mode BSoDs, but (for now) cannot
-do so with this driver.
-
-See also issue #98.
 
 Full list of configuration options
 
@@ -187,9 +256,12 @@ be set using the SETUP.EXE / VBESVGA.EXE tool described above.
                                                    32-bit modes will  
                                                    qualify)           
 
-  fontsize                       small or large    Choose whether to  small
-                                                   use 96dpi or       
-                                                   120dpi fonts       
+  fontsize                       auto, nativedpi,  Display DPI        auto
+                                 tiny, small or    setting,           
+                                 large             overriding the     
+                                                   detected value     
+                                                   from the system    
+                                                   font (see above)   
 
   dacdepth                       6, 8 or auto      Significant bits   auto
                                                    to use per colour  
@@ -329,7 +401,6 @@ Example configuration (showing only relevant snippets of SYSTEM.INI)
     Height=900
     Depth=15
     SwapBuffersInterval=15
-    fontsize=large
 
 Using debug builds
 
@@ -350,6 +421,38 @@ than a 486, you need to change some bytes:
 This removes references to the TR6 and TR7 registers, which crash the
 system since they only existed on the 386, 486 and a few other
 less-well-known chips!
+
+Windows 9x
+
+VBESVGA.DRV and VDDVBE.386 can be used together on Windows 9x, and this
+configuration even supports colour and animated cursors. However, the
+lack of integration with the registry and the "Plug-and-Play" system
+gives rise to the following limitations:
+
+- It is impossible to set the video mode from the GUI settings (as seen
+  in the screenshot above) - although you can set the font size
+- Hardware / driver names may be reported inconsistently depending on
+  where you look in system settings and/or system information
+- VDDVBE.386 cannot boot on DBCS versions of Windows (e.g. Japanese)
+  unless you load the shim driver VDDD.386, found in the Japanese
+  version of Windows 3.1. This will force BSoDs to render in Latin text,
+  which is not ideal - see also issue #98.
+
+My plan is to refactor VDDVBE.386 so that it can be compiled in two
+different ways:
+
+1.  A monolithic virtual display driver for Windows 3.x (i.e. what it is
+    now)
+2.  An installable mini-VDD for Windows 9x, containing a stripped down
+    subset of its code
+
+This will be accompanied by API and configuration changes, and a new
+installation script designed for Windows 9x, which should hopefully
+overcome the issues above. The two versions will be shipped side-by-side
+in this repository.
+
+When I make these changes (hopefully during 2026), the version number
+will be bumped to 2.0.
 
 Limitations in Windows programs / components
 
@@ -575,6 +678,26 @@ with the closest match * 2 if your graphics card doesn't support VBE at
 all, in which case VBESVGA.DRV will attempt to boot in mode 13h, i.e.
 320*200*8
 
+Testing a mode from DOS
+
+Sometimes you may get strange artefacts when booting Windows in certain
+display modes (e.g. wrong colours, stair-casing, etc.). In that case, it
+may be useful to understand whether the problem comes from Windows, your
+graphics firmware, or some combination of both. To help elucidate this,
+you can use the MODETEST.COM utility (included since v1.0) from
+Real-Mode DOS (i.e. without EMM386 or equivalent) to put up a
+sixteen-colour test card and see if it looks OK.
+
+To use it, you simply find the desired mode in the VIDMODES.COM output,
+and then pass it as an argument to MODETEST.COM, for example:
+
+    MODETEST 020B
+
+Or, to test it with a linear framebuffer (see next section), add 4000 to
+the number:
+
+    MODETEST 420B
+
 Linear Modes and Double Buffering
 
 The VBE modes used by this driver involve a framebuffer larger than can
@@ -790,7 +913,7 @@ DOS-based and can be automated using a batch file. See the file
 release-work/make-release.sh for an example of how this can be done
 using DOSBox on Linux.
 
-vbesvga.drv (needed in both Standard and 386 Enhanced Mode)
+vbesvga.drv (needed in both Standard and 386 Enhanced Mode, and on Windows 9x)
 
 - Install both the Win16 DDK and a contemporary version of Visual C++
 - Obtain a copy of EXE2BIN.EXE (e.g. from FreeDOS, or from the Open
@@ -804,7 +927,7 @@ vbesvga.drv (needed in both Standard and 386 Enhanced Mode)
 - Go to the VBESVGA\mak folder and run make vbesvga.mak; this should
   create the file VBESVGA.DRV which can be loaded by Windows
 
-vddvbe.386 (needed only in 386 Enhanced Mode)
+vddvbe.386 (needed only in 386 Enhanced Mode, and on Windows 9x)
 
 - Place the VDDVBE folder from this repository in the DDK hierarchy, at
   386/VDDVBE
@@ -814,7 +937,7 @@ vddvbe.386 (needed only in 386 Enhanced Mode)
 - Go to the VDDVBE folder and run nmake; this should create the file
   VDDVBE.386 which can be loaded by Windows
 
-vbevmdib.3gr (needed only in 386 Enhanced Mode for running graphical DOS programs in windowed mode)
+vbevmdib.3gr (needed only in 386 Enhanced Mode for running graphical DOS programs in windowed mode, not needed on Windows 9x)
 
 - Place the VBEGRAB folder from this repository in the DDK hierarchy, at
   386/VBEGRAB
@@ -823,36 +946,6 @@ vbevmdib.3gr (needed only in 386 Enhanced Mode for running graphical DOS program
 - In addition, ensure 386\TOOLS from the DDK is in your PATH
 - Go to the VBEGRAB folder and run nmake; this should create the file
   VBEVMDIB.3GR which can be loaded by Windows
-
-TODO list
-
-Things that should probably done before v1.0.0
-
-- Figure out some kind of versioning scheme within the code, ideally
-  integrated with Git (because I'm forgetful!), so user can easily
-  figure out which version of the driver they're installing / running
-- Make sure the driver works just as well on Win9x as it does on Win3.1
-- Consider adding a paper-thin implementation of StretchBlt to overcome
-  the "zoom-in in Paintbrush" limitation above (basically it would punt
-  straight to GDI for smaller scanline widths, and then for wider ones
-  allocate its own DIB and call out to GDI's StretchDIBits function)
-- Investigate adding support for colour / animated cursors, for Win9x
-- Investigate adding proper support for graphical-mode BSoDs, for DBCS
-  versions of Win9x
-
-Things that might come later
-
-- Consider efficiency improvements in swap_buffers and/or
-  VDD_SwapBuffers, to reduce idle CPU usage
-- Consider adding a virtual RAMDAC to the double-buffering code in
-  VDDVBE.386 to allow standard 256-colour modes to be emulated on
-  hardware that only supports high-colour VBE modes
-- See if VDDVBE.386 can work on newer AMD hardware (I don't have any
-  affected hardware)
-- Investigate adding Windows 3.0 support (perhaps still requiring a 286,
-  i.e. refusing to boot on anything older)
-- Investigate using VBE/AF where available for 2D acceleration
-- Investigate adding Windows 1/2 support
 
 [1] Ideally this check would be built into the Windows boot process in
 the driver, but unfortunately this is basically impossible, since
