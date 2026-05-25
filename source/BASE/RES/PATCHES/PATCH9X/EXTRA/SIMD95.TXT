@@ -1,0 +1,62 @@
+SIMD95
+------
+Simple hack for enabling SSE/AVX instructions on DOS and Windows 95/98/Me.
+
+Requirements
+------------
+CPU with SSE support, program is designed to be run in Virtual Machine.
+
+Usage
+-----
+Copy "simd95.com" to "C:\" directory and add following line to
+the (at begin of) "autoexec.bat" file
+
+C:\simd95.com
+
+And reboot a system. Don't run program directly, it must be run from real mode
+before memory manager is loaded (!).
+
+Behaviour
+---------
+DOS and Windows 95 doesn't support SSE instruction set, so this program will
+turn on SSE and AVX and these instructions will be exposed to user programs.
+
+Windows 98 and Me already supporting SSE, so behaviour is changed
+only with usability of AVX.
+
+Disadvantages
+-------------
+You cannot have two or more application running with new instructions or
+one multi-thread application.
+
+The system doesn't care about swapping SSE and AVX registers on context change
+(switching actual program or *its thread* to another). If you running program
+with new instructions and the system switch running application to another
+(multi-thread system do it and do it very often) in SSE and AVX registers
+isn't its old content but some mess which probably leads to crash.
+
+Credit
+------
+This program was inspired by: Falcosoft SSE 1.0
+(http://falcosoft.hu/dos_softwares.html#sse)
+
+Thanks!
+
+MIT No Attribution
+
+Copyright 2022 Jaroslav Hensl <emulator@emulace.cz>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.

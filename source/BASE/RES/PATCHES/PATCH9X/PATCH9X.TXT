@@ -1,5 +1,5 @@
 Patch for Windows 3.11/9x for run on newest CPUs - AMD ZEN 2+, Intel Tiger Lake+
-Version: 0.9.90
+Version: 0.9.91
 
 Usage:
 patch9x.exe [options] [path]
@@ -11,6 +11,7 @@ options:
 	-v: print program version
 	-auto,-y: use default actions (if path given) and don't bother user
 	-no-backup: don't backup files before modify
+	-m: include patch to move VXD above 16 MB
 	-force-w3: when patching VMM32.VXD, leave it as W3 file
 	-force-w4: when patching VMM32.VXD, always compress to W4 file
 	-select: comma separated selected patches:
@@ -20,7 +21,10 @@ options:
 		speed - speeddrv + speedndis
 		mem - memory limit patch
 		creg - CPU registry cleanup on startup
-		all - all patches (default)
+		g4resfix - >4G resource fix
+		16m - move VXD above 16MB (disabled by defautl)
+		default - default patch set
+		all - all patches
 	-unselect: comma separated patches (reversing -select)
 	-reverse: uninstall patches
 	-millennium: ignored, Me patch is included in TLB set

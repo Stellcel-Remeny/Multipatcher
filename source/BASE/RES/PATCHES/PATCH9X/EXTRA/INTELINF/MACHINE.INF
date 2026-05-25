@@ -1,0 +1,1248 @@
+
+; MACHINE.INF
+
+; Copyright (c) 1993-1998, Microsoft Corporation
+;
+; Copyright (c) 2013-2015, Conner McCoy aka LoneCrusader
+; "Slipstreamable" Intel Motherboard Chipset Drivers, v1.0
+; Intel Chipset Software Installation Utility 6.3.0.1007, 8.3.1.1009
+
+[version]
+CatalogFile=machine.cat
+LayoutFile= Layout.inf, Layout1.inf, Layout2.inf
+signature="$CHICAGO$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%MS%
+SetupClass=BASE
+
+[ClassInstall]
+AddReg=System_Class_Reg
+DelReg=System_Class_DelReg
+
+[System_Class_Reg]
+HKR,,,,%SystemClassName%
+HKR,,Installer,,sysclass.dll
+
+[System_Class_DelReg]
+HKR,,NoInstallClass
+
+[DestinationDirs]
+PNPBIOS_Copyfiles          = 11          ; LDID_SYS
+PNPBIOS_PRESARIO_Copyfiles = 13          ; LDID_CMD
+PNPBIOS_PROLINEA_Copyfiles = 13          ; LDID_CMD
+PNPBIOS_DelFiles           = 11          ; LDID_SYS
+ACPI_Copyfiles             = 11          ; LDID_SYS
+Battery_Copyfiles          = 11          ; LDID_SYS
+WmiMap_Copyfiles           = 11          ; LDID_SYS
+Embedded_Copyfiles         = 11          ; LDID_SYS
+PCI_Copyfiles              = 11          ; LDID_SYS
+PCI_DelFiles               = 11          ; LDID_SYS
+system_driver_files        = 11          ; LDID_SYS
+Lite_SysCopyFiles          = 11          ; LDID_SYS
+Lite_WinCopyFiles          = 10          ; LDID_WIN
+Elite_SysCopyFiles         = 11          ; LDID_SYS
+APM_CopyFiles              = 11          ; LDID_SYS
+APM_VxD_CopyFiles          = 11          ; LDID_SYS
+APMBATT_CopyFiles          = 11          ; LDID_SYS
+COMPOSITE_DRV_COPYFILES    = 11          ; LDID_SYS
+PROCESSOR_UPDATE_Copyfiles = 10,system32\drivers
+
+[Manufacturer]
+%GENDEV_MFG%=GENDEV_SYS
+%COMPAQ_MFG%=COMPAQ_SYS
+
+[Det.DevINFs]
+*pnp0A00=machine2.inf
+*pnp0A01=machine2.inf
+*pnp0A02=machine2.inf
+*pnp0A04=machine2.inf
+
+[GENDEV_SYS]
+%*PNP0C00.DeviceDesc%   = PNPBIOS_DRV,  *PNP0C00        ; PnP BIOS
+%BIOS\*PNP0C01.DeviceDesc%= SYSTEM_BOARD,BIOS\*PNP0C01  ; System board
+%ACPI\*PNP0C01.DeviceDesc%= SYSTEM_BOARD,ACPI\*PNP0C01  ; System board
+%*PNP0C01.DeviceDesc%   = SYSTEM_BOARD, *PNP0C01        ; System board
+%*PNP0C02.DeviceDesc%   = NO_DRV,       *PNP0C02        ; Motherboard resources
+%*PNP0C04.DeviceDesc%   = FPU_DRV,      *PNP0C04        ; Numeric processor
+%*PNP0C05.DeviceDesc%   = APM_DRV,      *PNP0C05        ; APM BIOS
+%*PNP0C08.DeviceDesc%   = ACPI_DRV,     *PNP0C08        ; ACPI BIOS
+%*PNP0C09.DeviceDesc%   = EMBEDDED_DRV, *PNP0C09        ; APM Embedded Controller
+%*PNP0C0A.DeviceDesc%   = BATTERY_DRV,  *PNP0C0A        ; APM Battery
+%*PNP0C0B.DeviceDesc%   = FAN_DRV,      *PNP0C0B        ; APM FAN
+%*PNP0C0C.DeviceDesc%   = POWER_BUT_DRV,*PNP0C0C        ; APM Power Button
+%*PNP0C0D.DeviceDesc%   = LID_DRV,      *PNP0C0D        ; APM Lid
+%*PNP0C0E.DeviceDesc%   = SLEEP_BUT_DRV,*PNP0C0E        ; APM Sleep Button
+%*PNP0C0F.DeviceDesc%   = IRQHOLDER_DRV,*PNP0C0F        ; ACPI IRQ Holder
+%*PNP0C13.DeviceDesc%   = PNPBIOS_DRV,  *PNP0C13        ; PnP BIOS in ACPI fail safe
+%*PNP0C14.DeviceDesc%   = WmiMap_DRV,   *PNP0C14        ; WmiAcpi mapper
+%PCI\IRQHolder.DeviceDesc%=IRQHOLDER_DRV,PCI\IRQHolder
+%*PNP0000.DeviceDesc%   = VPIC_DRV,     *PNP0000        ; PIC
+%*PNP0001.DeviceDesc%   = VPIC_DRV,     *PNP0001        ; EISA PIC
+%*PNP0002.DeviceDesc%   = VPIC_DRV,     *PNP0002        ; MCA PIC
+%*PNP0003.DeviceDesc%   = VPIC_DRV,     *PNP0003        ; APIC
+%*PNP0004.DeviceDesc%   = VPIC_DRV,     *PNP0004        ; Cyrix SLiC MPIC
+%*PNP0200.DeviceDesc%   = VDMA_DRV,     *PNP0200        ; DMA
+%*PNP0201.DeviceDesc%   = VDMA_DRV,     *PNP0201        ; EISA DMA
+%*PNP0202.DeviceDesc%   = VDMA_DRV,     *PNP0202        ; MCA DMA
+%*PNP0A03.DeviceDesc%   = PCI_DRV,      *PNP0A03        ; PCI BUS
+%*PNP0A05.DeviceDesc%   = ACPI_BUS_DRV, *PNP0A05        ; ACPI generic bus
+%*PNP0A06.DeviceDesc%   = ACPI_EIO_DRV, *PNP0A06        ; ACPI EIO bus
+%*PNP0B00.DeviceDesc%   = DUMMY_DRV,    *PNP0B00        ; Real Time Clock
+%*PNP0100.DeviceDesc%   = TIMER_DRV,    *PNP0100        ; System Timer
+%*PNP0101.DeviceDesc%   = TIMER_DRV,    *PNP0101        ; EISA System Timer
+%*PNP0102.DeviceDesc%   = TIMER_DRV,    *PNP0102        ; MCA System Timer
+%*PNP0103.DeviceDesc%   = NO_DRV,       *PNP0103        ; High Precision Event Timer
+%*PNP0800.DeviceDesc%   = DUMMY_DRV,    *PNP0800        ; System Speaker
+%*CPQFA1B.DeviceDesc%   = NO_DRV,       *CPQFA1B        ; Compaq memory board
+%ISAPNP\ReadDataPort.DeviceDesc%=ISARDP_DRV,ISAPNP\ReadDataPort
+%ACPI\ACPI_INTERRUPT.DeviceDesc%=ACPIINT_DRV,ACPI\ACPI_INTERRUPT
+%VPOWERD\BATTERY.DeviceDesc%=APMBATT_DRV,VPOWERD\BATTERY        
+%ACPI\COMPBATT.DeviceDesc%=COMPOSITE_DRV,ACPI\COMPBATT
+%ACPI\ACPI0003.DeviceDesc%=ACPI_AC_DRV, ACPI\ACPI0003
+%ACPI\BUTTON.DeviceDesc%=BUTTON_DRV, ACPI\BUTTON
+%Processor_Update.DeviceDesc%=PROCESSOR_UPDATE_DRV,PROCESSOR_UPDATE
+
+
+[COMPAQ_SYS]
+%*PNP0C06.DeviceDesc%   = PRESARIO_PNPBIOS_DRV, *PNP0C06        ; Early Presario PnP BIOS
+%*PNP0C07.DeviceDesc%   = PROLINEA_PNPBIOS_DRV, *PNP0C07        ; Early Prolinea PnP BIOS
+%*PNP0CF0.DeviceDesc%   = LITE_DRV,     *PNP0CF0        ; Compaq LTE Lite
+%*PNP0CF1.DeviceDesc%   = ELITE_DRV,    *PNP0CF1        ; Compaq LTE Elite
+%*CPQ9A83.DeviceDesc%=NO_DRV,*CPQ9A83
+%*CPQA090.DeviceDesc%=NO_DRV,*CPQA090
+%*CPQA0A0.DeviceDesc%=NO_DRV,*CPQA0A0
+%*CPQA0B0.DeviceDesc%=NO_DRV,*CPQA0B0
+
+;
+;   Force all system components to be installed with no UI during setup.
+;
+
+[*pnp0c00.Det]
+AddReg=ForceInstall
+
+[*pnp0c01.Det]
+AddReg=ForceInstall
+
+[*pnp0c04.Det]
+AddReg=ForceInstall
+
+[*pnp0c05.Det]
+AddReg=ForceInstall
+
+[*pnp0c06.Det]
+AddReg=ForceInstall
+
+[*pnp0c07.Det]
+AddReg=ForceInstall
+
+[*pnp0000.Det]
+AddReg=ForceInstall
+
+[*pnp0200.Det]
+AddReg=ForceInstall
+
+[*pnp0a03.Det]
+AddReg=ForceInstall
+
+[*pnp0b00.Det]
+AddReg=ForceInstall
+
+[*pnp0100.Det]
+AddReg=ForceInstall
+
+[*pnp0800.Det]
+AddReg=ForceInstall
+
+[ForceInstall]
+HKR,,NoSetupUI,,1
+
+[*pnp0c04.LogConfig]
+ConfigPriority=HARDWIRED
+IOConfig=f0-ff(ffff::)
+IRQConfig=13
+
+[*pnp0000.LogConfig]
+ConfigPriority=HARDWIRED
+IOConfig=20-21(ffff::)
+IOConfig=a0-a1(ffff::)
+IRQConfig=2
+
+[*pnp0200.LogConfig]
+ConfigPriority=HARDWIRED
+IOConfig=0-f(ffff::)
+IOConfig=81-83(ffff::)
+IOConfig=87-87(ffff::)
+IOConfig=89-8b(ffff::)
+IOConfig=8f-8f(ffff::)
+IOConfig=c0-df(ffff::)
+DMAConfig=4
+
+[*pnp0b00.LogConfig]
+ConfigPriority=HARDWIRED
+IOConfig=70-71(ffff::)
+IRQConfig=8
+
+[*pnp0100.LogConfig]
+ConfigPriority=HARDWIRED
+IOConfig=40-43(ffff::)
+IRQConfig=0
+
+[*pnp0800.LogConfig]
+ConfigPriority=HARDWIRED
+IOConfig=61-61(ffff::)
+
+[SYSTEM_BOARD]
+AddReg=System_Dev_Properties_AddReg,System_Removable_AddReg
+
+[NO_DRV]
+
+[FPU_DRV]
+AddReg=DUMMY_DRV_AddReg,FPU_DRV_AddReg
+
+[FPU_DRV_AddReg]
+HKR,,EnumPropPages,,"sysclass.dll,FPUEnumPropPages"
+
+[DUMMY_DRV]
+AddReg=DUMMY_DRV_AddReg,System_Dev_Properties_AddReg
+
+[TIMER_DRV]
+AddReg=DUMMY_DRV_AddReg,System_Dev_Properties_AddReg
+
+[TIMER_DRV.PosDup]
+*PNP0100
+
+[APM_DRV]
+AddReg=APM_VxD_Reg
+CopyFiles=APM_CopyFiles, APM_VxD_CopyFiles
+UpdateIniFields=APM_Driver_Ini
+
+[APM_VxD_Reg]
+HKR,,DevLoader,,VPOWERD.VXD
+HKLM,Software\Microsoft\Windows\CurrentVersion\Run,SystemTray,,"SysTray.Exe"
+HKR,,EnumPropPages,,"sysclass.dll,APMEnumPropPages"
+
+[LITE_DRV]
+
+AddReg=System_Dev_Properties_AddReg
+copyfiles=Lite_SysCopyFiles,Lite_WinCopyFiles
+
+[ELITE_DRV]
+AddReg=System_Dev_Properties_AddReg
+copyfiles=Elite_SysCopyFiles
+
+[VPIC_DRV]
+AddReg=VPIC_DRV_AddReg,System_Dev_Properties_AddReg
+
+[VPIC_DRV.PosDup]
+*PNP0000
+
+[VDMA_DRV]
+AddReg=VDMA_DRV_AddReg,VDMA_Dev_Properties_AddReg
+
+[VDMA_DRV.PosDup]
+*PNP0200
+
+[VDMA_Dev_Properties_AddReg]
+HKR,,EnumPropPages,,"sysclass.dll,DMAEnumPropPages"
+
+[PNPBIOS_DRV]
+AddReg=PNPBIOS_REG,PNPBIOS_DRV_AddReg,BIOS_Dev_Properties_AddReg
+copyfiles=PNPBIOS_Copyfiles
+DelFiles=PNPBIOS_DelFiles
+UpdateInis=PNPBIOS_Inis
+
+[PRESARIO_PNPBIOS_DRV]
+AddReg=PNPBIOS_REG,PNPBIOS_DRV_AddReg,System_Dev_Properties_AddReg
+copyfiles=PNPBIOS_Copyfiles,PNPBIOS_PRESARIO_Copyfiles
+DelFiles=PNPBIOS_DelFiles
+UpdateInis=PNPBIOS_Inis
+UpdateAutoBat=PRESARIO_Update_Autobat
+
+[PROLINEA_PNPBIOS_DRV]
+AddReg=PNPBios_Reg,PNPBIOS_DRV_AddReg,System_Dev_Properties_AddReg
+copyfiles=PNPBIOS_Copyfiles,PNPBIOS_PROLINEA_Copyfiles
+DelFiles=PNPBIOS_DelFiles
+UpdateInis=PNPBIOS_Inis
+UpdateAutoBat=PROLINEA_Update_Autobat
+
+[PROCESSOR_UPDATE_DRV]
+AddReg=PROCESSOR_UPDATE_DRV_AddReg,System_Dev_Properties_AddReg
+CopyFiles=PROCESSOR_UPDATE_Copyfiles
+
+[PROCESSOR_UPDATE_DRV_AddReg]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,update.sys
+
+[PROCESSOR_UPDATE_Copyfiles]
+update.sys
+
+[PCI_DRV]
+AddReg=PCI_DRV_AddReg,PCI_Dev_Properties_AddReg
+copyfiles=PCI_Copyfiles
+DelFiles=PCI_DelFiles
+
+[PCI_DRV.HW]
+AddReg=NoShutDownRemove.AddReg
+
+[ISARDP_DRV]
+
+[ISARDP_DRV.HW]
+AddReg=NoShutDownRemove.AddReg
+
+[ACPI_BUS_DRV]
+
+[ACPI_EIO_DRV]
+
+[ACPI_AC_DRV]
+AddReg=ACPI_AC_DRV_AddReg,System_Dev_Properties_AddReg
+CopyFiles=Battery_Copyfiles
+
+[ACPI_AC_DRV_AddReg]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,cmbatt.sys
+HKR,,PowerSourceType,1,01,00,00,00
+
+[ACPIINT_DRV]
+AddReg=ACPIINT_DRV_AddReg
+
+[ACPIINT_DRV_AddReg]
+HKR,,EnumPropPages,,"sysclass.dll,ACPIInterruptEnumPropPages"
+
+[ACPI_DRV]
+AddReg=ACPI_DRV_AddReg,System_Dev_Properties_AddReg
+CopyFiles=ACPI_Copyfiles, APM_CopyFiles, APM_VxD_CopyFiles
+UpdateIniFields=APM_Driver_Ini
+
+[ACPI_DRV.HW]
+AddReg=NoShutDownRemove.AddReg
+
+[ACPI_DRV_AddReg]
+HKR,,DevLoader,,"*ntkern,*acpi"
+HKR,,NTMPDriver,,acpi.sys
+HKLM,Software\Microsoft\Windows\CurrentVersion\Run,SystemTray,,"SysTray.Exe"
+HKLM,System\CurrentControlSet\Services\ACPI\Parameters
+
+[EMBEDDED_DRV]
+AddReg=Embedded_DRV_AddReg,System_Dev_Properties_AddReg
+CopyFiles=Embedded_Copyfiles
+
+[Embedded_DRV_AddReg]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,ec.sys
+
+[Embedded_Copyfiles]
+ec.sys
+
+[BATTERY_DRV]
+AddReg=Battery_DRV_AddReg,System_Dev_Properties_AddReg
+CopyFiles=Battery_Copyfiles
+
+[Battery_DRV_AddReg]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,cmbatt.sys
+HKR,,PowerSourceType,1,00,00,00,00
+
+[Battery_Copyfiles]
+cmbatt.sys
+battc.sys
+
+[WmiMap_DRV]
+AddReg=WmiMap_DRV_AddReg,System_Dev_Properties_AddReg
+CopyFiles=WmiMap_Copyfiles
+
+[WmiMap_DRV_AddReg]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,wmiacpi.sys
+
+[WmiMap_Copyfiles]
+wmiacpi.sys
+wmilib.sys
+
+[COMPOSITE_DRV]
+AddReg=COMPOSITE_DRV_ADDREG, System_Dev_Properties_AddReg
+CopyFiles=COMPOSITE_DRV_COPYFILES
+
+[COMPOSITE_DRV_ADDREG]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,compbatt.sys
+
+[COMPOSITE_DRV_COPYFILES]
+compbatt.sys
+battc.sys
+
+[IRQHOLDER_DRV]
+AddReg=IRQHOLDER_AddReg
+DelReg=IRQHOLDER_DelReg
+
+[IRQHOLDER_AddReg]
+HKR,,DevLoader,,PCI.VxD
+HKR,,PCIDevice,1,01,00,00,00
+
+[IRQHOLDER_DelReg]
+HKR,,ConfigFlags
+
+[IRQHOLDER_DRV.HW]
+AddReg=NoShutDownRemove.AddReg
+
+[FAN_DRV]
+AddReg=FAN_AddReg
+
+[FAN_AddReg]
+HKR,,NoUseClass,,1
+
+[POWER_BUT_DRV]
+
+[SLEEP_BUT_DRV]
+
+[BUTTON_DRV]
+AddReg=Button_AddReg,System_Dev_Properties_AddReg
+
+[LID_DRV]
+
+[Button_AddReg]
+HKR,,DevLoader,,"*ntkern"
+HKR,,NTMPDriver,,acpi.sys
+HKR,,ACPIDeviceType,1,01,00,00,00
+
+[APMBATT_DRV]
+AddReg=APMBATT_VxD_Reg
+DelFiles=APMBATT_DelFiles
+CopyFiles=APMBATT_CopyFiles
+
+[APMBATT_VxD_Reg]
+HKR,,DevLoader,,*NTKERN
+HKR,,NTMPDriver,,apmbatt.sys
+
+[APMBATT_CopyFiles]
+apmbatt.sys
+battc.sys
+
+[PCI_DRV_AddReg]
+HKR,,DevLoader,,pci.vxd
+HKR,,PCIDevice,1,00,00,00,00
+; Options setting
+; Bit 0 is set for using BIOS services instead of hardware
+; Bit 1 is set for using IRQ steering
+; Bit 2 is set for overriding bridge programming by BIOS
+; Bit 3 is set to disable GAT bit override
+; Bit 4 is set to force GAT always on when overriding (bit 3 must be clear)
+HKLM,System\CurrentControlSet\Services\VxD\PCI,Options,3,02,00,00,00
+; Devices specific settings (value name is DevID cat with VenID)
+; Bit 0: Devices video wanting no IRQ
+; Bit 1: Devices PCMCIA wanting IRQ
+; Bit 2: Devices Dual PCI IDE without programming code with bit 3 set
+HKLM,System\CurrentControlSet\Services\VxD\PCI,24118086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,24218086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,244A8086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,244B8086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,248B8086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,C6211045,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,06401095,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,12308086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,70108086,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,71998086,1,04,00,00,00
+; Bit 3: Devices needing no enum at all
+HKLM,System\CurrentControlSet\Services\VxD\PCI,0140104B,1,08,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,06031179,1,08,00,00,00
+; Bit 4: Devices needing no resources but having garbage in base address registers
+HKLM,System\CurrentControlSet\Services\VxD\PCI,10000E11,1,10,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,20000E11,1,10,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,04061039,1,10,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00088086,1,10,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00021014,1,10,00,00,00
+; Bit 5: Devices needing dword access
+HKLM,System\CurrentControlSet\Services\VxD\PCI,06001080,1,20,00,00,00
+; Bit 6: Devices being single function parading as multiple functions
+HKLM,System\CurrentControlSet\Services\VxD\PCI,11001013,1,40,00,00,00
+; Bit 7: Device always enabled
+HKLM,System\CurrentControlSet\Services\VxD\PCI,521910B9,1,80,00,00,00
+; Bit 8: Device is IDE even though not class code of 0101
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00011C1C,1,00,01,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00381097,1,00,01,00,00
+; Bit 9: Device is video even though not class code of 0001 or 03xx
+; Bit 10: Automatically fail to start the device. It is not supported in pmode
+HKLM,System\CurrentControlSet\Services\VxD\PCI,D001100B,1,00,04,00,00
+; Bit 11: Device can only appear on bus 0 (improperly decode type 1 transactions)
+HKLM,System\CurrentControlSet\Services\VxD\PCI,04A38086,1,00,08,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,000010AA,1,00,08,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,88D15333,1,00,08,00,00
+; Bit 12: Device can only appear on dev <16
+HKLM,System\CurrentControlSet\Services\VxD\PCI,06051179,1,00,10,00,00
+; Bit 13: Bridge device can only have children at Dev0
+HKLM,System\CurrentControlSet\Services\VxD\PCI,11101013,1,00,20,00,00
+; Bit 14: Do not modify the command bits of the device
+; Bit 15: Device is VGA even though not class code of 0001 or 0300 (only has meaning if bit 9 is set).
+; Bit 16: Device is MF CardBus controller that shares Command register
+HKLM,System\CurrentControlSet\Services\VxD\PCI,AC12104C,1,00,00,01,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,04661180,3,00,00,01,00
+; Bit 17: Device is a PCI/PCI bridge with straight thru routing (pin A to pin A, etc).
+; Bit 18: Device is a subtractive decode PCI-PCI bridge with writable IO window
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00471014,1,00,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00951014,1,00,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,71118086,1,04,00,00,00
+; Bit 19: Device is a PCI/ISA bridge with F-DMA ability
+HKLM,System\CurrentControlSet\Services\VxD\PCI,122E8086,1,00,00,08,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,70008086,1,00,00,08,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,71108086,1,00,00,08,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,76008086,1,00,00,08,00
+; Bit 20: Device does not allow IRQ sharing
+; Bit 21: Device does not allow level triggered IRQ
+; Bit 22: Device has dynamically configurable subsystem IDs
+HKLM,System\CurrentControlSet\Services\VxD\PCI,47471002,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,47541002,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,89015333,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00D61013,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,AC15104C,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,0004110B,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,000F1000,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,AC17104C,1,00,00,40,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,93971023,1,00,00,40,00
+; Bit 23: Device does not allow the WritePostingEnable bit to be set in CBB on the same bus
+; Bit 24: Create with the old ID (note that these are overridable so that
+; when they rev their driver they can clear that bit)
+HKLM,System\CurrentControlSet\Services\VxD\PCI,12318086,3,00,00,00,01
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00021273,3,00,00,00,01
+HKLM,System\CurrentControlSet\Services\VxD\PCI,007D1014,3,00,00,00,01
+HKLM,System\CurrentControlSet\Services\VxD\PCI,01001285,3,00,00,00,01
+; Bit 25: Do not shrink the memory window of this bridge
+; Bit 26: Turn off parity on this device
+; Bit 27: Dont program the BAR registers for non-PCI children
+HKLM,System\CurrentControlSet\Services\VxD\PCI,68361217,1,00,00,00,08
+HKLM,System\CurrentControlSet\Services\VxD\PCI,68321217,1,00,00,00,08
+; Bit 28: Device should not be enumerated and should be disabled
+; Bit 29: Ignore PM capability of this device
+; Bit 30: Don't reset bridge if it was in D3
+HKLM,System\CurrentControlSet\Services\VxD\PCI,AC22104C,1,00,00,00,40
+; More than one bit
+HKLM,System\CurrentControlSet\Services\VxD\PCI,C8141045,1,00,00,40,20
+HKLM,System\CurrentControlSet\Services\VxD\PCI,3202100C,1,00,8A,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,80021066,1,00,00,30,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,00021066,1,00,00,30,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,01021004,1,00,40,00,02
+
+;
+; Override of routing of some bridges
+;
+;                                                 devfunc of child device
+;                                                            ||
+;                                                    dwVenDev||
+;                                                    vvvvvvvvvv 1  A  B  C  D
+; Toshiba DeskStation V
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0605117908,1,03,04,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0605117920,1,01,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0605117940,1,03,04,01,02
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0605117948,1,04,03,02,01
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0605117960,1,02,01,04,03
+; Toshiba DeskStation V+
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0609117908,1,04,00,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0609117920,1,01,02,00,00
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0609117950,1,03,04,01,02
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0609117958,1,02,03,04,01
+HKLM,System\CurrentControlSet\Services\VxD\PCI,IRQORT0609117968,1,04,01,00,00
+
+;
+; IRQ Miniport Data
+;
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\04828086,Name,,"Intel 82375EB/SB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\04828086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\04828086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\122E8086,Name,,"Intel 82371FB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\122E8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\122E8086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\04848086,Name,,"Intel 82378"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\04848086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\04848086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\12348086,Name,,"Intel 82371MX"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\12348086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\12348086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\70008086,Name,,"Intel 82371SB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\70008086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\70008086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\71108086,Name,,"Intel 82371AB/EB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\71108086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\71108086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\76008086,Name,,"Intel 82372FB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\76008086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\76008086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00061004,Name,,"VLSI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00061004,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00061004,Instance,1,02,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\C5581045,Name,,"Opti Viper"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\C5581045,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\C5581045,Instance,1,03,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\C5681045,Name,,"Opti Viper Max"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\C5681045,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\C5681045,Instance,1,03,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00081039,Name,,"SiS5503"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00081039,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00081039,Instance,1,04,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\01021004,Name,,"VLSI Eagle"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\01021004,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\01021004,Instance,1,05,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\06021179,Name,,"Toshiba"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\06021179,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\06021179,Instance,1,06,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\80021066,Name,,"VESUVIUS PT86C523"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\80021066,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\80021066,Instance,1,07,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00021066,Name,,"VESUVIUS PT86C523"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00021066,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00021066,Instance,1,07,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\152310B9,Name,,"ALi 1523"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\152310B9,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\152310B9,Instance,1,08,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\0011100B,Name,,"NS 87560"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\0011100B,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\0011100B,Instance,1,09,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\AE290E11,Name,,"Compaq MISC-3"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\AE290E11,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\AE290E11,Instance,1,0A,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\153310B9,Name,,"ALi 1533"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\153310B9,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\153310B9,Instance,1,0B,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\c7001045,Name,,"Opti Fire Star"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\c7001045,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\c7001045,Instance,1,0C,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\05861106,Name,,"VT82C586B"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\05861106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\05861106,Instance,1,0D,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\05961106,Name,,"VT82C596"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\05961106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\05961106,Instance,1,0D,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\06861106,Name,,"VT82C686"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\06861106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\06861106,Instance,1,0D,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\A0F30E11,Name,,"Compaq OSB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\A0F30E11,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\A0F30E11,Instance,1,0E,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00020E11,Name,,"Compaq CMC-2"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00020E11,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00020E11,Instance,1,0F,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00021078,Name,,"Cyrix 5520 Rev 1"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00021078,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00021078,Instance,1,10,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00001078,Name,,"Cyrix 5520 Rev 0"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00001078,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\00001078,Instance,1,10,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24108086,Name,,"Intel 82801AA"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24108086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24108086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24208086,Name,,"Intel 82801AB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24208086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24208086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24408086,Name,,"Intel 82801BA"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24408086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24408086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\244C8086,Name,,"Intel 82801BAM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\244C8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\244C8086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24808086,Name,,"Intel 82801CA"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24808086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24808086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\248C8086,Name,,"Intel 82801CAM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\248C8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\248C8086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24C08086,Name,,"Intel 82801DB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24C08086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24C08086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24CC8086,Name,,"Intel 82801DBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24CC8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24CC8086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24D08086,Name,,"Intel 82801EB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24D08086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24D08086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24DC8086,Name,,"Intel 82801EBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24DC8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\24DC8086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26408086,Name,,"Intel 82801FB/FBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26408086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26408086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26418086,Name,,"Intel 82801FB/FBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26418086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26418086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26428086,Name,,"Intel 82801FB/FBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26428086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\26428086,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\71988086,Name,,"Intel 82440MX"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\71988086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQMiniports\71988086,Instance,1,01,00,00,00
+
+;
+; IDE Miniport Data
+;
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\12308086,Name,,"Intel 82371FB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\12308086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\12308086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\70108086,Name,,"Intel 82371SB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\70108086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\70108086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\71118086,Name,,"Intel 82371AB/EB/MB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\71118086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\71118086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\76018086,Name,,"Intel 82372FB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\76018086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\76018086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\C6211045,Name,,"Opti 826612A or Viper-M/N+"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\C6211045,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\C6211045,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\D7211045,Name,,"Opti FireStar"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\D7211045,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\D7211045,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\55131039,Name,,"SiS 5513"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\55131039,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\55131039,Instance,1,02,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\05971039,Name,,"SiS 5513 C Stepping"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\05971039,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\05971039,Instance,1,02,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\AE330E11,Name,,"Compaq MISC L/E"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\AE330E11,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\AE330E11,Instance,1,03,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\521910B9,Name,,"ALi 5219"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\521910B9,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\521910B9,Instance,1,03,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\522910B9,Name,,"ALi 5229"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\522910B9,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\522910B9,Instance,1,03,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\01031179,Name,,"Toshiba EX-IDE Type-B"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\01031179,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\01031179,Instance,1,03,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\D5681045,Name,,"Opti Viper Max"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\D5681045,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\D5681045,Instance,1,04,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\100B0002,Name,,"Nat. Sem. PC87415"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\100B0002,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\100B0002,Instance,1,05,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\05711106,Name,,"VT82C586B PIPC"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\05711106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\05711106,Instance,1,06,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24118086,Name,,"Intel 82801AA"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24118086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24118086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24218086,Name,,"Intel 82801AB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24218086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24218086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\244A8086,Name,,"Intel 82801BAM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\244A8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\244A8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\244B8086,Name,,"Intel 82801BA"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\244B8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\244B8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\248A8086,Name,,"Intel 82801CAM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\248A8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\248A8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\248B8086,Name,,"Intel 82801CA/CAM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\248B8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\248B8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24C18086,Name,,"Intel 82801DBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24C18086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24C18086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24CA8086,Name,,"Intel 82801DBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24CA8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24CA8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24CB8086,Name,,"Intel 82801DB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24CB8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24CB8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24D18086,Name,,"Intel 82801EB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24D18086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24D18086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24DA8086,Name,,"Intel 82801EBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24DA8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24DA8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24DB8086,Name,,"Intel 82801EB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24DB8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\24DB8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26518086,Name,,"Intel 82801FB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26518086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26518086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26528086,Name,,"Intel 82801FB"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26528086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26528086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26538086,Name,,"Intel 82801FBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26538086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\26538086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\266F8086,Name,,"Intel 82801FB/FBM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\266F8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\266F8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\71998086,Name,,"Intel 82440MX"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\71998086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IDEMiniports\71998086,Instance,1,00,00,00,00
+
+;
+; GART Miniport Data
+;
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71808086,Name,,"Intel 82443LX/EX"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71808086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71808086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71908086,Name,,"Intel 82443BX"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71908086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71908086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71A08086,Name,,"Intel 82443GX"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71A08086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\71A08086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\11308086,Name,,"Intel 815"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\11308086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\11308086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25008086,Name,,"Intel 820"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25008086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25008086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25018086,Name,,"Intel 820"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25018086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25018086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35758086,Name,,"Intel 830"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35758086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35758086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\1A218086,Name,,"Intel 840"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\1A218086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\1A218086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\1A308086,Name,,"Intel 845"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\1A308086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\1A308086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25308086,Name,,"Intel 850"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25308086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25308086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25318086,Name,,"Intel 860"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25318086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25318086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25508086,Name,,"Intel Placer Granite Bay"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25508086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25508086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\255D8086,Name,,"Intel Placer Granite Bay"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\255D8086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\255D8086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25608086,Name,,"Intel 82845G/GL/GE/PE/GV/E"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25608086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25608086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25708086,Name,,"Intel 82865G/PE/P/GV/82848P"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25708086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25708086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25788086,Name,,"Intel 82875P/E7210"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25788086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25788086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25808086,Name,,"Intel 915G/P/GV"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25808086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25808086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25848086,Name,,"Intel 925X/XE"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25848086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25848086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25908086,Name,,"Intel 915GM/PM/GMS/910GML Express"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25908086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\25908086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\33408086,Name,,"Intel 82855PM"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\33408086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\33408086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35808086,Name,,"Intel 82852/82855 GM/GME/PM/GMV"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35808086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35808086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35848086,Name,,"Intel 82852/82855 GM/GME/PM/GMV"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35848086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35848086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35858086,Name,,"Intel 82852/82855 GM/GME/PM/GMV"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35858086,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\35858086,Instance,1,00,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05971106,Name,,"VIA Tech 3045"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05971106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05971106,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05981106,Name,,"VIA Tech VT82C598"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05981106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05981106,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\06911106,Name,,"VIA Tech VT82C691"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\06911106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\06911106,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05011106,Name,,"VIA Tech VT501"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05011106,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\05011106,Instance,1,01,00,00,00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\154110B9,Name,,"ALi M1541"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\154110B9,Path,,"PCIMP.PCI"
+HKLM,System\CurrentControlSet\Services\VxD\PCI\GARTMiniports\154110B9,Instance,1,02,00,00,00
+
+; IRQ Routing Tables
+; Each entry has the same structure as Microsoft's PCI IRQ Routing Table Spec
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQRoutingTable,"VLSI Sample",1,\
+24,50,49,52, 00,01, 40,00, FF, FF, 00,00,00,00, 00,00,      \
+00,00,00,00, 00,00,00,00,  00,00,00,00,  00,00,00,00,       \
+00, 58, 01, 28,DE, 02, 28,DE, 03, 28,DE, 04, 28,DE, 01, 00, \
+00, 60, 02, 28,DE, 03, 28,DE, 04, 28,DE, 01, 28,DE, 01, 00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQRoutingTable,"IBM Mach, VLSI Chipset",1,\
+24,50,49,52, 00,01, 40,00, FF, FF, 00,00,00,00, 00,00,      \
+00,00,00,00, 00,00,00,00,  00,00,00,00,  00,00,00,00,       \
+00, 58, 01, 28,DE, 03, 28,DE, 02, 28,DE, 01, 28,DE, 01, 00, \
+00, 60, 02, 28,DE, 01, 28,DE, 03, 28,DE, 02, 28,DE, 01, 00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQRoutingTable,"Dell 4 PCI slot",1,\
+24,50,49,52, 00,01, 60,00, FF, FF, 00,00,00,00, 00,00,      \
+00,00,00,00, 00,00,00,00,  00,00,00,00,  00,00,00,00,       \
+00, 68, 60, B8,0E, 61, B8,0E, 62, B8,0E, 63, B8,0E, 01, 00, \
+00, 70, 61, B8,0E, 62, B8,0E, 63, B8,0E, 60, B8,0E, 01, 00, \
+00, 78, 62, B8,0E, 63, B8,0E, 60, B8,0E, 61, B8,0E, 01, 00, \
+00, 80, 63, B8,0E, 60, B8,0E, 61, B8,0E, 62, B8,0E, 01, 00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQRoutingTable,"Dell 2 PCI slot",1,\
+24,50,49,52, 00,01, 40,00, FF, FF, 00,00,00,00, 00,00,      \
+00,00,00,00, 00,00,00,00,  00,00,00,00,  00,00,00,00,       \
+00, 60, 60, B8,0E, 61, 08,8E, 62, 08,8E, 63, B8,0E, 01, 00, \
+00, 68, 62, B8,0E, 63, 08,8E, 61, 08,8E, 60, B8,0E, 01, 00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQRoutingTable,"Gateway 2000 3 PCI slot",1,\
+24,50,49,52, 00,01, 50,00, FF, FF, 00,00,00,00, 00,00,      \
+00,00,00,00, 00,00,00,00,  00,00,00,00,  00,00,00,00,       \
+00, 30, 62, B8,8E, 61, B8,8E, 60, B8,8E, 63, B8,8E, 0A, 00, \
+00, 70, 61, B8,8E, 60, B8,8E, 62, B8,8E, 63, B8,8E, 0B, 00, \
+00, 60, 60, B8,8E, 62, B8,8E, 61, B8,8E, 63, B8,8E, 0C, 00
+
+HKLM,System\CurrentControlSet\Services\VxD\PCI\IRQRoutingTable,"Intel 430MX Motherboard Sample",1,\
+24,50,49,52, 00,01, 80,00, FF, FF, 00,00,00,00, 00,00,      \
+00,00,00,00, 00,00,00,00,  00,00,00,00,  00,00,00,00,       \
+00, 70, 60, F8,DE, 61, F8,DE, 60, F8,DE, 61, F8,DE, 05, 00, \
+00, 78, 61, F8,DE, 60, F8,DE, 61, F8,DE, 60, F8,DE, 63, 00, \
+00, 88, 61, F8,DE, 60, F8,DE, 61, F8,DE, 60, F8,DE, 06, 00, \
+00, 90, 60, F8,DE, 61, F8,DE, 60, F8,DE, 61, F8,DE, 03, 00, \
+00, 98, 61, F8,DE, 60, F8,DE, 61, F8,DE, 60, F8,DE, 61, 00, \
+00, A0, 60, B8,8E, 62, B8,8E, 61, B8,8E, 63, B8,8E, 01, 00
+
+[PCI_Dev_Properties_AddReg]
+HKR,,EnumPropPages,,"sysclass.dll,PCIEnumPropPages"
+
+[DUMMY_DRV_AddReg]
+HKR,,DevLoader,,*CONFIGMG
+
+[VDMA_DRV_AddReg]
+HKR,,DevLoader,,*VDMAD
+HKR,,PrivateProblem,,DMAProblemHandler
+
+[PNPBIOS_DRV_AddReg]
+HKR,,DevLoader,,bios.vxd
+
+[BIOS_Dev_Properties_AddReg]
+HKR,,EnumPropPages,,"sysclass.dll,BIOSEnumPropPages"
+
+[System_Dev_Properties_AddReg]
+HKR,,EnumPropPages,,"sysclass.dll,EnumPropPages"
+
+[System_Removable_AddReg]
+HKR,,DevLoader,,*CONFIGMG
+HKR,,CMDrivFlags,1,02
+
+;--------------------------------------------------------------
+[BaseWinOptions]
+system_driver   ;always install & copy system.drv
+APM_Base                ;always clean-out APM, will (re)install if detected/verified 
+ACPI_BASE               ; Add the date after which ACPI GoodBiosList will not be used
+DetCleanUp      ; Delete old detcrash.log
+
+[ACPI_BASE]
+AddReg=ACPIAddReg
+
+[ACPIAddReg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\Detect,ACPICheckDate,,"12/01/99"
+
+[DetCleanUp]
+UpdateInis=DeleteDetCrashLog
+
+[DeleteDetCrashLog]
+wininit.ini,Rename,,"NUL=%30%\detcrash.log"
+
+[system_driver]
+UpdateInis = system_driver_inis
+CopyFiles=system_driver_files
+
+[system_driver_inis]
+; Install "system.drv=system.drv" unless "system.drv=atmsys.drv" exists.
+system.ini, boot, "system.drv=atmsys.drv", "~SetupTemp~=*",3
+system.ini, boot,, "system.drv=system.drv"
+system.ini, boot, "~SetupTemp~=*", "system.drv=system.drv",3
+; Make entry in boot.desc
+system.ini,boot.description,,"system.drv=%MS_CHICAGO%"
+
+[system_driver_files]
+system.drv,,,1
+
+[APM_Base]
+UpdateInis=APM_Cleanup, No_APM_Inis
+UpdateIniFields=No_APM_Fields
+
+[APM_Cleanup]
+system.ini,power.drv,"OptionsDLL=apmext.dll",,1
+
+[No_APM_Fields]
+system.ini,boot,drivers,power.drv
+
+[No_APM_Inis]
+system.ini,386Enh,"device=vpowerd.386"
+system.ini,386Enh,"device=*vpowerd"
+
+[PNPBIOS_Copyfiles]
+bios.vxd
+
+[PNPBIOS_PRESARIO_Copyfiles]
+CPQAE05.EXE
+
+[PNPBIOS_PROLINEA_Copyfiles]
+CPQAE06.EXE
+
+[PNPBIOS_DelFiles]
+bios.386
+
+[PNPBIOS_Inis]
+
+[PNPBIOS_Reg]
+HKLM,System\CurrentControlSet\Services\VxD\BIOS,Options,3,00,00,00,00
+
+[PRESARIO_Update_AutoBat]
+CmdAdd=CPQAE05.EXE
+
+[PROLINEA_Update_AutoBat]
+CmdAdd=CPQAE06.EXE
+
+[Lite_SysCopyFiles]
+compaq.drv
+compaq.vxd
+supervga.drv
+lmouse.drv
+lmouse.vxd
+
+[Lite_WinCopyFiles]
+cpqmon.ini
+cpqmode.ini
+
+[Elite_SysCopyFiles]
+wd.drv
+wd.vxd
+supervga.drv
+lmouse.drv
+lmouse.vxd
+
+[ACPI_Copyfiles]
+acpi.sys
+pci.vxd
+
+[PCI_Copyfiles]
+pci.vxd
+pcimp.pci
+
+[PCI_DelFiles]
+pci.386
+
+[APM_CopyFiles]
+power.drv
+
+[APM_VxD_CopyFiles]
+vpowerd.vxd
+
+[APM_Driver_Ini]
+system.ini,boot,drivers,,power.drv
+
+[NoShutDownRemove.AddReg]
+HKR,,ConfigFlags,1,00,02,00,00
+
+[ControlFlags]
+ExcludeFromSelect=*PNP0A05
+ExcludeFromSelect=*PNP0A06
+ExcludeFromSelect=*PNP0C00
+ExcludeFromSelect=BIOS\*PNP0C01
+ExcludeFromSelect=ACPI\*PNP0C01
+ExcludeFromSelect=*PNP0C01
+ExcludeFromSelect=*PNP0C02
+ExcludeFromSelect=*PNP0C04
+ExcludeFromSelect=*PNP0C05
+ExcludeFromSelect=*PNP0C06
+ExcludeFromSelect=*PNP0C07
+ExcludeFromSelect=*PNP0C09
+ExcludeFromSelect=*PNP0C0A
+ExcludeFromSelect=*PNP0C0B
+ExcludeFromSelect=*PNP0C0C
+ExcludeFromSelect=*PNP0C0D
+ExcludeFromSelect=*PNP0C0E
+ExcludeFromSelect=*PNP0C0F
+ExcludeFromSelect=PCI\IRQHolder
+ExcludeFromSelect=*PNP0CF0
+ExcludeFromSelect=*PNP0CF1
+ExcludeFromSelect=*PNP0000
+ExcludeFromSelect=*PNP0001
+ExcludeFromSelect=*PNP0002
+ExcludeFromSelect=*PNP0003
+ExcludeFromSelect=*PNP0004
+ExcludeFromSelect=*PNP0200
+ExcludeFromSelect=*PNP0201
+ExcludeFromSelect=*PNP0202
+ExcludeFromSelect=*PNP0B00
+ExcludeFromSelect=*PNP0100
+ExcludeFromSelect=*PNP0101
+ExcludeFromSelect=*PNP0102
+ExcludeFromSelect=*PNP0103
+ExcludeFromSelect=*PNP0800
+ExcludeFromSelect=*PNP0C14
+ExcludeFromSelect=*CPQFA1B
+ExcludeFromSelect=*CPQ9A83
+ExcludeFromSelect=*CPQA090
+ExcludeFromSelect=*CPQA0A0
+ExcludeFromSelect=*CPQA0B0
+ExcludeFromSelect=*CPQFA1B
+ExcludeFromSelect=ISAPNP\ReadDataPort
+ExcludeFromSelect=ACPI\ACPI_INTERRUPT
+ExcludeFromSelect=VPOWERD\BATTERY
+ExcludeFromSelect=ACPI\ACPI0003
+ExcludeFromSelect=ACPI\COMPBATT
+
+[Strings]
+SystemClassName = "System devices"
+GENDEV_MFG      = "(Standard system devices)"
+MS              = "Microsoft"
+NULL            = ""
+WINBASE         = "Base Windows Components"
+SRCPATH         = "Distribution directory"
+MS_CHICAGO      = "Standard PC"
+DetZenithPC     = "Zenith PC"
+*pnp0c00.DeviceDesc="Plug and Play BIOS"
+BIOS\*pnp0c01.DeviceDesc="System board extension for PnP BIOS"
+ACPI\*pnp0c01.DeviceDesc="System board extension for ACPI BIOS"
+*pnp0c01.DeviceDesc="System board"
+*pnp0c02.DeviceDesc="Motherboard resources"
+*pnp0c04.DeviceDesc="Numeric data processor"
+*pnp0c05.DeviceDesc="Advanced Power Management support"
+*pnp0c08.DeviceDesc="Advanced Configuration and Power Interface (ACPI) BIOS"
+*pnp0c09.DeviceDesc="ACPI Embedded Controller"
+*pnp0c0a.DeviceDesc="ACPI Battery"
+*pnp0c0b.DeviceDesc="ACPI Fan"
+*pnp0c0c.DeviceDesc="ACPI Power Button"
+*pnp0c0d.DeviceDesc="ACPI Lid"
+*pnp0c0e.DeviceDesc="ACPI Sleep Button"
+*pnp0c0f.DeviceDesc="ACPI IRQ Holder for PCI IRQ Steering"
+*pnp0c13.DeviceDesc="Plug and Play BIOS (fail safe)"
+*pnp0c14.DeviceDesc="Wmi ACPI Mapper"
+PCI\IRQHolder.DeviceDesc="IRQ Holder for PCI Steering"
+*pnp0000.DeviceDesc="Programmable interrupt controller"
+*pnp0001.DeviceDesc="EISA programmable interrupt controller"
+*pnp0002.DeviceDesc="MCA programmable interrupt controller"
+*pnp0003.DeviceDesc="Advanced programmable interrupt controller"
+*pnp0004.DeviceDesc="Cyrix SLiC MP interrupt controller"
+*pnp0200.DeviceDesc="Direct memory access controller"
+*pnp0201.DeviceDesc="EISA direct memory access controller"
+*pnp0202.DeviceDesc="MCA direct memory access controller"
+*pnp0a03.DeviceDesc="PCI bus"
+*pnp0a05.DeviceDesc="ACPI Generic Bus"
+*pnp0a06.DeviceDesc="ACPI Generic EIO Bus"
+*pnp0b00.DeviceDesc="System CMOS/real time clock"
+*pnp0100.DeviceDesc="System timer"
+*pnp0101.DeviceDesc="EISA system timer"
+*pnp0102.DeviceDesc="MCA system timer"
+*pnp0103.DeviceDesc="High Precision Event Timer"
+*pnp0800.DeviceDesc="System speaker"
+ISAPNP\ReadDataPort.DeviceDesc="IO read data port for ISA Plug and Play enumerator"
+ACPI\ACPI_INTERRUPT.DeviceDesc="SCI IRQ used by ACPI bus"
+VPOWERD\BATTERY.DeviceDesc="APM Battery Slot"
+ACPI\COMPBATT.DeviceDesc="Composite Power Source"
+ACPI\ACPI0003.DeviceDesc="ACPI AC Power Source"
+ACPI\BUTTON.DeviceDesc="ACPI System Button"
+Processor_Update.DeviceDesc="Processor support"
+
+COMPAQ_MFG="Compaq"
+*pnp0c06.DeviceDesc="Early Compaq Presario Plug and Play BIOS"
+*pnp0c07.DeviceDesc="Early Compaq Prolinea Plug and Play BIOS"
+*pnp0cf0.DeviceDesc="Compaq LTE Lite support"
+*pnp0cf1.DeviceDesc="Compaq LTE Elite support"
+*CPQ9A83.DeviceDesc="Compaq Deskpro XL Processor Board"
+*CPQA090.DeviceDesc="Compaq SmartStation"
+*CPQA0A0.DeviceDesc="Compaq MiniStation/EN"
+*CPQA0B0.DeviceDesc="Compaq MiniStation/TR"
+*CPQFA1B.DeviceDesc="Compaq Deskpro 486/50 system memory board"
