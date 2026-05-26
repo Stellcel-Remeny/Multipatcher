@@ -1,6 +1,6 @@
 @echo off
 rem genimg.bat – Windows equivalent of genimg.sh
-rem Usage: genimg.bat <template> <output> <content-dir>
+rem Usage: genimg.bat <template> <content-dir> <output>
 rem Generates a bootable floppy image by copying content into a template.
 rem Requires ImDisk (imdisk.exe) – https://sourceforge.net/projects/imdisk-toolkit/
 
@@ -8,13 +8,13 @@ setlocal enabledelayedexpansion
 
 rem ----- argument checks -----
 if "%~3"=="" (
-    echo ERROR: Usage: %~nx0 ^<template^> ^<output^> ^<content-dir^> >&2
+    echo ERROR: Usage: %~nx0 ^<template^> ^<content-dir^> ^<output^> >&2
     exit /b 1
 )
 
 set "TEMPLATE=%~1"
-set "OUTPUT=%~2"
-set "CONTENT=%~3"
+set "CONTENT=%~2"
+set "OUTPUT=%~3"
 
 if not exist "%TEMPLATE%" (
     echo ERROR: Template image not found: "%TEMPLATE%" >&2

@@ -33,20 +33,18 @@ os = host_machine.system()
 if os == 'windows'
     gen_script = base_dir / 'genimg.bat'
     cmd = ['cmd', '/c',
-            gen_script,
-            template_img,
-            build_dir / boot_img_out,
-            content_dir]
+            gen_script]
 elif os == 'linux'
     gen_script = base_dir / 'genimg.sh'
-    cmd = ['sh',
-            gen_script,
-            template_img,
-            build_dir / boot_img_out,
-            content_dir]
+    cmd = ['sh', gen_script]
 else
     error('Unsupported OS, expected Windows or Linux but detected: ' + os)
 endif
+
+# Append common arguments to cmd
+cmd += [template_img,
+        content_dir,
+        build_dir / boot_img_out]
 
 # Build the Boot image
 boot_target = custom_target(
